@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import 'boxicons/css/boxicons.min.css';
 import "./globals.css";
-import Navbar from "@/components/navbar/NavBar";
+import Navbar from "@/src/components/navbar/NavBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
