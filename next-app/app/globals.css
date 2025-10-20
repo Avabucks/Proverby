@@ -1,5 +1,76 @@
-:root {
-  --primary-color: #1e40af; /* blu scuro */
-  --secondary-color: #facc15; /* giallo */
-  --radius: 0.5rem;
+@import "tailwindcss";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Stile generale */
+
+body.light {
+    --primary: rgb(102, 72, 175);
+    --primary-dark: rgb(85, 52, 164);
+    --primary-verydark: rgb(29, 29, 54);
+    --bg: rgb(237, 237, 237);
+    --bg-05: rgb(237, 237, 237, .5);
+    --text-color: rgb(0, 0, 0, .8);
+    --text-color-05: rgb(0, 0, 0, .5);
+    --contrast-02: rgb(0, 0, 0, .2);
+    --contrast-01: rgb(0, 0, 0, .1);
+    --contrast-007: rgb(0, 0, 0, .07);
+    --contrast-005: rgb(0, 0, 0, .05);
+    --white: rgb(255, 255, 255)
+    --white-05: rgb(255, 255, 255, .5);
+    --border-radius: 20px;
+}
+
+body.dark {
+    --primary: rgb(102, 72, 175);
+    --primary-dark: rgb(85, 52, 164);
+    --primary-verydark: rgb(29, 29, 54);
+    --bg: rgb(18, 18, 18);
+    --bg-05: rgb(18, 18, 18, .5);
+    --text-color: rgb(255, 255, 255, .8);
+    --text-color-05: rgb(255, 255, 255, .5);
+    --contrast-02: rgb(255, 255, 255, .2);
+    --contrast-01: rgb(255, 255, 255, .1);
+    --contrast-007: rgb(255, 255, 255, .07);
+    --contrast-005: rgb(255, 255, 255, .05);
+    --white: rgb(0, 0, 0)
+    --white-05: rgb(0, 0, 0, .5);
+    --border-radius: 20px;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    color: var(--text-color);
+    background-color: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    animation: fade-in .5s;
+    transition: .3s;
+}
+
+i {
+    pointer-events: none;
+}
+
+b {
+    font-weight: 700;
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: .5;
+}
+
+.hidden {
+    display: none !important;
 }
