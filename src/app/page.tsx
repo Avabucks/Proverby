@@ -6,6 +6,7 @@ export default function Home() {
       <button className="bg-[var(--primary)] text-white rounded-[var(--border-radius)]">
         Cliccami
       </button>
+      <p>{`${process.env.NEXT_PUBLIC_PHP_API}`}</p>
     </section>
   );
 }
