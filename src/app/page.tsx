@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 export default function Home() {
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_PHP_API}/api/test_api.php`)
+    fetch(`${process.env.NEXT_PUBLIC_PHP_API}/test_api.php`)
       .then(res => res.json())
       .then(data => console.log(data))
       .catch(err => console.error(err));
