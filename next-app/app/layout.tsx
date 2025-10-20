@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import 'boxicons';
+import 'boxicons/css/boxicons.min.css';
 import "./globals.css";
 import Navbar from "@/components/navbar/NavBar";
 
@@ -26,6 +26,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="it">
+      <head>
+        
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased light`}
       >
