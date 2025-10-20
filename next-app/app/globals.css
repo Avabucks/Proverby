@@ -65,12 +65,3 @@ i {
 b {
     font-weight: 700;
 }
-
-.disabled {
-    pointer-events: none;
-    opacity: .5;
-}
-
-.hidden {
-    display: none !important;
-}
