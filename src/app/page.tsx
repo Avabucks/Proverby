@@ -2,13 +2,8 @@
 import { useEffect } from 'react';
 
 export default function Home() {
-  useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_PHP_API}/test_api.php`)
-      .then(res => res.json())
-      .then(data => console.log(data))
-      .catch(err => console.error(err));
-  }, []);
 
+  // console.log(`${process.env.NEXT_PUBLIC_PHP_API}/test_api.php`); TEST API
 
   return (
     <section className="bg-primary text-text-color p-4">
