@@ -1,13 +1,18 @@
 <?php
-header("Access-Control-Allow-Origin: *");
+$allowed_origins = [
+    'http://localhost:3000',
+    'http://proverby.it'
+];
+
+if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowed_origins)) {
+    header("Access-Control-Allow-Origin: " . $_SERVER['HTTP_ORIGIN']);
+}
+
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+header("Access-Control-Allow-Headers: Content-Type");
 
-$allowed_ips = ['127.0.0.1', '::1', '192.168.56.1']; // TODO manca IP server
-
-if (!in_array($_SERVER['REMOTE_ADDR'], $allowed_ips)) {
-    http_response_code(403);
-    exit('Accesso negato');
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    exit(0);
 }
 
 echo "funziona";
