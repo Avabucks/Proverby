@@ -2,8 +2,16 @@
 import { useEffect } from 'react';
 
 export default function Home() {
-
-  // console.log(`${process.env.NEXT_PUBLIC_PHP_API}/test_api.php`); TEST API
+  
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_PHP_API}/test_api.php`, {
+      method: "GET",
+    })
+      .then(async (res) => {
+        const text = await res.text();
+        console.log(text);
+      })
+  }, []);
 
   return (
     <section className="bg-primary text-text-color p-4">
