@@ -20,7 +20,9 @@
     ],
     "paths": {
       "@/*": ["./*"]
-    }
+    },
+    "experimentalDecorators": true,    // ✅ enable decorators
+    "emitDecoratorMetadata": true,     // ✅ needed by TypeORM
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "tailwind.config.js"],
   "exclude": ["node_modules"]
