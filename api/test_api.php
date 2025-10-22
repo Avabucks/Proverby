@@ -1,11 +1,16 @@
 <?php
-$allowed_origins = [
-    'http://localhost:3000',
-    'http://proverby.it'
-];
+include "config/config.php";
 
-if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowed_origins)) {
-    header("Access-Control-Allow-Origin: " . $_SERVER['HTTP_ORIGIN']);
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+    $origin = $_SERVER['HTTP_ORIGIN'];
+
+    // Estrarre solo schema + host senza porta
+    $parsed = parse_url($origin);
+    $origin_base = $parsed['scheme'] . '://' . $parsed['host'];
+
+    if (in_array($origin_base, $allowed_origins)) {
+        header("Access-Control-Allow-Origin: $origin");
+    }
 }
 
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
