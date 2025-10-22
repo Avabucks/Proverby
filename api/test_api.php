@@ -4,7 +4,6 @@ include "config/config.php";
 if (isset($_SERVER['HTTP_ORIGIN'])) {
     $origin = $_SERVER['HTTP_ORIGIN'];
 
-    // Estrarre solo schema + host senza porta
     $parsed = parse_url($origin);
     $origin_base = $parsed['scheme'] . '://' . $parsed['host'];
 
@@ -20,5 +19,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
 
-echo "funziona";
+echo $_SERVER['HTTP_ORIGIN'];
 ?>
