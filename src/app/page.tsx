@@ -14,14 +14,14 @@ export default async function Home() {
   const [users] = await pool.query<User[]>("SELECT * FROM users");
 
   return (
-    <section className="bg-primary text-text-color p-4">
-      <h1 className="text-primary">Benvenuto nella Home!</h1>
-      <p className="text-text-color-05">Questa è la pagina principale.</p>
-      <button className="bg-[var(--primary)] text-white rounded-[var(--border-radius)]">
+    <section>
+      <h1 className="text-xl">Benvenuto nella Home!</h1>
+      <p className="text-base text-text-color-05">Questa è la pagina principale.</p>
+      <div className="bg-[var(--primary)] text-base text-white rounded-[var(--border-radius)]">
         Cliccami
-      </button>
+      </div>
       <div>
-        <h1>Lista Utenti</h1>
+        <h1 className="text-3xl font-bold">Lista Utenti</h1>
         <ul>
           {users.map((u) => (
             <li key={u.id}>

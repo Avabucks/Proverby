@@ -3,10 +3,10 @@ import GoogleLogin from "@/src/components/googlelogin/GoogleLogin";
 
 export default function Navbar() {
   return (
-    <nav>
+    <header>
       <Link href="/">Home</Link> |{" "}
       <Link href="/about">Chi siamo</Link> |{" "}
       <GoogleLogin></GoogleLogin>
-    </nav>
+    </header>
   );
 }

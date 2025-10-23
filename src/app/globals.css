@@ -56,6 +56,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
     animation: fade-in .5s;
     transition: .3s;
+    font-family: var(--font-poppins);
 }
 
 i {
@@ -64,4 +65,11 @@ i {
 
 b {
     font-weight: 700;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    align-items: center;
 }
