@@ -1,12 +1,21 @@
 import "./Ripple.css";
+import Image from "next/image";
 
 interface RippleProps {
-  children: React.ReactNode;
+  handleOnClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  children?: React.ReactNode;
+  opt?: string;
   icon?: string;
+  img?: string;
+  alt?: string;
 }
 
-export default function Ripple({ children, icon }: RippleProps) {
+export default function Ripple({ handleOnClick, children, opt, icon, img, alt }: RippleProps) {
   return (
-        <div className="ripple"><i className={`${ icon }`}></i>{ children }</div>
+        <div onClick={ handleOnClick } className={`ripple ${ opt || `` }`}>
+          { icon ? <i className={`${ icon }`}></i> : `` }
+          { img ? <Image src={img} alt={alt || ""} width={20}></Image> : `` }
+          { children }
+        </div>
     );
 }

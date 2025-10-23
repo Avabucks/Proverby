@@ -70,3 +70,7 @@ section {
     gap: 7px;
     align-items: center;
 }
+
+nav * {
+    user-select: none;
+}

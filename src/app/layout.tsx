@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import "./animations.css";
-import Navbar from "@/src/components/navbar/NavBar";
+import Navbar from "@/src/components/NavBar";
 
 const poppins = Poppins({
   variable: "--font-poppins",

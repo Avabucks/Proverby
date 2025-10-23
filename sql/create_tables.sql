@@ -12,13 +12,11 @@ USE proverby;
 --
 
 CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `username` varchar(255) NOT NULL default '',
-  `email` varchar(255) NOT NULL default '',
-  `uid` varchar(255) NOT NULL default '',
-  PRIMARY KEY  (`id`)
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  uid VARCHAR(255) NOT NULL,
+  username VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  UNIQUE KEY unique_uid (uid)
 )
-  COMMENT='Users'
-  DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
 
 -- TODO

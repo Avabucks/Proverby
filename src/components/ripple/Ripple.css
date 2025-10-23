@@ -57,6 +57,6 @@
     opacity: 1;
 }
 
-.ripple.outline>a {
+.ripple.outline {
     outline: 1px solid var(--contrast-01);
 }
