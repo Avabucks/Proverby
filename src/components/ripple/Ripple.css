@@ -9,7 +9,7 @@
     font-size: 1rem;
     line-height: 24px;
     text-decoration: none;
-    height: 50px;
+    min-height: 50px;
     padding-inline: 15px;
     border-radius: var(--border-radius);
     color: var(--text-color);

@@ -33,8 +33,9 @@ header>div {
 header .headerLeft {
     align-items: center;
     display: flex;
-    gap: 35px;
+    gap: 20px;
     color: var(--text-color);
+    margin-left: -15px;
     transition: .3s;
 }
 
@@ -44,7 +45,6 @@ header .headerLeft .toggleMenu {
     cursor: pointer;
     color: var(--text-color);
     display: none;
-    color: var(--text-color);
 }
 
 header .logo {
@@ -52,15 +52,7 @@ header .logo {
     display: flex;
     align-items: center;
     gap: 20px;
-}
-
-header .logo > a {
-    pointer-events: all;
-    display: flex;
-    align-items: center;
-    height: 60px !important;
-    margin: -15px;
-    gap: 5px;
+    padding: 12px 0;
 }
 
 header .logo img {
@@ -96,7 +88,7 @@ header .menu {
     display: flex;
     align-items: center;
     flex-direction: row;
-    gap: 20px;
+    gap: 10px;
     list-style-type: none;
 }
 
