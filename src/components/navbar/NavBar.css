@@ -1,7 +1,7 @@
-header * {
+nav * {
     user-select: none;
 }
-header {
+nav {
     position: fixed;
     top: 0;
     left: 0;
@@ -18,36 +18,7 @@ header {
     background-color: rgb(0, 0, 0, 0);
 }
 
-header.header-bg {
-    background-color: var(--bg);
-    box-shadow: 0 4px 6px -2px var(--contrast-01);
-}
-
-header>div {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-}
-
-header .headerLeft {
-    align-items: center;
-    display: flex;
-    gap: 20px;
-    color: var(--text-color);
-    margin-left: -15px;
-    transition: .3s;
-}
-
-header .headerLeft .toggleMenu {
-    pointer-events: all;
-    font-size: 1.4rem;
-    cursor: pointer;
-    color: var(--text-color);
-    display: none;
-}
-
-header .logo {
+nav .logo {
     pointer-events: none;
     display: flex;
     align-items: center;
@@ -55,40 +26,32 @@ header .logo {
     padding: 12px 0;
 }
 
-header .logo img {
+nav .logo img {
     position: relative;
     z-index: 2;
     padding: 0px;
     padding-top: 2px;
 }
 
-header .title {
-    font-size: 45px;
-}
 
-header a {
-    text-decoration: none;
-    color: var(--text-color);
-    cursor: pointer;
-    transition: .3s;
-}
 
-header a div {
-    margin-left: 10px;
-}
+/* TODO */
 
-header .menu-cont {
+
+
+
+nav .menu-cont {
     display: flex;
     gap: 20px;
     align-items: center;
 }
 
-header .menu {
+nav .menu {
     font-size: 1rem;
     display: flex;
     align-items: center;
     flex-direction: row;
-    gap: 10px;
+    gap: 20px;
     list-style-type: none;
 }
 
@@ -96,46 +59,53 @@ header .menu {
     display: none;
 }
 
-header .v-divider {
+nav .v-divider {
     height: 40px;
     border-left: 1px solid var(--contrast-01);
 }
 
-header .shadow {
+nav .shadow {
     display: none;
 }
 
-header .ripple.profilo a {
+
+
+/* TODO */
+
+
+
+
+nav .ripple.profilo a {
     display: flex;
     gap: 10px;
     align-items: center;
     height: 60px;
 }
 
-header .ripple.profilo a img {
+nav .ripple.profilo a img {
     width: 42px;
     aspect-ratio: 1/1;
     border-radius: 50rem;
 }
 
-header .ripple.profilo a div:first-child {
+nav .ripple.profilo a div:first-child {
     display: flex;
     align-items: center;
     margin: 0;
 }
 
-header .ripple.profilo a div:last-child {
+nav .ripple.profilo a div:last-child {
     display: flex;
     flex-direction: column;
     margin: 0;
 }
 
-header .ripple.profilo a div:last-child :first-child {
+nav .ripple.profilo a div:last-child :first-child {
     font-weight: 600;
     font-size: 1.1rem;
 }
 
-header .ripple.profilo a div:last-child :last-child {
+nav .ripple.profilo a div:last-child :last-child {
     font-weight: 500;
     font-size: .9rem;
     opacity: .4;
