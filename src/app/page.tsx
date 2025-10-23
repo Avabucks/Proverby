@@ -4,14 +4,14 @@ import { RowDataPacket } from "mysql2";
 
 interface User extends RowDataPacket {
   id: number;
-  name: string;
+  username: string;
   email: string;
-  isActive: boolean;
+  uid: string;
 }
 
 export default async function Home() {
 
-  const [users] = await pool.query<User[]>("SELECT * FROM user");
+  const [users] = await pool.query<User[]>("SELECT * FROM users");
 
   return (
     <section className="bg-primary text-text-color p-4">
@@ -25,7 +25,7 @@ export default async function Home() {
         <ul>
           {users.map((u) => (
             <li key={u.id}>
-              {u.name} - {u.email} - {u.isActive}
+              {u.id} - {u.username} - {u.email} - {u.uid}
             </li>
           ))}
         </ul>
