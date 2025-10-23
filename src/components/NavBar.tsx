@@ -74,5 +74,4 @@ export default function Navbar() {
 }
 
 // TODO:
-// - login cookie
 // - responsive
