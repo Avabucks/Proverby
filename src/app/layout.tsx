@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import 'boxicons/css/boxicons.min.css';
 import "./globals.css";
+import "./animations.css";
 import Navbar from "@/src/components/navbar/NavBar";
 
 const poppins = Poppins({
@@ -23,7 +23,9 @@ export default function RootLayout({
   return (
     <html lang="it">
       <head>
-        
+        <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet' />
+        <link href='https://cdn.boxicons.com/fonts/brands/boxicons-brands.min.css' rel='stylesheet' />
+        <link href='https://cdn.boxicons.com/fonts/animations.min.css' rel='stylesheet' />
       </head>
       <body
         className={`${poppins.variable} antialiased light`}
