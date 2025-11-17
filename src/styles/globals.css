@@ -1,0 +1,102 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Stile generale */
+
+body.light {
+    --primary: rgb(102, 72, 175);
+    --primary-dark: rgb(85, 52, 164);
+    --primary-verydark: rgb(29, 29, 54);
+    --bg: rgb(240, 240, 240);
+    --bg-grad: rgb(240, 240, 240, .87);
+    --text-color: rgb(0, 0, 0, .8);
+    --text-color-05: rgb(0, 0, 0, .5);
+    --contrast-02: rgb(0, 0, 0, .2);
+    --contrast-01: rgb(0, 0, 0, .1);
+    --contrast-007: rgb(0, 0, 0, .07);
+    --contrast-005: rgb(0, 0, 0, .05);
+    --white: rgb(255, 255, 255)
+    --white-05: rgb(255, 255, 255, .5);
+    --border-radius: 20px;
+}
+
+body.dark {
+    --primary: rgb(102, 72, 175);
+    --primary-dark: rgb(85, 52, 164);
+    --primary-verydark: rgb(29, 29, 54);
+    --bg: rgb(15, 15, 15);
+    --bg-grad: rgb(15, 15, 15, .87);
+    --text-color: rgb(255, 255, 255, .8);
+    --text-color-05: rgb(255, 255, 255, .5);
+    --contrast-02: rgb(255, 255, 255, .2);
+    --contrast-01: rgb(255, 255, 255, .1);
+    --contrast-007: rgb(255, 255, 255, .07);
+    --contrast-005: rgb(255, 255, 255, .05);
+    --white: rgb(0, 0, 0)
+    --white-05: rgb(0, 0, 0, .5);
+    --border-radius: 20px;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 15px;
+}
+
+body {
+    color: var(--text-color);
+    background-color: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    animation: fade-in .5s;
+    transition: .3s background-color;
+    font-family: var(--font-poppins);
+}
+
+i {
+    pointer-events: none;
+}
+
+b {
+    font-weight: 700;
+}
+
+section {
+    width: 90%;
+    animation: fade-in .5s;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    transition: .3s;
+}
+
+section .title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+nav * {
+    user-select: none;
+}
+
+input[type="text"] {
+    border-radius: 5px;
+    padding: 5px 10px;
+    outline: 2px solid rgb(0, 0, 0, 0);
+    border: 1px solid var(--contrast-01);
+    transition: .3s;
+}
+
+input[type="text"]::placeholder {
+    opacity: .4;
+}
+
+input[type="text"]:focus {
+    outline: 2px solid var(--primary);
+}

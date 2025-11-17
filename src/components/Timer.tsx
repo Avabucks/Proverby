@@ -1,0 +1,55 @@
+"use client"
+import { useEffect, useState } from "react";
+
+export default function Timer() {
+
+  const [countdown, setCountdown] = useState<string>("");
+
+  useEffect(() => {
+    const now = new Date();
+    const deadline = new Date();
+    const daysUntilSunday =
+      now.getDay() === 0 && now.getHours() < 18 ? 0 : 7 - now.getDay();
+
+    deadline.setDate(now.getDate() + daysUntilSunday);
+    deadline.setHours(18, 0, 0, 0);
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = deadline.getTime() - now.getTime();
+
+      if (diff <= 0) {
+        setCountdown("");
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      const formatted =
+        days +
+        "g " +
+        hours.toString().padStart(2, "0") +
+        "h " +
+        minutes.toString().padStart(2, "0") +
+        "m " +
+        seconds.toString().padStart(2, "0") +
+        "s";
+
+      setCountdown(formatted);
+    }
+
+    updateCountdown();
+    const timer = setInterval(updateCountdown, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <>
+        { countdown }
+    </>
+    );
+}
