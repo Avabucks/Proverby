@@ -29,7 +29,7 @@ export default async function Profilo({
     return (
         <>
             <section>
-                <BreadCrumb pagesLabel={["Home", "Proverbio"]} pagesLink={["/", "/"]}>{result?.proverbio.replaceAll(".", "")}</BreadCrumb>
+                <BreadCrumb pagesLabel={["Home", "Proverbio"]} pagesLink={["/", "/sfoglia"]}>{result?.proverbio.replaceAll(".", "")}</BreadCrumb>
             </section>
             <CardProverbio type="dettagli"></CardProverbio>
             <section>

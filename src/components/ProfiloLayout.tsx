@@ -20,6 +20,11 @@ export default function ProfiloLayout({ username }: RippleProps) {
   const [isOwner, setOwner] = useState(false);
   const [user, setUser] = useState<{ displayName: string, photoURL: string, uid: string, username: string, email: string, partiteGiocate: number, bestScore: number, migliorPosizione: number, posizioneAttuale: number } | null>(null);
 
+  const [countAccettati, setCountAccettati] = useState(false);
+  const [countReviewed, setCountReviewed] = useState(false);
+  const [countDeclined, setCountDeclined] = useState(false);
+  const [countSalvati, setCountSalvati] = useState(false);
+
   useEffect(() => {
     async function loadUser() {
       const cookieUser = await getCookie("user");
@@ -85,20 +90,20 @@ export default function ProfiloLayout({ username }: RippleProps) {
           <input type="radio" id="tab-statistiche" name="tab" />
 
           <nav>
-            <label htmlFor="tab-proverbi"><i className="bx bx-gallery-vertical-end"></i><i className="bx bxs-gallery-vertical-end"></i><p className="hidden md:flex">Proverbi</p><span>2</span></label>
-            {isOwner ? <label htmlFor="tab-salvati"><i className="bx bx-bookmark"></i><i className="bx bxs-bookmark"></i><p className="hidden md:flex">Salvati</p><span>1</span></label> : <></>}
+            <label htmlFor="tab-proverbi"><i className="bx bx-gallery-vertical-end"></i><i className="bx bxs-gallery-vertical-end"></i><p className="hidden md:flex">Proverbi</p>{countAccettati === false ? <></> : <span>{countAccettati}</span>}</label>
+            {isOwner ? <label htmlFor="tab-salvati"><i className="bx bx-bookmark"></i><i className="bx bxs-bookmark"></i><p className="hidden md:flex">Salvati</p><span>{countSalvati}</span></label> : <></>}
             <label htmlFor="tab-statistiche"><i className="bx bx-chart-bar-rows"></i><i className="bx bxs-chart-bar-rows"></i><p className="hidden md:flex">Statistiche</p></label>
           </nav>
           <div className="tab-content">
             <div className="tab-panel proverbi">
               <h3>I PROVERBI DI {username.toUpperCase()}</h3>
-              <ListProverbi type="accepted"></ListProverbi>
+              <ListProverbi type="accepted" setCount={setCountAccettati}></ListProverbi>
               {isOwner ?
                 <>
-                  <h3>IN ATTESA DI REVISONE</h3>
-                  <ListProverbi type="review"></ListProverbi>
-                  <h3>RIFIUTATI</h3>
-                  <ListProverbi type="declined"></ListProverbi>
+                  {countReviewed ? <h3>IN ATTESA DI REVISONE</h3> : <></>}
+                  <div className={`${!countReviewed ? "hidden" : ""}`}><ListProverbi type="review" setCount={setCountReviewed}></ListProverbi></div>
+                  {countDeclined ? <h3>RIFIUTATI</h3> : <></>}
+                  <div className={`${!countDeclined ? "hidden" : ""}`}><ListProverbi type="declined" setCount={setCountDeclined}></ListProverbi></div>
                 </> :
                 <>
                 </>
@@ -109,7 +114,7 @@ export default function ProfiloLayout({ username }: RippleProps) {
                 {isOwner ?
                   <>
                     <h3>I TUOI PROVERBI SALVATI</h3>
-                    <ListProverbi type="salvati"></ListProverbi>
+                    <ListProverbi type="salvati" setCount={setCountSalvati}></ListProverbi>
                   </> :
                   <>
                   </>

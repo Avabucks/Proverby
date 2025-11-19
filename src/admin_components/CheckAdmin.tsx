@@ -3,15 +3,16 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { getCookie } from "cookies-next";
-import { getUser } from "@/src/actions/users_actions";
+import { getUser, checkUsername } from "@/src/actions/users_actions";
 import { checkAdmin } from "@/src/actions/admin_actions";
 
 interface Props {
     children: React.ReactNode;
     load: boolean;
+    closeOnError: boolean;
 }
 
-export default function CheckAdmin({ children, load }: Props) {
+export default function CheckAdmin({ children, load, closeOnError }: Props) {
     const router = useRouter();
     const [isAdmin, setAdmin] = useState(false)
 
@@ -22,15 +23,18 @@ export default function CheckAdmin({ children, load }: Props) {
             if (cookieUser) {
                 jsonCookie = JSON.parse(cookieUser as string);
                 const user = await getUser(jsonCookie?.username)
-                if (user.uid === jsonCookie.uid) {
-                    const result = await checkAdmin(user.uid)
-                    setAdmin(result)
-                    if (!result) {
-                        router.push("/")
+                const check = await checkUsername(jsonCookie?.uid)
+                if (!check) {
+                    if (user.uid === jsonCookie.uid) {
+                        const result = await checkAdmin(user.uid)
+                        setAdmin(result)
+                        if (!result) {
+                            if (closeOnError) router.push("/")
+                        }
                     }
                 }
             } else {
-                router.push("/")
+                if (closeOnError) router.push("/")
             }
         }
 

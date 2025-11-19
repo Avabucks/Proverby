@@ -3,31 +3,30 @@ import { pool } from "@/src/lib/db";
 
 const SITE_URL = "https://www.proverby.it";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   const client = await pool.connect();
   try {
-    await client.query('BEGIN');
-
     const proverbsResult = await client.query(
       `SELECT seo_link, data_accettazione as "lastmod"
-     FROM proverbi
-     WHERE stato!=1`
+       FROM proverbi
+       WHERE stato != 1`
     );
-    const proverbs = proverbsResult.rows;
-
     const usersResult = await client.query(
       `SELECT username
-     FROM users
-     WHERE username!=uid`
+       FROM users
+       WHERE username != uid`
     );
-    const users = usersResult.rows;
-    await client.query('COMMIT');
 
-    const proverbi_urls = proverbs
-      .map((p) => `<url><loc>${SITE_URL}/proverbio/${p.seo_link}</loc><lastmod>${p.lastmod.toISOString().split("T")[0]}</lastmod></url>`)
+    const proverbi_urls = proverbsResult.rows
+      .map(
+        (p) =>
+          `<url><loc>${SITE_URL}/proverbio/${p.seo_link}</loc><lastmod>${p.lastmod.toISOString().split("T")[0]}</lastmod></url>`
+      )
       .join("\n");
 
-    const users_urls = users
+    const users_urls = usersResult.rows
       .map((u) => `<url><loc>${SITE_URL}/profilo/${u.username}</loc></url>`)
       .join("\n");
 
@@ -36,7 +35,7 @@ export async function GET() {
   <url><loc>${SITE_URL}</loc></url>
   <url><loc>${SITE_URL}/terms</loc></url>
   <url><loc>${SITE_URL}/about</loc></url>
-  <url><loc>${SITE_URL}/aggiungi</loc></url>
+  <url><loc>${SITE_URL}/editor/new</loc></url>
   <url><loc>${SITE_URL}/sfoglia</loc></url>
   <url><loc>${SITE_URL}/quiz</loc></url>
   ${proverbi_urls}
@@ -45,14 +44,13 @@ export async function GET() {
 
     return new NextResponse(sitemap, {
       headers: {
-        "Content-Type": "text/xml",
+        "Content-Type": "application/xml",
       },
     });
   } catch (err) {
-    await client.query('ROLLBACK');
-    return new NextResponse('Internal Server Error', { status: 500 });
+    console.error(err);
+    return new NextResponse("Internal Server Error", { status: 500 });
   } finally {
     client.release();
   }
-
 }

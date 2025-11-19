@@ -11,7 +11,7 @@ export async function generateMetadata({
 
   return {
     title: `${username} - Proverby`,
-    description: `Profilo dell'utente ${username}`,
+    description: `Entra nel mondo dei proverbi di ${username}: frasi antiche, pensieri profondi e saggezza condivisa.`,
   };
 }
 

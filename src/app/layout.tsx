@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Proverby",
-    description: "Proverby è la raccolta collaborativa di proverbi della community. Aggiungi i tuoi e guadagna punti saggezza!",
+    description: "Proverby è una piattaforma che raccoglie proverbi condivisi dalla community: divertenti, saggi, originali o nati dall'esperienza quotidiana. Aggiungi i tuoi proverbi e guadagna punti saggezza!",
     images: ["/assets/social.png"],
   },
   appleWebApp: {

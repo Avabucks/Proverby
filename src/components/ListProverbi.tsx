@@ -14,6 +14,7 @@ import { getUser } from "@/src/actions/users_actions";
 
 interface ListProps {
   type: string;
+  setCount?: Function;
 }
 
 interface Proverbio {
@@ -22,9 +23,10 @@ interface Proverbio {
   username: string;
   seo_link: string;
   photoURL: string;
+  totProverbi: number;
 }
 
-export default function ListProverbi({ type }: ListProps) {
+export default function ListProverbi({ type, setCount }: ListProps) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -48,6 +50,7 @@ export default function ListProverbi({ type }: ListProps) {
       const result = await acceptedProverbi(pathname.split("/").filter(Boolean).pop());
       if (result) {
         setProverbiArray(result);
+        if (setCount) setCount(result[0] ? result[0].totProverbi : 0);
       }
       setLoading(false);
     }
@@ -56,6 +59,7 @@ export default function ListProverbi({ type }: ListProps) {
       const result = await reviewProverbi(pathname.split("/").filter(Boolean).pop(), userUid.uid);
       if (result) {
         setProverbiArray(result);
+        if (setCount) setCount(result[0] ? result[0].totProverbi : false);
       }
       setLoading(false);
     }
@@ -64,11 +68,13 @@ export default function ListProverbi({ type }: ListProps) {
       const result = await declinedProverbi(pathname.split("/").filter(Boolean).pop(), userUid.uid);
       if (result) {
         setProverbiArray(result);
+        if (setCount) setCount(result[0] ? result[0].totProverbi : false);
       }
       setLoading(false);
     }
     async function loadSalvatiProverbi() {
       // TODO
+      // TODO: count -> if (setCount) setCount(result[0] ? result[0].totProverbi : 0);
       setLoading(false);
     }
 
@@ -120,12 +126,12 @@ export default function ListProverbi({ type }: ListProps) {
             <div className="animate-pulse rounded-[var(--border-radius)] w-full h-[77px] bg-[var(--contrast-01)]"></div>
           </div>
           :
-          proverbiArray.map((item, i) => (
+          proverbiArray.length > 0 ? proverbiArray.map((item, i) => (
             <div className={`animate-[slide-up_.5s] flex flex-col min-h-[72px] md:flex-row items-center gap-[10px] px-[25px] py-[15px] md:py-[10px] justify-between rounded-[var(--border-radius)] border-[1px] border-solid border-[var(--contrast-01)] ${type == "declined" ? "" : "cursor-pointer shadow-[0_5px_0_var(--contrast-01)] active:shadow-[0_0_0_var(--contrast-01)] active:transform-[translateY(5px)]"} duration-300`} onClick={() => { if (type != "declined") router.push("/proverbio/" + item.seo_link) }} key={i}>
               <div className="flex flex-col md:flex-row items-center gap-[10px] md:gap-[20px]">
                 <div className="flex gap-[10px] items-center">
                   <i className='bx bx-quote-left text-[1.9rem] opacity-20'></i>
-                  <p className="text-center">{item.proverbio.replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim()}</p>
+                  <p className="text-center">{item.proverbio.replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim()}.</p>
                   <i className='bx bx-quote-right text-[1.9rem] opacity-20'></i>
                 </div>
                 <div>
@@ -139,8 +145,8 @@ export default function ListProverbi({ type }: ListProps) {
                 <div className="flex items-center">
                   {isOwner ?
                     <>
-                      {type != "declined" ? <Ripple icon="bx bx-edit-alt"></Ripple> : <></>}
-                      <div className="ml-[-5px]"><Ripple icon="bx bx-trash" handleOnClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {e.stopPropagation(); setOpenDeletePopup(true); setDelteId(item.id);} }></Ripple></div>
+                      {type != "declined" ? <Ripple icon="bx bx-edit-alt" handleOnClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => { e.stopPropagation(); router.push("/editor/" + item.seo_link); }}></Ripple> : <></>}
+                      <div className="ml-[-5px]"><Ripple icon="bx bx-trash" handleOnClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => { e.stopPropagation(); setOpenDeletePopup(true); setDelteId(item.id); }}></Ripple></div>
                       <div className="mx-[5px_20px] h-[30px] border-l-[1px] border-l-solid border-l-[var(--contrast-01)]"></div>
                     </>
                     :
@@ -168,12 +174,39 @@ export default function ListProverbi({ type }: ListProps) {
               }
             </div>
           ))
+            :
+            <>
+              {type == "accepted" ?
+                <>
+                  {isOwner ?
+                    <div>
+                      TODO: Non hai ancora aggiunto nessuno proverbio.
+                      <div>Button Aggiungi</div>
+                    </div>
+                    :
+                    <div>TODO: L'utente {pathname.split("/").filter(Boolean).pop()} non ha ancora aggiunto nessuno proverbio.</div>
+                  }
+                </>
+                :
+                type == "salvati" ?
+                  <div>
+                    TODO: Non hai ancora salvato nessuno proverbio. Sfoglia i proverbi e utilizza il bottone <i className="bx bx-bookmark"></i> per salvarli.
+                    <div>Button Sfoglia</div>
+                  </div>
+                  :
+                  <></>
+              }
+
+            </>
         }
       </div>
       {type == "top10" || type == "salvati" ? <></>
         :
-        <Popup width="md" isOpen={openDeletePopup} canClose={true} title="Confermi l'eliminazione?" setPopup={setOpenDeletePopup}><DeletePopup setOpenDeletePopup={setOpenDeletePopup} id={ delteId }></DeletePopup></Popup>
+        <Popup width="md" isOpen={openDeletePopup} canClose={true} title="Confermi l'eliminazione?" setPopup={setOpenDeletePopup}><DeletePopup setOpenDeletePopup={setOpenDeletePopup} id={delteId}></DeletePopup></Popup>
       }
     </>
   );
 }
+
+// TODO:
+// - ritorna frase se list vuota

@@ -5,6 +5,12 @@ interface Props {
 }
 
 export default function ListProverbi({ id }: Props) {
+
+    // TODO: like e dislike functions (con controllo login e username)
+    // - return { success: false, error: "No login" };
+    // - return { success: false, error: "Errore del database" };
+    // - return { success: true };
+
     return (
         <div className="flex items-center">
             <Ripple icon="bx bx-like"></Ripple>
@@ -12,3 +18,6 @@ export default function ListProverbi({ id }: Props) {
         </div>
     )
 }
+
+// TODO:
+// - controllo se è salvato icona piena

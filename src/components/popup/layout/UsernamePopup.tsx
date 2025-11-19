@@ -64,7 +64,7 @@ export default function UsernamePopup({ userString, setUser, setOpenUsernamePopu
   return (
     <div className="flex flex-col gap-[4px]">
       <div className="flex gap-[10px] items-center justify-between">
-        <input className="w-full"
+        <input className="input w-full"
         type="text"
         value={username}
         onChange={ handleChange }

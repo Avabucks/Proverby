@@ -12,7 +12,7 @@
 body.light {
     --primary: rgb(102, 72, 175);
     --primary-dark: rgb(85, 52, 164);
-    --primary-verydark: rgb(29, 29, 54);
+    --primary-light: rgb(138, 99, 224);
     --bg: rgb(240, 240, 240);
     --bg-grad: rgb(240, 240, 240, .87);
     --text-color: rgb(0, 0, 0, .8);
@@ -29,7 +29,7 @@ body.light {
 body.dark {
     --primary: rgb(102, 72, 175);
     --primary-dark: rgb(85, 52, 164);
-    --primary-verydark: rgb(29, 29, 54);
+    --primary-light: rgb(138, 99, 224);
     --bg: rgb(15, 15, 15);
     --bg-grad: rgb(15, 15, 15, .87);
     --text-color: rgb(255, 255, 255, .8);
@@ -45,6 +45,7 @@ body.dark {
 
 html {
     scroll-behavior: smooth;
+    scroll-padding: 110px;
     font-size: 15px;
 }
 
@@ -85,7 +86,8 @@ nav * {
     user-select: none;
 }
 
-input[type="text"] {
+.input,
+.textarea {
     border-radius: 5px;
     padding: 5px 10px;
     outline: 2px solid rgb(0, 0, 0, 0);
@@ -93,10 +95,25 @@ input[type="text"] {
     transition: .3s;
 }
 
-input[type="text"]::placeholder {
+textarea {
+    resize: none;
+}
+
+.textarea {
+    min-height: 100px;
+}
+
+input,
+textarea {
+    outline: 0;
+}
+
+input::placeholder,
+textarea::placeholder {
     opacity: .4;
 }
 
-input[type="text"]:focus {
+.input:focus,
+.textarea:focus {
     outline: 2px solid var(--primary);
 }

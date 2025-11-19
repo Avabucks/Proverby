@@ -27,3 +27,17 @@ export function generateCodeSecure(): string {
   ).join("");
   return ts + random;
 }
+
+export function cleanString(str: string): string {
+  let result = str;
+
+  if (result.startsWith('"') && result.endsWith('"')) {
+    result = result.slice(1, -1);
+  }
+
+  if (result.endsWith('.')) {
+    result = result.slice(0, -1);
+  }
+
+  return result;
+}

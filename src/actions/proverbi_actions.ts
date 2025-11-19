@@ -1,5 +1,6 @@
 'use server';
 import { pool } from "@/src/lib/db";
+import { generateCodeSecure, cleanString } from "@/src/utils/utils";
 
 export async function dailyProverbio() {
 
@@ -67,11 +68,19 @@ export async function acceptedProverbi(username?: string) {
   if (!username) return false
 
   const result = await pool.query(
-    `SELECT P.*, U.foto_profilo AS "photoURL"
-     FROM proverbi P JOIN users U ON P.username=U.username
-     WHERE stato=2 AND P.username=$1
-     ORDER BY data_accettazione`,
-     [username]
+    `SELECT 
+    P.*,
+    U.foto_profilo AS "photoURL",
+    (
+        SELECT COUNT(*) 
+        FROM proverbi 
+        WHERE username = $1 AND stato = 2
+    ) AS "totProverbi"
+    FROM proverbi P
+    JOIN users U ON P.username = U.username
+    WHERE P.stato = 2 AND P.username = $1
+    ORDER BY P.data_accettazione;`,
+    [username]
   );
 
   return result.rows;
@@ -83,11 +92,18 @@ export async function reviewProverbi(username?: string, uid?: string) {
   if (!username || !uid) return false
 
   const result = await pool.query(
-    `SELECT P.*, U.foto_profilo AS "photoURL"
+    `SELECT 
+    P.*,
+    U.foto_profilo AS "photoURL",
+    (
+        SELECT COUNT(*) 
+        FROM proverbi 
+        WHERE username = $1 AND stato = 2
+    ) AS "totProverbi"
      FROM proverbi P JOIN users U ON P.username=U.username
      WHERE stato=0 AND P.username=$1 AND U.uid=$2
      ORDER BY data_accettazione`,
-     [username, uid]
+    [username, uid]
   );
 
   return result.rows;
@@ -99,13 +115,41 @@ export async function declinedProverbi(username?: string, uid?: string) {
   if (!username || !uid) return false
 
   const result = await pool.query(
-    `SELECT P.*, U.foto_profilo AS "photoURL"
+    `SELECT 
+    P.*,
+    U.foto_profilo AS "photoURL",
+    (
+        SELECT COUNT(*) 
+        FROM proverbi 
+        WHERE username = $1 AND stato = 2
+    ) AS "totProverbi"
      FROM proverbi P JOIN users U ON P.username=U.username
      WHERE stato=1 AND P.username=$1 AND U.uid=$2
      ORDER BY data_accettazione`,
-     [username, uid]
+    [username, uid]
   );
 
   return result.rows;
+
+}
+
+export async function aggiungiProverbio(id: string, username: string, uid: string, proverbio: string, spiegazione: string) {
+
+  if (proverbio.length == 0 || spiegazione.length == 0) return { success: false, error: "Il proverbio e la spiegazione non possono essere vuoti." };
+
+  proverbio = cleanString(proverbio)
+  spiegazione = cleanString(spiegazione)
+  // TODO: esempio
+  const seoLink = generateCodeSecure()
+  // TODO: controlla username se è diverso da uid e username apparteenete a quell uid
+
+  if (id == "new") {
+    // query aggiunta
+  } else {
+    // query modifica
+  }
+
+  return { success: true };
+  // TODO: mail admin
 
 }

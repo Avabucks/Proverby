@@ -98,20 +98,21 @@ export default function Navbar() {
                 <Link href="/sfoglia" onClick={closeNav}><Ripple icon="bx bx-gallery-vertical-end">Sfoglia</Ripple></Link>
                 <Link href={`/proverbio/${randomSEO}`} onClick={() => (closeNav(), randomProverbio())}><Ripple icon="bx bx-dice-roll"><span className="md:hidden lg:hidden xl:flex flex-col">Proverbio</span>Casuale</Ripple></Link>
                 <Link href="/quiz" onClick={closeNav}><Ripple icon="bx bx-joystick">Quiz</Ripple></Link>
-                <Link href="/aggiungi" className="flex md:hidden lg:flex" onClick={closeNav}><Ripple icon="bx bx-plus">Aggiungi<span className="md:hidden lg:hidden xl:flex flex-col">Proverbio</span></Ripple></Link>
+                <Link href="/editor/new" className="flex md:hidden" onClick={closeNav}><Ripple icon="bx bx-plus">Aggiungi<span className="md:hidden lg:hidden xl:flex flex-col">Proverbio</span></Ripple></Link>
                 <div className="flex md:hidden mx-auto w-[90%] border-b-[1px] border-solid border-[var(--contrast-01)]"></div>
                 <Link href="/about" className="flex md:hidden [@media(min-width:1800px)]:flex" onClick={closeNav}><Ripple icon="bx bx-badge-info">Cos’è Proverby?</Ripple></Link>
                 <Link href="/terms" className="flex md:hidden [@media(min-width:1800px)]:flex" onClick={closeNav}><Ripple icon="bx bx-article">Termini e condizioni</Ripple></Link>
                 {user ?
                   <>
                     <div className="flex md:hidden mx-auto w-[90%] border-b-[1px] border-solid border-[var(--contrast-01)]"></div>
-                    <Link href="/" className="flex md:hidden" onClick={ handleLogout }><Ripple icon="bx bx-arrow-out-right-square-half">Disconnettiti</Ripple></Link>
+                    <Link href="/" className="flex md:hidden" onClick={handleLogout}><Ripple icon="bx bx-arrow-out-right-square-half">Disconnettiti</Ripple></Link>
                   </>
                   : <></>}
               </ul>
             </div>
           </div>
           <div className="flex items-center gap-[20px]">
+            <Link href="/editor/new" className="hidden md:flex" onClick={closeNav}><Ripple opt="accient" icon="bx bx-plus">Aggiungi<span className="md:hidden lg:hidden xl:flex flex-col">Proverbio</span></Ripple></Link>
             <ThemeToggle></ThemeToggle>
             <div className="border-l-[1px] border-solid border-[var(--contrast-01)] h-[40px]"></div>
             {!user ?
@@ -134,7 +135,10 @@ export default function Navbar() {
           </div>
         </div>
       </nav>
-      <Popup width="md" isOpen={openUsernamePopup} canClose={false} title="Devi impostare il tuo username" setPopup={ setOpenUsernamePopup }><UsernamePopup setUser={setUser} userString={user} setOpenUsernamePopup={setOpenUsernamePopup}></UsernamePopup></Popup>
+      <div className="fixed bottom-[15px] right-[15px] z-[1000] flex md:hidden bg-[var(--bg)] rounded-[var(--border-radius)] duration-300">
+        <Link href="/editor/new" onClick={closeNav}><Ripple opt="accient" icon="bx bx-edit-alt"></Ripple></Link>
+      </div>
+      <Popup width="md" isOpen={openUsernamePopup} canClose={false} title="Devi impostare il tuo username" setPopup={setOpenUsernamePopup}><UsernamePopup setUser={setUser} userString={user} setOpenUsernamePopup={setOpenUsernamePopup}></UsernamePopup></Popup>
     </>
   );
 }

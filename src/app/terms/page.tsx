@@ -4,7 +4,7 @@ import Footer from "@/src/components/Footer";
 
 export const metadata: Metadata = {
   title: "Termini e condizioni - Proverby",
-  description: "Proverby è un sito online che raccoglie proverbi, modi di dire ed espressioni popolari della tradizione italiana e internazionale, con l'obiettivo di conservarne il valore culturale e renderli facilmente accessibili a tutti.",
+  description: "Proverby è una piattaforma che raccoglie proverbi condivisi dalla community: divertenti, saggi, originali o nati dall'esperienza quotidiana. Aggiungi i tuoi proverbi e guadagna punti saggezza!",
 };
 
 export default function Terms() {
@@ -29,21 +29,6 @@ export default function Terms() {
             <p>La presenza di tali contenuti ha finalità unicamente documentativa e informativa: non implica approvazione, consenso o incoraggiamento al loro utilizzo da parte dei Creatori.</p>
           </div>
           <div>
-            <h2>Licenza e utilizzo dei contenuti</h2>
-            <p>I contenuti pubblicati su Proverby sono disponibili con licenza Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0).</p>
-            <ul>
-              <li>L'Utente può condividere e riutilizzare i contenuti, anche a scopo commerciale;</li>
-              <li>Deve sempre citare l'autore e la fonte “Proverby.it”;</li>
-              <li>Se modifica o rielabora i contenuti, deve distribuirli sotto la stessa licenza.</li>
-            </ul>
-            <p>Ulteriori informazioni sulla licenza CC BY-SA 4.0 sono disponibili <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.it" target="_blank">qui</a>.</p>
-            <p>Gli Utenti non possono utilizzare il Sito per attività illegali, per accedere a dati riservati né per scopi contrari alla legge.</p>
-          </div>
-          <div>
-            <h2>Attribuzione</h2>
-            <p>Design originale e risorse grafiche tratte da <a href="https://www.figma.com/community/file/1351126696463064535" target="_blank" rel="noopener noreferrer">Figma Community</a>.</p>
-          </div>
-          <div>
             <h2>Esclusione di responsabilità</h2>
             <p>I Creatori non garantiscono l'assoluta correttezza dei contenuti e non sono responsabili per eventuali errori o omissioni. L'uso delle informazioni presenti sul Sito è a esclusivo rischio dell'Utente.</p>
           </div>
@@ -63,7 +48,7 @@ export default function Terms() {
           </div>
           <div>
             <h2>Eliminazione dei dati personali</h2>
-            <p>L'Utente può richiedere la cancellazione completa dei propri dati personali scrivendo a: <a href="mailto:info@proverby.it">info@proverby.it</a>.
+            <p>L'Utente può richiedere la cancellazione completa dei propri dati personali scrivendo a: <a href="mailto:info@proverby.it" className="text-[var(--primary-light)] underline">info@proverby.it</a>.
               La richiesta sarà gestita entro 30 giorni.
             </p>
           </div>
@@ -79,17 +64,32 @@ export default function Terms() {
             <p>I Creatori o i Moderatori possono rifiutare, modificare o rimuovere contenuti a loro discrezione, senza che ciò comporti responsabilità verso l'Utente.</p>
           </div>
           <div>
+            <h2>Privacy e Cookie</h2>
+            <p>Proverby rispetta la normativa vigente in materia di protezione dei dati personali (GDPR). I dati raccolti sono limitati a email, nickname e dati tecnici di navigazione (IP, browser, sistema operativo, pagine visitate). I dati vengono utilizzati esclusivamente per gestire il Profilo, migliorare l'esperienza di navigazione e, previo consenso, per inviare comunicazioni informative o pubblicitarie. Proverby utilizza cookie tecnici (necessari al funzionamento) e, previo consenso, cookie analitici e di profilazione pubblicitaria. L'Utente può modificare le preferenze sui cookie in qualsiasi momento tramite il banner o le impostazioni del browser. Gli Utenti hanno diritto di accedere, modificare o cancellare i propri dati, nonché di revocare il consenso al trattamento scrivendo a: <a href="mailto:info@proverby.it" className="text-[var(--primary-light)] underline">info@proverby.it</a>.</p>
+          </div>
+          <div id="licenza">
+            <h2>Licenza e utilizzo dei contenuti</h2>
+            <p>I contenuti pubblicati su Proverby sono disponibili con licenza Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0).</p>
+            <ul>
+              <li>L'Utente può condividere e riutilizzare i contenuti, anche a scopo commerciale;</li>
+              <li>Deve sempre citare l'autore e la fonte “Proverby.it”;</li>
+              <li>Se modifica o rielabora i contenuti, deve distribuirli sotto la stessa licenza.</li>
+            </ul>
+            <p>Ulteriori informazioni sulla licenza CC BY-SA 4.0 sono disponibili <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.it" target="_blank" className="text-[var(--primary-light)] underline">qui</a>.</p>
+            <p>Gli Utenti non possono utilizzare il Sito per attività illegali, per accedere a dati riservati né per scopi contrari alla legge.</p>
+          </div>
+          <div>
+            <h2>Attribuzione</h2>
+            <p>Design originale e risorse grafiche tratte da <a href="https://www.figma.com/community/file/1351126696463064535" target="_blank" rel="noopener noreferrer" className="text-[var(--primary-light)] underline">Figma Community</a>.</p>
+          </div>
+          <div>
             <h2>Copyright e proprietà intellettuale</h2>
             <p>I Creatori sono titolari dei diritti relativi al marchio, loghi, grafica e struttura del Sito. I contenuti originali caricati direttamente dai Creatori restano di loro proprietà. I contenuti inviati dagli Utenti vengono condivisi pubblicamente sotto licenza CC BY-SA 4.0. Pubblicando contenuti, l'Utente dichiara di avere tutti i diritti necessari e concede a Proverby una licenza irrevocabile, mondiale e gratuita per l'utilizzo, distribuzione e condivisione degli stessi.</p>
           </div>
           <div>
-            <h2>Privacy e Cookie</h2>
-            <p>Proverby rispetta la normativa vigente in materia di protezione dei dati personali (GDPR). I dati raccolti sono limitati a email, nickname e dati tecnici di navigazione (IP, browser, sistema operativo, pagine visitate). I dati vengono utilizzati esclusivamente per gestire il Profilo, migliorare l'esperienza di navigazione e, previo consenso, per inviare comunicazioni informative o pubblicitarie. Proverby utilizza cookie tecnici (necessari al funzionamento) e, previo consenso, cookie analitici e di profilazione pubblicitaria. L'Utente può modificare le preferenze sui cookie in qualsiasi momento tramite il banner o le impostazioni del browser. Gli Utenti hanno diritto di accedere, modificare o cancellare i propri dati, nonché di revocare il consenso al trattamento scrivendo a: <a href="mailto:info@proverby.it">info@proverby.it</a>.</p>
-          </div>
-          <div>
             <h2>Contatti</h2>
             <p className="flex flex-col gap-[10px]">Per qualsiasi domanda o segnalazione puoi scriverci a:
-              <a href="mailto:info@proverby.it">info@proverby.it</a>
+              <a href="mailto:info@proverby.it" className="text-[var(--primary-light)] underline">info@proverby.it</a>
             </p>
           </div>
         </div>
