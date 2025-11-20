@@ -6,6 +6,7 @@ import { sendEmail } from "@/src/utils/send_mail";
 // TODO: controlla se funziona
 
 export async function GET(request: Request) {
+  console.log([...request.headers]);
   const isCron = request.headers.get('x-vercel-cron');
   if (!isCron) {
     return new Response('Unauthorized', { status: 401 });
