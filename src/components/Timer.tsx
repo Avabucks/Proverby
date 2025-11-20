@@ -7,12 +7,16 @@ export default function Timer() {
 
   useEffect(() => {
     const now = new Date();
-    const deadline = new Date();
-    const daysUntilSunday =
-      now.getDay() === 0 && now.getHours() < 18 ? 0 : 7 - now.getDay();
 
-    deadline.setDate(now.getDate() + daysUntilSunday);
-    deadline.setHours(18, 0, 0, 0);
+    const daysUntilSunday = (7 - now.getUTCDay()) % 7;
+
+    const isSundayBefore18UTC = now.getUTCDay() === 0 && now.getUTCHours() < 18;
+
+    const deadline = new Date(now);
+    if (!isSundayBefore18UTC) {
+      deadline.setUTCDate(deadline.getUTCDate() + daysUntilSunday);
+    }
+    deadline.setUTCHours(18, 0, 0, 0);
 
     function updateCountdown() {
       const now = new Date();
@@ -20,6 +24,7 @@ export default function Timer() {
 
       if (diff <= 0) {
         setCountdown("");
+        clearInterval(timer);
         return;
       }
 
@@ -43,13 +48,12 @@ export default function Timer() {
 
     updateCountdown();
     const timer = setInterval(updateCountdown, 1000);
-
     return () => clearInterval(timer);
   }, []);
 
   return (
     <>
-        { countdown }
+      {countdown}
     </>
-    );
+  );
 }

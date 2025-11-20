@@ -1,7 +1,7 @@
 "use client";
 import { auth, googleProvider } from "@/src/lib/firebase";
 import { signInWithPopup } from "firebase/auth";
-import { saveUser, getUsername } from "@/src/actions/users_actions";
+import { saveUser, getUsername, getUser } from "@/src/actions/users_actions";
 import { getAuth, signOut } from "firebase/auth";
 import { deleteCookie } from "cookies-next";
 import { setCookie } from "cookies-next";
@@ -18,14 +18,12 @@ export async function firebaseLogIn() {
     const userCookie = {
       uid: user.uid,
       username: uname,
-      email: user.email || "",
-      displayName: user.displayName || "",
-      photoURL: user.photoURL || ""
     };
 
     setCookie("user", JSON.stringify(userCookie), { maxAge: 365 * 24 * 60 * 60 });
 
-    return userCookie
+    const returnUser = await getUser(uname, user.uid)
+    return returnUser
 
   } catch (error: any) {
     return false

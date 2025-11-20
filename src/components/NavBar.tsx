@@ -1,68 +1,38 @@
 "use client";
 
+import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getCookie } from "cookies-next";
-
+import { useUser } from "@/src/context/UserContext";
 import Link from "next/link";
-import GoogleLogin from "@/src/components/GoogleLogin";
+import GoogleLogo from "@/public/assets/google_logo.svg";
 import Ripple from "@/src/components/Ripple";
 import Popup from "@/src/components/popup/Popup";
 import UsernamePopup from "@/src/components/popup/layout/UsernamePopup";
 import ThemeToggle from "@/src/components/ThemeToggle";
 import Image from "next/image";
 import Logo from "@/public/assets/logo.webp";
-import { checkUsername } from "@/src/actions/users_actions";
+import { checkUsernameSameUid } from "@/src/actions/users_actions";
 import { getRandomProverbioSEO } from "@/src/actions/proverbi_actions";
-import { firebaseLogOut } from "@/src/actions/firebase_actions";
+import { firebaseLogIn, firebaseLogOut } from "@/src/actions/firebase_actions";
 
 export default function Navbar() {
+  const { user, setUser } = useUser();
+  const router = useRouter()
+  const pathname = usePathname()
 
   const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const [user, setUser] = useState<{ displayName: string, photoURL: string, uid: string, username: string, email: string } | null>(null);
   const [openUsernamePopup, setOpenUsernamePopup] = useState(false);
-  const [randomSEO, setRandomProverbio] = useState("");
+  const [isNavOpen, setNavOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const randomProverbio = async () => {
-    const result = await getRandomProverbioSEO()
-    setRandomProverbio(result)
+  const handleScroll = () => {
+    setScrolled(window.scrollY > 10);
   };
 
-  useEffect(() => {
-    const cookieUser = getCookie("user");
-
-    if (cookieUser) {
-      setUser(JSON.parse(cookieUser as string));
-    }
-
-    randomProverbio();
-
-    window.addEventListener("resize", closeNav);
-    return () => window.removeEventListener("resize", closeNav);
-
-  }, []);
-
-  useEffect(() => {
-    const verifyUsername = async () => {
-      const same = await checkUsername(user?.uid || "");
-      if (same) {
-        setOpenUsernamePopup(true);
-      }
-    };
-
-    verifyUsername();
-  }, [user]);
-
-  const [isNavOpen, setNavOpen] = useState(false);
+  const handleRandom = async () => {
+    const result = await getRandomProverbioSEO()
+    router.push(`/proverbio/${result}`)
+  };
 
   const handleNavClick = () => {
     setNavOpen(isNavOpen ? false : true);
@@ -72,10 +42,46 @@ export default function Navbar() {
     setNavOpen(false);
   };
 
+  const handleLogin = async () => {
+    setLoading(true)
+    const result = await firebaseLogIn();
+    if (result) {
+      setUser(result)
+    }
+    setLoading(false)
+  };
+
   const handleLogout = async () => {
     const result = await firebaseLogOut()
-    if (result) location.href = "/";
+    if (result) {
+      setUser(null);
+      router.push("/");
+      closeNav();
+    }
   };
+
+  useEffect(() => {
+    window.addEventListener("resize", closeNav);
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("resize", closeNav);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!user) return;
+
+    const verifyUsername = async () => {
+      const same = await checkUsernameSameUid(user?.uid || "");
+      if (same) {
+        setOpenUsernamePopup(true);
+      }
+    };
+
+    verifyUsername();
+  }, [user]);
 
   return (
     <>
@@ -93,10 +99,10 @@ export default function Navbar() {
               </div>
             </Ripple>
             <div>
-              <ul className={`${!isNavOpen ? "opacity-0 pointer-events-none" : "bg-[var(--bg)]"} md:opacity-100 md:pointer-events-auto absolute top-[75px] left-0 md:relative md:top-0 w-full h-[calc(100vh-75px)] md:h-auto p-[7px] md:p-0 flex md:flex flex-col md:flex-row items-bt md:items-center gap-[10px] lg:gap-[20px] list-none duration-300`}>
+              <div className={`${!isNavOpen ? "opacity-0 pointer-events-none" : "bg-[var(--bg)]"} md:opacity-100 md:pointer-events-auto absolute top-[75px] left-0 md:relative md:top-0 w-full h-[calc(100vh-75px)] md:h-auto p-[7px] md:p-0 flex md:flex flex-col md:flex-row items-bt md:items-center gap-[10px] lg:gap-[20px] list-none duration-300`}>
                 <div className="hidden md:flex border-l-[1px] border-solid border-[var(--contrast-01)] h-[40px]"></div>
                 <Link href="/sfoglia" onClick={closeNav}><Ripple icon="bx bx-gallery-vertical-end">Sfoglia</Ripple></Link>
-                <Link href={`/proverbio/${randomSEO}`} onClick={() => (closeNav(), randomProverbio())}><Ripple icon="bx bx-dice-roll"><span className="md:hidden lg:hidden xl:flex flex-col">Proverbio</span>Casuale</Ripple></Link>
+                <a onClick={() => (closeNav(), handleRandom())}><Ripple icon="bx bx-dice-roll"><span className="md:hidden lg:hidden xl:flex flex-col">Proverbio</span>Casuale</Ripple></a>
                 <Link href="/quiz" onClick={closeNav}><Ripple icon="bx bx-joystick">Quiz</Ripple></Link>
                 <Link href="/editor/new" className="flex md:hidden" onClick={closeNav}><Ripple icon="bx bx-plus">Aggiungi<span className="md:hidden lg:hidden xl:flex flex-col">Proverbio</span></Ripple></Link>
                 <div className="flex md:hidden mx-auto w-[90%] border-b-[1px] border-solid border-[var(--contrast-01)]"></div>
@@ -108,15 +114,30 @@ export default function Navbar() {
                     <Link href="/" className="flex md:hidden" onClick={handleLogout}><Ripple icon="bx bx-arrow-out-right-square-half">Disconnettiti</Ripple></Link>
                   </>
                   : <></>}
-              </ul>
+              </div>
             </div>
           </div>
           <div className="flex items-center gap-[20px]">
-            <Link href="/editor/new" className="hidden md:flex" onClick={closeNav}><Ripple opt="accient" icon="bx bx-plus">Aggiungi<span className="md:hidden lg:hidden xl:flex flex-col">Proverbio</span></Ripple></Link>
+            {pathname == "/editor/new" ? <></> :
+              <div onClick={() => {
+                if (user) router.push("/editor/new");
+                else handleLogin();
+                closeNav();
+              }}
+                className="animate-[bounce-in_.5s_cubic-bezier(0.68,-0.6,0.32,1.6)] hidden md:flex cursor-pointer">
+                <Ripple opt="accient" icon="bx bx-plus">Aggiungi<span className="md:hidden lg:hidden xl:flex flex-col">Proverbio</span></Ripple>
+              </div>
+            }
             <ThemeToggle></ThemeToggle>
             <div className="border-l-[1px] border-solid border-[var(--contrast-01)] h-[40px]"></div>
             {!user ?
-              <GoogleLogin setUser={setUser}><span className="hidden md:flex">Accedi con Google</span></GoogleLogin>
+              <>
+                {loading ?
+                  <div className="border-[3px] border-solid border-[var(--primary)] border-t-[rgba(0,0,0,0)] rounded-full w-[30px] h-[30px] animate-spin"></div>
+                  :
+                  <Ripple handleOnClick={handleLogin} opt="outline" img={GoogleLogo} alt="google_logo"><span className="hidden md:flex">Accedi con Google</span></Ripple>
+                }
+              </>
               :
               <Link className="ml-[-13px]" href={user.username != user.uid ? `/profilo/${user.username}` : ``} onClick={closeNav}>
                 <Ripple>
@@ -135,10 +156,19 @@ export default function Navbar() {
           </div>
         </div>
       </nav>
-      <div className="fixed bottom-[15px] right-[15px] z-[1000] flex md:hidden bg-[var(--bg)] rounded-[var(--border-radius)] duration-300">
-        <Link href="/editor/new" onClick={closeNav}><Ripple opt="accient" icon="bx bx-edit-alt"></Ripple></Link>
-      </div>
-      <Popup width="md" isOpen={openUsernamePopup} canClose={false} title="Devi impostare il tuo username" setPopup={setOpenUsernamePopup}><UsernamePopup setUser={setUser} userString={user} setOpenUsernamePopup={setOpenUsernamePopup}></UsernamePopup></Popup>
+      {pathname == "/editor/new" ? <></> :
+        <div className="fixed bottom-[25px] right-[25px] z-[1000] flex md:hidden bg-[var(--bg)] rounded-[var(--border-radius)] duration-300 transform-[scale(1.1)] origin-bottom-right">
+          <div onClick={() => {
+            if (user) router.push("/editor/new");
+            else handleLogin();
+            closeNav();
+          }}
+            className="animate-[bounce-in_.5s_cubic-bezier(0.68,-0.6,0.32,1.6)] cursor-pointer">
+            <Ripple opt="accient" icon="bx bx-edit-alt"></Ripple>
+          </div>
+        </div>
+      }
+      <Popup width="md" isOpen={openUsernamePopup} canClose={false} title="Devi impostare il tuo username" setPopup={setOpenUsernamePopup}><UsernamePopup setOpenUsernamePopup={setOpenUsernamePopup}></UsernamePopup></Popup>
     </>
   );
 }

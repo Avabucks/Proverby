@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from "react";
-import { getCookie } from "cookies-next";
+import { useUser } from "@/src/context/UserContext";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -10,11 +10,12 @@ import Popup from "@/src/components/popup/Popup";
 import DeletePopup from "@/src/components/popup/layout/DeletePopup";
 import { useRouter, usePathname } from "next/navigation";
 import { top10Proverbi, acceptedProverbi, reviewProverbi, declinedProverbi } from "@/src/actions/proverbi_actions";
-import { getUser } from "@/src/actions/users_actions";
+import { adminProverbi, accettaProverbio, declinaProverbio } from "@/src/actions/admin_actions";
 
 interface ListProps {
   type: string;
   setCount?: Function;
+  isOwner?: boolean;
 }
 
 interface Proverbio {
@@ -26,15 +27,16 @@ interface Proverbio {
   totProverbi: number;
 }
 
-export default function ListProverbi({ type, setCount }: ListProps) {
+export default function ListProverbi({ type, setCount, isOwner }: ListProps) {
   const router = useRouter();
   const pathname = usePathname();
+  const { user } = useUser();
 
   const [proverbiArray, setProverbiArray] = useState<Proverbio[]>([]);
   const [isLoading, setLoading] = useState(true);
-  const [isOwner, setOwner] = useState(false);
   const [openDeletePopup, setOpenDeletePopup] = useState(false);
   const [delteId, setDelteId] = useState(0);
+  const [updated, setUpdated] = useState(0);
 
   useEffect(() => {
 
@@ -46,7 +48,6 @@ export default function ListProverbi({ type, setCount }: ListProps) {
       setLoading(false);
     }
     async function loadAcceptedProverbi() {
-      const userUid = await loadUser();
       const result = await acceptedProverbi(pathname.split("/").filter(Boolean).pop());
       if (result) {
         setProverbiArray(result);
@@ -55,8 +56,7 @@ export default function ListProverbi({ type, setCount }: ListProps) {
       setLoading(false);
     }
     async function loadReviewProverbi() {
-      const userUid = await loadUser();
-      const result = await reviewProverbi(pathname.split("/").filter(Boolean).pop(), userUid.uid);
+      const result = await reviewProverbi(pathname.split("/").filter(Boolean).pop(), user?.uid);
       if (result) {
         setProverbiArray(result);
         if (setCount) setCount(result[0] ? result[0].totProverbi : false);
@@ -64,8 +64,7 @@ export default function ListProverbi({ type, setCount }: ListProps) {
       setLoading(false);
     }
     async function loadDeclinedProverbi() {
-      const userUid = await loadUser();
-      const result = await declinedProverbi(pathname.split("/").filter(Boolean).pop(), userUid.uid);
+      const result = await declinedProverbi(pathname.split("/").filter(Boolean).pop(), user?.uid);
       if (result) {
         setProverbiArray(result);
         if (setCount) setCount(result[0] ? result[0].totProverbi : false);
@@ -77,46 +76,32 @@ export default function ListProverbi({ type, setCount }: ListProps) {
       // TODO: count -> if (setCount) setCount(result[0] ? result[0].totProverbi : 0);
       setLoading(false);
     }
-
-    async function loadUser() {
-      const cookieUser = getCookie("user");
-      let jsonCookie;
-      if (cookieUser) {
-        jsonCookie = JSON.parse(cookieUser as string);
-        const user = await getUser(jsonCookie?.username)
-        const userPage = await getUser(pathname.split("/").filter(Boolean).pop() || "")
-        if (user && userPage && user.uid === userPage.uid) {
-          setOwner(true);
-        }
-        if (user) {
-          return user
-        }
+    async function loadAdminProverbi() {
+      const result = await adminProverbi();
+      if (result) {
+        setProverbiArray(result);
       }
+      setLoading(false);
     }
 
-    switch (type) {
-      case "top10":
-        loadTopProverbi();
-        break;
-      case "accepted":
-        loadAcceptedProverbi();
-        break;
-      case "review":
-        loadReviewProverbi();
-        break;
-      case "declined":
-        loadDeclinedProverbi();
-        break;
-      case "salvati":
-        loadSalvatiProverbi();
-        break;
+    const loaders: { [key: string]: () => Promise<void> } = {
+      "top10": loadTopProverbi,
+      "accepted": loadAcceptedProverbi,
+      "review": loadReviewProverbi,
+      "declined": loadDeclinedProverbi,
+      "salvati": loadSalvatiProverbi,
+      "admin": loadAdminProverbi,
+    };
+
+    if (loaders[type]) {
+      loaders[type]();
     }
 
-  }, []);
+  }, [openDeletePopup, user, updated]);
 
   return (
     <>
-      <div className="flex flex-col gap-[20px] my-[15px]">
+      <div className="flex flex-col gap-[20px] my-[15px] w-full">
         {isLoading ?
           <div className="flex flex-col gap-[20px]">
             <div className="animate-pulse rounded-[var(--border-radius)] w-full h-[77px] bg-[var(--contrast-01)]"></div>
@@ -143,11 +128,18 @@ export default function ListProverbi({ type, setCount }: ListProps) {
                   <LikeDislike id={item.id}></LikeDislike>
                 </> :
                 <div className="flex items-center">
-                  {isOwner ?
+                  {isOwner || type == "admin" ?
                     <>
                       {type != "declined" ? <Ripple icon="bx bx-edit-alt" handleOnClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => { e.stopPropagation(); router.push("/editor/" + item.seo_link); }}></Ripple> : <></>}
                       <div className="ml-[-5px]"><Ripple icon="bx bx-trash" handleOnClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => { e.stopPropagation(); setOpenDeletePopup(true); setDelteId(item.id); }}></Ripple></div>
                       <div className="mx-[5px_20px] h-[30px] border-l-[1px] border-l-solid border-l-[var(--contrast-01)]"></div>
+                      {type == "admin" ?
+                        <div className="flex items-center">
+                          <div className="ml-[-15px]"><Ripple icon="bx bx-x" handleOnClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => { e.stopPropagation(); if (user) {declinaProverbio(item.id, user.uid); setUpdated(x => x + 1)} }}></Ripple></div>
+                          <div className="mx-[-5px_-15px]"><Ripple icon="bx bx-check" handleOnClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => { e.stopPropagation(); if (user) {accettaProverbio(item.id, user.uid); setUpdated(x => x + 1)} }}></Ripple></div>
+                        </div>
+                        : <></>
+                      }
                     </>
                     :
                     <>
@@ -156,19 +148,20 @@ export default function ListProverbi({ type, setCount }: ListProps) {
                   {
                     type == "review" ?
                       <div className="flex items-center gap-[8px] px-[13px] py-[5px]">
-                        <p className="text-[#FCA311] leading-0">In revisione</p>
-                        <i className='bx bx-alarm rounded-full p-[5px] bg-[#FCA311] text-[rgb(255,255,255)] text-[1.2rem]'></i>
+                        <p className="text-[rgb(255,140,50)] leading-0">In revisione</p>
+                        <i className='bx bx-alarm rounded-full p-[5px] bg-[rgb(255,140,50)] text-[rgb(255,255,255)] text-[1.2rem]'></i>
                       </div>
                       : type == "declined" ?
                         <div className="flex items-center gap-[8px] px-[13px] py-[5px]">
-                          <p className="text-[#C1121F] leading-0">Rifiutato</p>
-                          <i className='bx bx-x rounded-full p-[5px] bg-[#C1121F] text-[rgb(255,255,255)] text-[1.2rem]'></i>
+                          <p className="text-[rgb(220,50,50)] leading-0">Rifiutato</p>
+                          <i className='bx bx-x rounded-full p-[5px] bg-[rgb(220,50,50)] text-[rgb(255,255,255)] text-[1.2rem]'></i>
                         </div>
-                        :
-                        <div className="flex items-center gap-[8px] px-[13px] py-[5px] rounded-full bg-[var(--primary)] text-white/90">
-                          <i className="bx bx-medal-alt-2 text-[1.3rem] leading-0"></i>
-                          <p className="text-[1rem] font-semibold leading-0">TODO</p>
-                        </div>
+                        : type == "accepted" ?
+                          <div className="flex items-center gap-[8px] px-[13px] py-[5px] rounded-full bg-[var(--primary)] text-white/90">
+                            <i className="bx bx-medal-alt-2 text-[1.3rem] leading-0"></i>
+                            <p className="text-[1rem] font-semibold leading-0">TODO</p>
+                          </div>
+                          : <></>
                   }
                 </div>
               }
@@ -179,22 +172,37 @@ export default function ListProverbi({ type, setCount }: ListProps) {
               {type == "accepted" ?
                 <>
                   {isOwner ?
-                    <div>
-                      TODO: Non hai ancora aggiunto nessuno proverbio.
-                      <div>Button Aggiungi</div>
+                    <div className="relative w-full border-solid border-[1px] border-[var(--contrast-01)] rounded-[var(--border-radius)] p-[0px_20px_50px_20px] text-center">
+                      <h3 className="font-semibold text-[1.4rem]">Non hai ancora aggiunto nessun proverbio!</h3>
+                      <p className="flex items-center justify-center gap-[5px] flex-wrap"><span>Entra a far parte della community: condividi i tuoi proverbi su Proverby.</span></p>
+                      <Link className="absolute left-[50%] top-[100%] transform-[translate(-50%,-50%)] flex items-center justify-center px-[25px] py-[15px] gap-[7px] text-[var(--text-color)] bg-[var(--bg)] rounded-[var(--border-radius)] border-solid border-[1px] border-[var(--contrast-01)] shadow-[0_5px_0_var(--contrast-01)] active:shadow-[0_0_0_var(--contrast-01)] active:transform-[translate(-50%,calc(-50%+5px))] duration-300 cursor-pointer" href="/editor/new">
+                        <i className="bx bx-gallery-vertical-end text-[1.3rem] opacity-80"></i>Aggiungi Proverbio
+                      </Link>
                     </div>
                     :
-                    <div>TODO: L'utente {pathname.split("/").filter(Boolean).pop()} non ha ancora aggiunto nessuno proverbio.</div>
+                    <div className="relative w-full border-solid border-[1px] border-[var(--contrast-01)] rounded-[var(--border-radius)] p-[0px_20px_50px_20px] text-center">
+                      <h3 className="font-semibold text-[1.4rem]">L'utente {pathname.split("/").filter(Boolean).pop()} non ha ancora aggiunto nessuno proverbio.</h3>
+                      <p className="flex items-center justify-center gap-[5px] flex-wrap"><span>Sfoglia i proverbi di altri utenti della community di Proverby.</span></p>
+                      <Link className="absolute left-[50%] top-[100%] transform-[translate(-50%,-50%)] flex items-center justify-center px-[25px] py-[15px] gap-[7px] text-[var(--text-color)] bg-[var(--bg)] rounded-[var(--border-radius)] border-solid border-[1px] border-[var(--contrast-01)] shadow-[0_5px_0_var(--contrast-01)] active:shadow-[0_0_0_var(--contrast-01)] active:transform-[translate(-50%,calc(-50%+5px))] duration-300 cursor-pointer" href="/sfoglia">
+                        <i className="bx bx-gallery-vertical-end text-[1.3rem] opacity-80"></i>Sfoglia
+                      </Link>
+                    </div>
                   }
                 </>
                 :
                 type == "salvati" ?
-                  <div>
-                    TODO: Non hai ancora salvato nessuno proverbio. Sfoglia i proverbi e utilizza il bottone <i className="bx bx-bookmark"></i> per salvarli.
-                    <div>Button Sfoglia</div>
+                  <div className="relative w-full border-solid border-[1px] border-[var(--contrast-01)] rounded-[var(--border-radius)] p-[0px_20px_50px_20px] text-center">
+                    <h3 className="font-semibold text-[1.4rem]">Non hai ancora salvato nessun proverbio!</h3>
+                    <p className="flex items-center justify-center gap-[5px] flex-wrap"><span>Sfoglia i proverbi e clicca sul bottone</span><i className="bx bx-bookmark"></i><span>per aggiungerli ai tuoi preferiti.</span></p>
+                    <Link className="absolute left-[50%] top-[100%] transform-[translate(-50%,-50%)] flex items-center justify-center px-[25px] py-[15px] gap-[7px] text-[var(--text-color)] bg-[var(--bg)] rounded-[var(--border-radius)] border-solid border-[1px] border-[var(--contrast-01)] shadow-[0_5px_0_var(--contrast-01)] active:shadow-[0_0_0_var(--contrast-01)] active:transform-[translate(-50%,calc(-50%+5px))] duration-300 cursor-pointer" href="/sfoglia">
+                      <i className="bx bx-gallery-vertical-end text-[1.3rem] opacity-80"></i>Sfoglia
+                    </Link>
                   </div>
                   :
-                  <></>
+                  type == "admin" ?
+                    <div className="text-center">Non ci sono proverbi da revisionare</div>
+                    :
+                    <></>
               }
 
             </>
@@ -207,6 +215,3 @@ export default function ListProverbi({ type, setCount }: ListProps) {
     </>
   );
 }
-
-// TODO:
-// - ritorna frase se list vuota

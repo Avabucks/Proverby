@@ -1,10 +1,7 @@
 "use client"
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
-import { getCookie } from "cookies-next";
-import { getUser, checkUsername } from "@/src/actions/users_actions";
-import { checkAdmin } from "@/src/actions/admin_actions";
+import { useUser } from "@/src/context/UserContext";
 
 interface Props {
     children: React.ReactNode;
@@ -15,24 +12,13 @@ interface Props {
 export default function CheckAdmin({ children, load, closeOnError }: Props) {
     const router = useRouter();
     const [isAdmin, setAdmin] = useState(false)
+    const { user } = useUser();
 
     useEffect(() => {
         async function loadUser() {
-            const cookieUser = getCookie("user");
-            let jsonCookie;
-            if (cookieUser) {
-                jsonCookie = JSON.parse(cookieUser as string);
-                const user = await getUser(jsonCookie?.username)
-                const check = await checkUsername(jsonCookie?.uid)
-                if (!check) {
-                    if (user.uid === jsonCookie.uid) {
-                        const result = await checkAdmin(user.uid)
-                        setAdmin(result)
-                        if (!result) {
-                            if (closeOnError) router.push("/")
-                        }
-                    }
-                }
+            if (user) {
+                if (user.isAdmin === 1) setAdmin(true)
+                    else if (closeOnError) router.push("/")
             } else {
                 if (closeOnError) router.push("/")
             }

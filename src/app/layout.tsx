@@ -5,6 +5,9 @@ import "../styles/animations.css";
 import "../styles/style.css";
 import Navbar from "@/src/components/NavBar";
 import localFont from "next/font/local";
+import { UserProvider } from "@/src/context/UserContext";
+import { cookies } from "next/headers";
+import { getUser } from "@/src/actions/users_actions";
 
 const yourmate = localFont({
   src: "./fonts/Yourmate.otf",
@@ -47,11 +50,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+    const cookieStore = await cookies();
+    const token = cookieStore.get("user")?.value;
+    const user = token ? await getUser(JSON.parse(token as string).username, JSON.parse(token as string).uid) : null;
 
   return (
     <html lang="it">
@@ -71,8 +78,10 @@ export default function RootLayout({
         className={`${poppins.variable} ${yourmate.variable} antialiased light`}
         data-scroll-behavior="smooth"
       >
-        <Navbar />
-        <main>{children}</main>
+        <UserProvider initialUser={user}>
+          <Navbar />
+          <main>{children}</main>
+        </UserProvider>
       </body>
     </html>
   );

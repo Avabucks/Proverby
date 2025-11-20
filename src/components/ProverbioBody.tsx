@@ -1,8 +1,6 @@
 "use client"
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-
-import Link from "next/link";
 import { getProverbioFromSEO } from "@/src/actions/proverbi_actions";
 import { getRandomProverbioSEO } from "@/src/actions/proverbi_actions";
 
@@ -16,17 +14,25 @@ export default function ProverbioBody() {
     const pathname = usePathname();
 
     const [msg, setMsg] = useState("");
-    const [randomSEO, setRandomProverbio] = useState("");
     const [proverbioObj, setProverbioObj] = useState<Proverbio>();
     const [isLoading, setLoading] = useState(true);
 
-    const randomProverbio = async () => {
+    let lock = false;
+    const [isSpin, setSpin] = useState(false);
+
+    const handleRandom = async () => {
+        if (lock) return;
+        lock = true;
+        setSpin(true);
         const result = await getRandomProverbioSEO()
-        setRandomProverbio(result)
+        setTimeout(() => {
+            setSpin(false);
+            lock = false;
+            router.push(`/proverbio/${result}`)
+        }, 1000);
     };
 
     useEffect(() => {
-
         async function loadProverbioFromSEO() {
             const result = await getProverbioFromSEO(pathname.split("/").filter(Boolean).pop() || "");
             if (result) {
@@ -36,24 +42,8 @@ export default function ProverbioBody() {
             }
         }
 
-        randomProverbio();
         loadProverbioFromSEO();
     }, []);
-
-    let lock = false;
-    const [isSpin, setSpin] = useState(false);
-
-    const handleRandom = async () => {
-        if (lock) return;
-        lock = true;
-        setSpin(true);
-        randomProverbio();
-        setTimeout(() => {
-            setSpin(false);
-            lock = false;
-            router.push(`/proverbio/${randomSEO}`)
-        }, 1000);
-    };
 
     return (
         <div className="flex flex-col gap-[10px]">

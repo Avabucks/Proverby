@@ -1,9 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
-import { getCookie, setCookie } from "cookies-next";
-import { setUsername } from "@/src/actions/users_actions";
 import Ripple from "@/src/components/Ripple";
-import { toSeoFriendly } from "@/src/utils/utils";
+import { deleteProverbio } from "@/src/actions/proverbi_actions";
 
 interface DeletePopupProps {
   setOpenDeletePopup: Function;
@@ -12,10 +9,20 @@ interface DeletePopupProps {
 
 export default function DeletePopup({ setOpenDeletePopup, id }: DeletePopupProps) {
 
+  async function handleDelete() {
+    const result = await deleteProverbio(id)
+    if (result) {
+      setOpenDeletePopup(false)
+    }
+  };
+
   return (
-    <>
-      TODO
-      DeletePopup { id }
-    </>
+    <div>
+      <p>Sei sicuro di voler eliminare il proverbio? L’operazione sarà irreversibile.</p>
+      <div className="flex items-center justify-end gap-[10px]">
+        <Ripple opt="outline" icon="bx bx-x" handleOnClick={() => setOpenDeletePopup(false)}>Annulla</Ripple>
+        <Ripple opt="delete" icon="bx bx-trash" handleOnClick={handleDelete}>Elimina</Ripple>
+      </div>
+    </div>
   );
 }

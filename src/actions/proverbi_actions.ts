@@ -1,13 +1,15 @@
 'use server';
 import { pool } from "@/src/lib/db";
 import { generateCodeSecure, cleanString } from "@/src/utils/utils";
+import { checkUsernameSameUid, getUser } from "@/src/actions/users_actions";
+import { sendEmail } from "@/src/utils/send_mail";
 
 export async function dailyProverbio() {
 
   const result = await pool.query(
     `SELECT P.*, U.foto_profilo AS "photoURL"
      FROM proverbi P JOIN users U ON P.username=U.username
-     WHERE stato=2 AND proverbio_del_giorno=1
+     WHERE stato=2 AND proverbio_del_giorno=2
      LIMIT 1`
   );
 
@@ -54,7 +56,7 @@ export async function top10Proverbi() {
   const result = await pool.query(
     `SELECT P.*, U.foto_profilo AS "photoURL"
      FROM proverbi P JOIN users U ON P.username=U.username
-     WHERE stato=2 AND proverbio_del_giorno=0
+     WHERE stato=2 AND proverbio_del_giorno!=2
      ORDER BY score_week
      LIMIT 10`
   );
@@ -66,6 +68,8 @@ export async function top10Proverbi() {
 export async function acceptedProverbi(username?: string) {
 
   if (!username) return false
+
+  // TODO: calcolo punti del proverbio
 
   const result = await pool.query(
     `SELECT 
@@ -79,7 +83,7 @@ export async function acceptedProverbi(username?: string) {
     FROM proverbi P
     JOIN users U ON P.username = U.username
     WHERE P.stato = 2 AND P.username = $1
-    ORDER BY P.data_accettazione;`,
+     ORDER BY data_accettazione`,
     [username]
   );
 
@@ -133,23 +137,89 @@ export async function declinedProverbi(username?: string, uid?: string) {
 
 }
 
-export async function aggiungiProverbio(id: string, username: string, uid: string, proverbio: string, spiegazione: string) {
+export async function deleteProverbio(id: number) {
 
-  if (proverbio.length == 0 || spiegazione.length == 0) return { success: false, error: "Il proverbio e la spiegazione non possono essere vuoti." };
+  try {
+    const result = await pool.query(
+      'DELETE FROM proverbi WHERE id = $1',
+      [id]
+    );
+    return true;
+  } catch (err) {
+    return false;
+  }
+
+}
+
+export async function aggiungiProverbio(seoLink: string, uid: string, username: string, proverbio: string, spiegazione: string, esempi: string[], isAdmin: number) {
 
   proverbio = cleanString(proverbio)
   spiegazione = cleanString(spiegazione)
-  // TODO: esempio
-  const seoLink = generateCodeSecure()
-  // TODO: controlla username se è diverso da uid e username apparteenete a quell uid
+  const esempiCleaned = esempi.map(e => cleanString(e));
 
-  if (id == "new") {
-    // query aggiunta
+  let stato;
+
+  const same = await checkUsernameSameUid(uid);
+  if (same) return { success: false, error: "Errore del database", isAdmin: false };
+  const user = await getUser(username, uid);
+  if (!user) return { success: false, error: "Utente non esistente", isAdmin: false };
+
+  let result;
+  if (seoLink == "new") {
+    if (isAdmin == 0) stato = 0
+    seoLink = generateCodeSecure()
+
+    result = await pool.query(
+      `INSERT INTO proverbi (proverbio, spiegazione, esempi, stato, data_accettazione, username, seo_link)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+      [proverbio, spiegazione, esempiCleaned, stato, new Date(), username, seoLink]
+    );
+
   } else {
-    // query modifica
+    if (isAdmin == 0) {
+      stato = 0
+      result = await pool.query(
+        `UPDATE proverbi
+        SET proverbio = $1,
+        spiegazione = $2,
+        esempi = $3,
+        stato = $4,
+        data_accettazione = $5
+        WHERE seo_link = $6`,
+        [proverbio, spiegazione, esempiCleaned, stato, new Date(), seoLink]
+      );
+    } else if (isAdmin == 1) {
+      result = await pool.query(
+        `UPDATE proverbi
+        SET proverbio = $1,
+        spiegazione = $2,
+        esempi = $3
+        WHERE seo_link = $4`,
+        [proverbio, spiegazione, esempiCleaned, seoLink]
+      );
+    }
   }
 
-  return { success: true };
-  // TODO: mail admin
+  if (result) {
+    if (isAdmin == 0) {
+      return { success: true, isAdmin: false }; // TODO: togliere
+
+      const sended = await sendEmail({
+        to: "info@proverby.it",
+        subject: "Richiesta di accettazione del proverbio",
+        html: `
+          <div>
+            <p>Utente: ${username}</p>
+            <p>Proverbio: ${proverbio}</p>
+            <a href="https://www.proverby.it/admin">Vai all'admin</a>
+          <div>`
+      });
+      return { success: true, isAdmin: false };
+    } else {
+      return { success: true, isAdmin: true };
+    }
+  } else {
+    return { success: false, error: "Errore del database", isAdmin: false };
+  }
 
 }

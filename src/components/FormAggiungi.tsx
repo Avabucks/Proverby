@@ -1,46 +1,94 @@
 "use client"
 import { useEffect, useState } from "react"
 import { useRouter, usePathname } from "next/navigation";
-import { getCookie } from "cookies-next";
-
+import { useUser } from "@/src/context/UserContext";
 import CardProverbio from "@/src/components/CardProverbio";
-import { checkUsername } from "@/src/actions/users_actions";
-import { getProverbioFromSEO } from "@/src/actions/proverbi_actions";
+import { getProverbioFromSEO, aggiungiProverbio } from "@/src/actions/proverbi_actions";
+import confetti from "canvas-confetti"
 
-export default function ProfiloLayout() {
+interface Props {
+    id: string;
+}
+
+export default function ProfiloLayout({ id }: Props) {
     const router = useRouter();
     const pathname = usePathname().split("/").filter(Boolean).pop();
+    const { user } = useUser();
 
-    const [isLogged, setLogged] = useState(false)
     const [isLoading, setLoading] = useState(true)
-
+    const [isSaving, setSaving] = useState(false)
     const [proverbio, setProverbioString] = useState("");
     const [spiegazione, setSpiegazioneString] = useState("");
-
     const [isSuccess, setSuccess] = useState(false)
-    const [errorMsg, setErrMsg] = useState<{ success?: boolean; error: string; } | { success?: boolean; error?: undefined; }>({});
+    const [errorMsg, setErrMsg] = useState<{ success?: boolean; error: string; } | { success?: boolean; error?: undefined; }>({ success: true });
+
+    const handleConfetti = () => {
+        const duration = 5 * 1000
+        const animationEnd = Date.now() + duration
+        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 }
+        const randomInRange = (min: number, max: number) =>
+            Math.random() * (max - min) + min
+        const interval = window.setInterval(() => {
+            const timeLeft = animationEnd - Date.now()
+            if (timeLeft <= 0) {
+                return clearInterval(interval)
+            }
+            const particleCount = 50 * (timeLeft / duration)
+            confetti({
+                ...defaults,
+                particleCount,
+                origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+            })
+            confetti({
+                ...defaults,
+                particleCount,
+                origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+            })
+        }, 250)
+    }
+
+    const handleAggiungi = async () => {
+        if (!user) {
+            setErrMsg({ success: false, error: "Utente non caricato" });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+        if (proverbio.length == 0 || spiegazione.length == 0) {
+            setErrMsg({ success: false, error: "Il proverbio e la spiegazione non possono essere vuoti" });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+
+        // TODO:
+        const esempi = ["Es1", "es2"]
+
+        setSaving(true)
+        const result = await aggiungiProverbio(id, user.uid, user.username, proverbio, spiegazione, esempi, user.isAdmin)
+        if (result.success && !result.isAdmin) {
+            setSuccess(true)
+            handleConfetti();
+        } else if (result.success && result.isAdmin) {
+            router.push("/admin")
+        } else {
+            setErrMsg(result)
+        }
+        if (!result.isAdmin) window.scrollTo({ top: 0, behavior: 'smooth' });
+        setSaving(false);
+    };
 
     useEffect(() => {
         async function loadUser() {
-            const cookieUser = getCookie("user");
-            let jsonCookie;
-            if (cookieUser) {
-                setLogged(true);
+            if (user) {
                 loadProverbioFromSEO();
-                jsonCookie = JSON.parse(cookieUser as string);
-                const check = await checkUsername(jsonCookie?.uid)
-                if (check) {
-                    location.href = "/"
-                }
             } else {
-                location.href = "/" // TODO: manda a una pagina per login
+                router.push("/");
             }
         }
 
         async function loadProverbioFromSEO() {
             if (pathname != "new") {
                 const result = await getProverbioFromSEO(pathname || "");
-                if (result && result.stato != 1) {
+                if (user && result && result.stato != 1 && (result.username == user.username || user.isAdmin == 1)) {
                     setProverbioString(result.proverbio);
                     setSpiegazioneString(result.spiegazione);
                     setLoading(false);
@@ -59,6 +107,14 @@ export default function ProfiloLayout() {
         <div>
             {!isSuccess ?
                 <div>
+                    {!errorMsg.success ?
+                        <section>
+                            <div className="relative flex items-center gap-[10px] overflow-hidden border-solid border-[2px] border-[rgb(220,50,50)] text-[rgb(220,50,50)] p-[20px] rounded-[var(--border-radius)] before:content-[''] before:absolute before:inset-0 before:w-full before:h-full before:bg-[rgb(220,50,50)] before:opacity-20">
+                                <i className='bx bx-alert-triangle text-[1.3rem]'></i>
+                                {errorMsg.error}
+                            </div>
+                        </section>
+                        : <></>}
                     <CardProverbio type="aggiungi" setString={setProverbioString} proverbio={proverbio}></CardProverbio>
                     <section className="mt-[-130px]">
                         {isLoading ?
@@ -72,7 +128,7 @@ export default function ProfiloLayout() {
                             </>
                             :
                             <>
-                                {isLogged ?
+                                {user ?
                                     <>
                                         <div className="flex flex-col items-start w-full">
                                             <div className="title">SPIEGAZIONE</div>
@@ -85,7 +141,7 @@ export default function ProfiloLayout() {
                                         <div className="flex flex-col items-start w-full mt-[50px]">
                                             <div className="title">ESEMPI</div>
                                             <div className="mt-[15px]">
-                                                TODO
+                                                TODO: esempi
                                             </div>
                                         </div>
                                         <div className="flex flex-col items-start w-full mt-[50px]">
@@ -105,8 +161,17 @@ export default function ProfiloLayout() {
                                                 </ol>
                                             </div>
                                         </div>
-                                        <div className="mt-[50px] flex items-center justify-center gap-[5px] leading-0 w-full bg-[var(--primary)] py-[20px] text-[rgb(255,255,255)] rounded-[var(--border-radius)] shadow-[0_5px_0_var(--primary-dark)] active:shadow-[0_0_0_var(--primary-dark)] active:transform-[translateY(5px)] duration-300 cursor-pointer">
-                                            <i className="bx bx-send-alt mr-[5px]"></i>Sottoponi il proverbio <span className="hidden md:flex">e attendi che venga accettato</span>
+                                        <div className="mt-[50px] flex flex-col gap-[20px] items-center">
+                                            {isSaving ?
+                                                <div className="py-[10px]">
+                                                    <div className="border-[3px] border-solid border-[var(--primary)] border-t-[rgba(0,0,0,0)] rounded-full w-[30px] h-[30px] animate-spin"></div>
+                                                </div>
+                                                :
+                                                <div className="animate-[fade-in_.3s] flex items-center justify-center gap-[5px] leading-0 w-full bg-[var(--primary)] py-[20px] text-[rgb(255,255,255)] rounded-[var(--border-radius)] shadow-[0_5px_0_var(--primary-dark)] active:shadow-[0_0_0_var(--primary-dark)] active:translate-y-[5px] transition-[translate,box-shadow] duration-300 cursor-pointer"
+                                                    onClick={handleAggiungi}>
+                                                    <i className="bx bx-send-alt mr-[5px]"></i>Invia il proverbio <span className="hidden md:flex">e attendi che venga accettato</span>
+                                                </div>
+                                            }
                                         </div>
                                     </>
                                     :
@@ -117,20 +182,10 @@ export default function ProfiloLayout() {
                     </section>
                 </div>
                 :
-                <div className="animate-[fade-in_.5s]">
-                    Success "confetti"
-                </div>
+                <section className="animate-[fade-in_.5s] flex flex-col items-center center min-h-[70vh]">
+                    TODO: Success (visualizza il profilo con css outline, aggiungine un altro con css accient [cambia state])
+                </section>
             }
         </div>
     )
 }
-
-// TODO:
-// - loadUser che controlla login e username != uid else locaion.href [FATTO]
-// - setState delle variabili quando scrivo [FATTO]
-// - passa variabile e setState a CardProverbio [FATTO]
-// - await aggiungi(...)
-// - esempi
-
-// - testo per specifiche (click su href con target _blank) [FATTO]
-// - setState(aggiunto = true) cambia layout con quello con confetti

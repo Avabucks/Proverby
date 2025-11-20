@@ -22,16 +22,57 @@ export default function Footer({ ctaText }: Props) {
                             </div>
                         </div>
                         <div>
-                            TODO: Links: sfoglia, cos'è proverby, termini e condizioni, licenza
+                            <div className="relative w-fit text-[var(--primary-light)] font-medium p-[5px_15px] after:absolute after:inset-0 after:content-[''] after:w-full after:h-full after:rounded-[var(--border-radius)] after:opacity-20 after:bg-[var(--primary-light)]">Pagine</div>
+                            <ul className="mt-[30px] space-y-3 overflow-hidden">
+                                <li className="relative duration-300 transform-[translateX(-15px)] hover:transform-[translateX(0)]">
+                                    <Link href="/sfoglia">
+                                        <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[5px] border-b-[5px] border-l-[8px] border-t-transparent border-b-transparent border-l-[var(--primary)]"></span>
+                                        <span className="ml-[15px]">Sfoglia</span>
+                                    </Link>
+                                </li>
+                                <li className="relative duration-300 transform-[translateX(-15px)] hover:transform-[translateX(0)]">
+                                    <Link href="/about">
+                                        <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[5px] border-b-[5px] border-l-[8px] border-t-transparent border-b-transparent border-l-[var(--primary)]"></span>
+                                        <span className="ml-[15px]">Cos'è Proverby?</span>
+                                    </Link>
+                                </li>
+                                <li className="relative duration-300 transform-[translateX(-15px)] hover:transform-[translateX(0)]">
+                                    <Link href="/terms">
+                                        <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[5px] border-b-[5px] border-l-[8px] border-t-transparent border-b-transparent border-l-[var(--primary)]"></span>
+                                        <span className="ml-[15px]">Termini e condizioni</span>
+                                    </Link>
+                                </li>
+                            </ul>
                         </div>
                         <div>
-                            TODO: Links: aggiungi proverbio, quiz
-                            <CheckAdmin load={ false } closeOnError={ false }>Admin</CheckAdmin>
+                            <div className="relative w-fit text-[var(--primary-light)] font-medium p-[5px_15px] after:absolute after:inset-0 after:content-[''] after:w-full after:h-full after:rounded-[var(--border-radius)] after:opacity-20 after:bg-[var(--primary-light)]">Account</div>
+                            <ul className="mt-[30px] space-y-3 overflow-hidden">
+                                <li className="relative duration-300 transform-[translateX(-15px)] hover:transform-[translateX(0)]">
+                                    <Link href="/editor/new">
+                                        <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[5px] border-b-[5px] border-l-[8px] border-t-transparent border-b-transparent border-l-[var(--primary)]"></span>
+                                        <span className="ml-[15px]">Aggiungi Proverbio</span>
+                                    </Link>
+                                </li>
+                                <li className="relative duration-300 transform-[translateX(-15px)] hover:transform-[translateX(0)]">
+                                    <Link href="/quiz">
+                                        <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[5px] border-b-[5px] border-l-[8px] border-t-transparent border-b-transparent border-l-[var(--primary)]"></span>
+                                        <span className="ml-[15px]">Quiz</span>
+                                    </Link>
+                                </li>
+                                <CheckAdmin load={false} closeOnError={false}>
+                                    <li className="relative duration-300 transform-[translateX(-15px)] hover:transform-[translateX(0)]">
+                                        <Link href="/admin">
+                                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[5px] border-b-[5px] border-l-[8px] border-t-transparent border-b-transparent border-l-[var(--primary)]"></span>
+                                            <span className="ml-[15px]">Admin</span>
+                                        </Link>
+                                    </li>
+                                </CheckAdmin>
+                            </ul>
                         </div>
                     </div>
                 </section>
                 <section className="border-t-solid border-t-[1px] border-t-[var(--contrast-01)]">
-                        <a className="mx-auto py-[25px] opacity-[90] text-[.9rem]" href="https://avabucks.it/" target="_blank">© 2025 Proverby. Created by AvaBucks</a>
+                    <a className="mx-auto py-[25px] opacity-[90] text-[.9rem]" href="https://avabucks.it/" target="_blank">© 2025 Proverby. Created by AvaBucks</a>
                 </section>
             </footer>
         </div>

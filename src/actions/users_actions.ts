@@ -21,14 +21,34 @@ export async function saveUser(displayName: string, email: string, uid: string, 
   }
 }
 
-export async function getUser(username: string) {
+export async function getUserFromUsername(username: string) {
+
+  // TODO: calcolo punti saggezza totali
 
   const result = await pool.query(
-    `SELECT uid, username, display_name AS "displayName", email, foto_profilo AS "photoURL", partite_giocate as "partiteGiocate", best_score as "bestScore", miglior_posizione as "migliorPosizione", posizione_attuale as "posizioneAttuale"
+    `SELECT uid, username, display_name AS "displayName", email, foto_profilo AS "photoURL", partite_giocate as "partiteGiocate", best_score as "bestScore", miglior_posizione as "migliorPosizione", posizione_attuale as "posizioneAttuale", is_admin as "isAdmin"
      FROM users
      WHERE username = $1
      LIMIT 1`,
     [username]
+  );
+
+  if (result.rows.length === 0) {
+    return null;
+  }
+
+  return result.rows[0];
+
+}
+
+export async function getUser(username: string, uid: string) {
+
+  const result = await pool.query(
+    `SELECT uid, username, display_name AS "displayName", email, foto_profilo AS "photoURL", partite_giocate as "partiteGiocate", best_score as "bestScore", miglior_posizione as "migliorPosizione", posizione_attuale as "posizioneAttuale", is_admin as "isAdmin"
+     FROM users
+     WHERE username = $1 AND uid = $2
+     LIMIT 1`,
+    [username, uid]
   );
 
   if (result.rows.length === 0) {
@@ -51,7 +71,7 @@ export async function getUsername(uid: string) {
 
 }
 
-export async function checkUsername(uid: string) {
+export async function checkUsernameSameUid(uid: string) {
 
   const result = await pool.query(
     `SELECT username, uid FROM users WHERE uid = $1`,
@@ -72,7 +92,7 @@ export async function setUsername(uid: string, username: string) {
   if (username.length > 15) return { success: false, error: "Username massimo 15 caratteri" };
 
   try {
-    const same = await checkUsername(uid);
+    const same = await checkUsernameSameUid(uid);
     if (same) {
       const result = await pool.query(
         `
@@ -100,16 +120,4 @@ export async function setUsername(uid: string, username: string) {
     console.error("Database error:", err);
     return { success: false, error: "Errore del database" };
   }
-}
-
-// TODO
-export async function calcolaPunti(uid: string) {
-
-  const result = await pool.query(
-    `SELECT `,
-    [uid]
-  );
-
-  return result.rows[0];
-
 }

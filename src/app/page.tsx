@@ -2,11 +2,9 @@ import CardProverbio from "@/src/components/CardProverbio";
 import Timer from "@/src/components/Timer";
 import ListProverbi from "@/src/components/ListProverbi";
 import Link from "next/link";
-import { generateCodeSecure } from "@/src/utils/utils";
 import Footer from "@/src/components/Footer";
 
 export default async function Home() {
-
   return (
     <div className="animate-[fade-in_.3s]">
       <CardProverbio type="giorno"></CardProverbio>
