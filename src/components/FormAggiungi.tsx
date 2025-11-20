@@ -183,7 +183,7 @@ export default function ProfiloLayout({ id }: Props) {
                 </div>
                 :
                 <section className="animate-[fade-in_.5s] flex flex-col items-center center min-h-[70vh]">
-                    TODO: Success (visualizza il profilo con css outline - aggiungine un altro con css accient [cambia state])
+                    TODO: Success (visualizza il profilo con css outline, aggiungine un altro con css accient [cambia state])
                 </section>
             }
         </div>
