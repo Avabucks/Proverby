@@ -24,6 +24,7 @@ export default function ProfiloLayout({ username }: Props) {
   const [countSalvati, setCountSalvati] = useState(false);
 
   const handleLogout = async () => {
+    setLoading(true)
     const result = await firebaseLogOut()
     if (result) {
       setUser(null);
@@ -79,9 +80,16 @@ export default function ProfiloLayout({ username }: Props) {
             }
           </div>
         </div>
-        <div>
-          {isOwner ? <div className="hidden md:flex items-center gap-[7px] px-[25px] py-[15px] cursor-pointer rounded-[var(--border-radius)] border-[1px] border-solid border-[var(--contrast-01)] shadow-[0_5px_0_var(--contrast-01)] active:shadow-[0_0_0_var(--contrast-01)] active:transform-[translateY(5px)] duration-300 select-none" onClick={handleLogout}><i className="bx bx-arrow-out-right-square-half text-[1.3rem] opacity-80"></i>Disconnettiti</div> : ``}
-        </div>
+        {isOwner ?
+          <div>
+            {isLoading ?
+              <div className="hidden md:flex mt-[10px]"><div className="border-[3px] border-solid border-[var(--primary)] border-t-[rgba(0,0,0,0)] rounded-full w-[30px] h-[30px] animate-spin"></div></div>
+              :
+              <div className="animate-[fade-in_.5s] hidden md:flex items-center gap-[7px] px-[25px] py-[15px] cursor-pointer rounded-[var(--border-radius)] border-[1px] border-solid border-[var(--contrast-01)] shadow-[0_5px_0_var(--contrast-01)] active:shadow-[0_0_0_var(--contrast-01)] active:translate-y-[5px] transition-[translate,box-shadow] duration-300 select-none" onClick={handleLogout}><i className="bx bx-arrow-out-right-square-half text-[1.3rem] opacity-80"></i>Disconnettiti</div>
+            }
+          </div>
+          : <></>
+        }
       </div>
       <div className="section tab-profilo">
         <div className="tabbar">
@@ -91,7 +99,7 @@ export default function ProfiloLayout({ username }: Props) {
 
           <nav>
             <label htmlFor="tab-proverbi"><i className="bx bx-gallery-vertical-end"></i><i className="bx bxs-gallery-vertical-end"></i><p className="hidden md:flex">Proverbi</p>{countAccettati === false ? <></> : <span>{countAccettati}</span>}</label>
-            {isOwner ? <label htmlFor="tab-salvati"><i className="bx bx-bookmark"></i><i className="bx bxs-bookmark"></i><p className="hidden md:flex">Salvati</p><span>{countSalvati}</span></label> : <></>}
+            {isOwner ? <label htmlFor="tab-salvati"><i className="bx bx-bookmark"></i><i className="bx bxs-bookmark"></i><p className="hidden md:flex">Salvati</p>{countSalvati === false ? <></> : <span>{countSalvati}</span>}</label> : <></>}
             <label htmlFor="tab-statistiche"><i className="bx bx-chart-bar-rows"></i><i className="bx bxs-chart-bar-rows"></i><p className="hidden md:flex">Statistiche</p></label>
           </nav>
           <div className="tab-content">

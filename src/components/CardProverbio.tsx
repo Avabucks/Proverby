@@ -31,6 +31,7 @@ export default function CardProverbio({ type, setString, proverbio }: Props) {
     const [proverbioObj, setProverbioObj] = useState<Proverbio>();
     const [isLoading, setLoading] = useState(true);
     const [counterChar, setCounterChar] = useState(0);
+    const [isSaved, setSaved] = useState(false);
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -62,9 +63,10 @@ export default function CardProverbio({ type, setString, proverbio }: Props) {
         }
 
         async function loadProverbioFromSEO() {
-            const result = await getProverbioFromSEO(pathname || "");
+            const result = await getProverbioFromSEO(pathname || "", user?.uid, user?.username);
             if (result && (result.stato == 2 || (result.stato == 0 && user && user.username == result.username) || user?.isAdmin == 1)) {
                 setProverbioObj(result);
+                if (user && result.stato == 2) setSaved(result.isSaved)
                 setLoading(false);
             } else {
                 router.push("/")
@@ -163,10 +165,10 @@ export default function CardProverbio({ type, setString, proverbio }: Props) {
                                         <div className="flex items-center absolute bottom-[15px] right-[15px] leading-0">{counterChar} <i className="bx bx-chevron-left text-[24px]"></i> <span className="font-semibold">99</span> </div>
                                     </div>}
                                 <Link className="absolute top-[85%] left-[50%] transform-[translate(-50%,-50%)] z-[3] flex items-center gap-[10px] text-[.9rem]" href={`/profilo/${proverbioObj?.username}`} onClick={(e) => { e.stopPropagation(); }}>by {proverbioObj?.username}<Image className="rounded-full max-w-none" src={`${proverbioObj?.photoURL}`} alt="fot_profilo" width={30} height={30} /></Link>
-                                {type === "dettagli" ?
+                                {(type === "dettagli" && proverbioObj?.stato == 2) ?
                                     <>
                                         <div className="absolute bottom-[10px] left-[10px] z-[3] text-[rgb(255,255,255)]"><LikeDislike id={proverbioObj?.id || 0}></LikeDislike></div>
-                                        {proverbioObj?.stato == 2 ? <div className="absolute top-[10px] left-[10px] z-[3] text-[rgb(255,255,255)]"><SalvaProverbio id={proverbioObj?.id || 0}></SalvaProverbio></div> : <></>}
+                                        <div className="absolute top-[10px] left-[10px] z-[3] text-[rgb(255,255,255)]"><SalvaProverbio id={proverbioObj?.id || 0} isSaved={isSaved} setSaved={setSaved}></SalvaProverbio></div>
                                     </>
                                     : <></>}
                             </div>

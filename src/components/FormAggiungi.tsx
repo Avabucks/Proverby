@@ -64,17 +64,22 @@ export default function ProfiloLayout({ id }: Props) {
 
         setSaving(true)
         const result = await aggiungiProverbio(id, user.uid, user.username, proverbio, spiegazione, esempi, user.isAdmin)
-        if (!result.isAdmin) window.scrollTo({ top: 0, behavior: 'smooth' });
-        if (result.success && !result.isAdmin) {
+        if (result.success && user?.isAdmin == 0) {
             setSuccess(true)
             handleConfetti();
-        } else if (result.success && result.isAdmin) {
+        } else if (result.success && user?.isAdmin == 1) {
             router.push("/admin")
         } else {
             setErrMsg(result)
         }
         setSaving(false);
     };
+
+    useEffect(() => {
+        if (isSuccess && user?.isAdmin == 0) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }, [isSuccess, user?.isAdmin]);
 
     useEffect(() => {
         async function loadUser() {
@@ -104,7 +109,7 @@ export default function ProfiloLayout({ id }: Props) {
     }, [])
 
     return (
-        <div>
+        <div className="min-h-[70vh]">
             {!isSuccess ?
                 <div>
                     {!errorMsg.success ?
@@ -134,7 +139,7 @@ export default function ProfiloLayout({ id }: Props) {
                                             <div className="title">SPIEGAZIONE</div>
                                         </div>
                                         <textarea
-                                            className="textarea w-full mt-[15px]"
+                                            className="textarea w-full mt-[15px] text-[16px]"
                                             value={spiegazione}
                                             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setSpiegazioneString(e.target.value)}
                                             placeholder="Inserisci una spiegazione" />
@@ -182,7 +187,7 @@ export default function ProfiloLayout({ id }: Props) {
                     </section>
                 </div>
                 :
-                <section className="animate-[fade-in_.5s] flex flex-col items-center center min-h-[70vh]">
+                <section className="animate-[fade-in_.5s] flex flex-col items-center center h-full">
                     TODO: Success (visualizza il profilo con css outline - aggiungine un altro con css accient [cambia state])
                 </section>
             }

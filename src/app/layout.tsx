@@ -64,8 +64,6 @@ export default async function RootLayout({
     <html lang="it">
       <head>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
         <link rel="preload" href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css" as="style" />
         <link rel="stylesheet" href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css" />
         <link rel="preload" href="https://cdn.boxicons.com/fonts/brands/boxicons-brands.min.css" as="style" />

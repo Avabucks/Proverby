@@ -85,7 +85,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 z-[1000] flex items-center content-between w-full pl-[15px] pr-[20px] md:pl-[50px] md:pr-[50px] h-[75px] md:h-[95px] ${(scrolled || (!scrolled && isNavOpen)) ? "bg-[var(--bg)] shadow-[0_4px_6px_-2px_var(--contrast-01)]" : ""} duration-[.3s]`}>
+      <nav className={`fixed top-0 left-0 z-[1000] flex items-center content-between w-full pl-[15px] pr-[5px] md:pl-[50px] md:pr-[50px] h-[75px] md:h-[95px] ${(scrolled || (!scrolled && isNavOpen)) ? "bg-[var(--bg)] shadow-[0_4px_6px_-2px_var(--contrast-01)]" : ""} duration-[.3s]`}>
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center md:ml-[-15px] md:gap-[20px]">
             <div className="flex md:hidden items-center mx-[-10px]">

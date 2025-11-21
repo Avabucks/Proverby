@@ -56,7 +56,7 @@ export default function UsernamePopup({ setOpenUsernamePopup }: Props) {
   return (
     <div className="flex flex-col gap-[4px]">
       <div className="flex gap-[10px] items-center justify-between">
-        <input className="input w-full"
+        <input className="input w-full text-[16px]"
           type="text"
           value={username}
           onChange={handleChange}

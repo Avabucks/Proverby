@@ -9,7 +9,7 @@ import LikeDislike from "@/src/components/LikeDislike";
 import Popup from "@/src/components/popup/Popup";
 import DeletePopup from "@/src/components/popup/layout/DeletePopup";
 import { useRouter, usePathname } from "next/navigation";
-import { top10Proverbi, acceptedProverbi, reviewProverbi, declinedProverbi } from "@/src/actions/proverbi_actions";
+import { top10Proverbi, acceptedProverbi, reviewProverbi, declinedProverbi, salvatiProverbi } from "@/src/actions/proverbi_actions";
 import { adminProverbi, accettaProverbio, declinaProverbio } from "@/src/actions/admin_actions";
 
 interface ListProps {
@@ -72,8 +72,11 @@ export default function ListProverbi({ type, setCount, isOwner }: ListProps) {
       setLoading(false);
     }
     async function loadSalvatiProverbi() {
-      // TODO
-      // TODO: count -> if (setCount) setCount(result[0] ? result[0].totProverbi : 0);
+      const result = await salvatiProverbi(pathname.split("/").filter(Boolean).pop(), user?.uid);
+      if (result) {
+        setProverbiArray(result);
+        if (setCount) setCount(result[0] ? result[0].totProverbi : 0);
+      }
       setLoading(false);
     }
     async function loadAdminProverbi() {
@@ -135,8 +138,8 @@ export default function ListProverbi({ type, setCount, isOwner }: ListProps) {
                       <div className="mx-[5px_20px] h-[30px] border-l-[1px] border-l-solid border-l-[var(--contrast-01)]"></div>
                       {type == "admin" ?
                         <div className="flex items-center">
-                          <div className="ml-[-15px]"><Ripple icon="bx bx-x" handleOnClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => { e.stopPropagation(); if (user) {declinaProverbio(item.id, user.uid); setUpdated(x => x + 1)} }}></Ripple></div>
-                          <div className="mx-[-5px_-15px]"><Ripple icon="bx bx-check" handleOnClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => { e.stopPropagation(); if (user) {accettaProverbio(item.id, user.uid); setUpdated(x => x + 1)} }}></Ripple></div>
+                          <div className="ml-[-15px]"><Ripple icon="bx bx-x" handleOnClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => { e.stopPropagation(); if (user) { declinaProverbio(item.id, user.uid); setUpdated(x => x + 1) } }}></Ripple></div>
+                          <div className="mx-[-5px_-15px]"><Ripple icon="bx bx-check" handleOnClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => { e.stopPropagation(); if (user) { accettaProverbio(item.id, user.uid); setUpdated(x => x + 1) } }}></Ripple></div>
                         </div>
                         : <></>
                       }
