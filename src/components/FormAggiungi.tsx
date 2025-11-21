@@ -64,6 +64,7 @@ export default function ProfiloLayout({ id }: Props) {
 
         setSaving(true)
         const result = await aggiungiProverbio(id, user.uid, user.username, proverbio, spiegazione, esempi, user.isAdmin)
+        if (!result.isAdmin) window.scrollTo({ top: 0, behavior: 'smooth' });
         if (result.success && !result.isAdmin) {
             setSuccess(true)
             handleConfetti();
@@ -72,7 +73,6 @@ export default function ProfiloLayout({ id }: Props) {
         } else {
             setErrMsg(result)
         }
-        if (!result.isAdmin) window.scrollTo({ top: 0, behavior: 'smooth' });
         setSaving(false);
     };
 

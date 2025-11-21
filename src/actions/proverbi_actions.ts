@@ -57,7 +57,7 @@ export async function top10Proverbi() {
     `SELECT P.*, U.foto_profilo AS "photoURL"
      FROM proverbi P JOIN users U ON P.username=U.username
      WHERE stato=2 AND proverbio_del_giorno!=2
-     ORDER BY score_week
+     ORDER BY score_week DESC
      LIMIT 10`
   );
 

@@ -56,15 +56,15 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-    const cookieStore = await cookies();
-    const token = cookieStore.get("user")?.value;
-    const user = token ? await getUser(JSON.parse(token as string).username, JSON.parse(token as string).uid) : null;
+  const cookieStore = await cookies();
+  const token = cookieStore.get("user")?.value;
+  const user = token ? await getUser(JSON.parse(token as string).username, JSON.parse(token as string).uid) : null;
 
   return (
     <html lang="it">
       <head>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
         <link rel="preload" href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css" as="style" />
         <link rel="stylesheet" href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css" />

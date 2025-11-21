@@ -166,7 +166,7 @@ export default function CardProverbio({ type, setString, proverbio }: Props) {
                                 {type === "dettagli" ?
                                     <>
                                         <div className="absolute bottom-[10px] left-[10px] z-[3] text-[rgb(255,255,255)]"><LikeDislike id={proverbioObj?.id || 0}></LikeDislike></div>
-                                        <div className="absolute top-[10px] left-[10px] z-[3] text-[rgb(255,255,255)]"><SalvaProverbio id={proverbioObj?.id || 0}></SalvaProverbio></div>
+                                        {proverbioObj?.stato == 2 ? <div className="absolute top-[10px] left-[10px] z-[3] text-[rgb(255,255,255)]"><SalvaProverbio id={proverbioObj?.id || 0}></SalvaProverbio></div> : <></>}
                                     </>
                                     : <></>}
                             </div>

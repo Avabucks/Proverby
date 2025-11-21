@@ -56,8 +56,8 @@ export default function ProfiloLayout({ username }: Props) {
     <>
       <div className="flex items-center justify-between py-[30px]">
         <div className="flex items-center gap-[20px]">
-          {isLoading ? <div className="animate-pulse rounded-full w-[120px] h-[120px] bg-[var(--contrast-01)]"></div> :
-            <Image className="animate-[fade-in_.5s] rounded-full" width={120} height={120} src={`${userPage?.photoURL}`} alt="foto_profilo" priority />
+          {isLoading ? <div className="animate-pulse rounded-full w-[100px] md:w-[120px] h-[100px] md:h-[120px] bg-[var(--contrast-01)]"></div> :
+            <Image className="animate-[fade-in_.5s] rounded-full w-[100px] md:w-[120px] h-[100px] md:h-[120px]" width={96} height={96} src={`${userPage?.photoURL}`} alt="foto_profilo" priority />
           }
           <div>
             {isLoading ?

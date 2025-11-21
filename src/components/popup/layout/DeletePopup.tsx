@@ -19,7 +19,7 @@ export default function DeletePopup({ setOpenDeletePopup, id }: DeletePopupProps
   return (
     <div>
       <p>Sei sicuro di voler eliminare il proverbio? L’operazione sarà irreversibile.</p>
-      <div className="flex items-center justify-end gap-[10px]">
+      <div className="mt-[10px] flex items-center justify-end gap-[10px]">
         <Ripple opt="outline" icon="bx bx-x" handleOnClick={() => setOpenDeletePopup(false)}>Annulla</Ripple>
         <Ripple opt="delete" icon="bx bx-trash" handleOnClick={handleDelete}>Elimina</Ripple>
       </div>

@@ -3,8 +3,6 @@ import { pool } from "@/src/lib/db";
 import { NextResponse } from 'next/server';
 import { sendEmail } from "@/src/utils/send_mail";
 
-// TODO: controlla se funziona
-
 export async function GET(request: Request) {
   const userAgent = request.headers.get('user-agent');
 
@@ -21,7 +19,7 @@ export async function GET(request: Request) {
 
     let result = await pool.query(
       `SELECT id FROM proverbi
-       WHERE proverbio_del_giorno = 0
+       WHERE proverbio_del_giorno = 0 AND stato = 2
        ORDER BY data_accettazione ASC
        LIMIT 1`
     );
@@ -30,7 +28,7 @@ export async function GET(request: Request) {
       await pool.query(`UPDATE proverbi SET proverbio_del_giorno = 0`);
       result = await pool.query(
         `SELECT id FROM proverbi
-         WHERE proverbio_del_giorno = 0
+         WHERE proverbio_del_giorno = 0 AND stato = 2
          ORDER BY data_accettazione ASC
          LIMIT 1`
       );
