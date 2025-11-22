@@ -33,9 +33,9 @@ export default function CheckAdmin({ children, load, closeOnError }: Props) {
     else return (
         <>
             {load ?
-                <section className="animate-[fade-in_.3s] flex flex-col gap-[10px] items-center justify-center h-[calc(100vh-90px)] md:h-[calc(100vh-110px)] mt-[90px] md:mt-[110px]">
+                <section className="animate-[fade-in_.3s] flex flex-col gap-2.5 items-center justify-center h-[calc(100vh-90px)] md:h-[calc(100vh-110px)] mt-[90px] md:mt-[110px]">
                     <span>Verificando requisiti</span>
-                    <div className="border-[3px] border-solid border-[var(--primary)] border-t-[rgba(0,0,0,0)] rounded-full w-[30px] h-[30px] animate-spin"></div>
+                    <div className="border-[3px] border-solid border-(--primary) border-t-[rgba(0,0,0,0)] rounded-full w-[30px] h-[30px] animate-spin"></div>
                 </section>
                 : <></>}
         </>
