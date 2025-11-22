@@ -11,19 +11,17 @@ on:
 
 jobs:
   aggiorna_daily:
-    if: github.event.schedule == '0 0 * * *'
     runs-on: ubuntu-latest
     steps:
       - name: Call aggiorna_daily
-        run: |
-          curl -X GET "https://proverby.it/api/aggiorna_daily" \
+        run: | 
+          curl -v -L -X GET "https://proverby.it/api/aggiorna_daily" \
             -H "X-CRON-KEY: ${{ secrets.CRON_KEY }}"
 
   aggiorna_weekly:
-    if: github.event.schedule == '0 18 * * 0'
     runs-on: ubuntu-latest
     steps:
       - name: Call aggiorna_weekly
         run: |
-          curl -X GET "https://proverby.it/api/aggiorna_weekly" \
+          curl -v -L -X GET "https://proverby.it/api/aggiorna_daily" \
             -H "X-CRON-KEY: ${{ secrets.CRON_KEY }}"
