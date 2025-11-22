@@ -4,10 +4,8 @@ import { NextResponse } from 'next/server';
 import { sendEmail } from "@/src/utils/send_mail";
 
 export async function GET(request: Request) {
-  const userAgent = request.headers.get('user-agent');
-
-  if (!userAgent || !userAgent.startsWith('vercel-cron/')) {
-    return new Response('Unauthorized', { status: 401 });
+  if (request.headers.get('x-cron-key') !== process.env.CRON_KEY) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {

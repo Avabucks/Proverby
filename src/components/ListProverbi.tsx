@@ -119,9 +119,9 @@ export default function ListProverbi({ type, setCount, isOwner }: ListProps) {
             <div className={`animate-[slide-up_.5s] flex flex-col min-h-[72px] md:flex-row items-center gap-[10px] px-[25px] py-[15px] md:py-[10px] justify-between rounded-[var(--border-radius)] border-[1px] border-solid border-[var(--contrast-01)] ${type == "declined" ? "" : "cursor-pointer shadow-[0_5px_0_var(--contrast-01)] active:shadow-[0_0_0_var(--contrast-01)] active:transform-[translateY(5px)]"} duration-300`} onClick={() => { if (type != "declined") router.push("/proverbio/" + item.seo_link) }} key={i}>
               <div className="flex flex-col md:flex-row items-center gap-[10px] md:gap-[20px]">
                 <div className="flex gap-[10px] items-center">
-                  <BiSolidQuoteLeft className="text-[1.9rem] opacity-20" />
+                  <div><BiSolidQuoteLeft className="text-[1.9rem] opacity-20" /></div>
                   <p className="text-center">{item.proverbio.replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim()}.</p>
-                  <BiSolidQuoteRight className="text-[1.9rem] opacity-20" />
+                  <div><BiSolidQuoteRight className="text-[1.9rem] opacity-20" /></div>
                 </div>
                 <div>
                   <Link className="flex items-center gap-[10px] text-[.9rem]" href={`/profilo/${item.username}`} onClick={(e) => { e.stopPropagation(); }}>by {item.username}<Image className="rounded-full max-w-none" src={`${item.photoURL}`} alt="fot_profilo" width={30} height={30} /></Link>

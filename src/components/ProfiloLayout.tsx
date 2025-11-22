@@ -6,7 +6,7 @@ import { getUserFromUsername } from "@/src/actions/users_actions";
 import { firebaseLogOut } from "@/src/actions/firebase_actions";
 import Image from "next/image";
 import ListProverbi from "@/src/components/ListProverbi";
-import { BiCollection, BiSolidCollection, BiBookmark, BiSolidBookmark, BiStats, BiMedal, BiExit } from "react-icons/bi";
+import { BiCollection, BiSolidCollection, BiBookmark, BiSolidBookmark, BiLineChart, BiMedal, BiExit } from "react-icons/bi";
 
 interface Props {
   username: string;
@@ -101,7 +101,7 @@ export default function ProfiloLayout({ username }: Props) {
           <nav>
             <label htmlFor="tab-proverbi"><i className="bx-gallery-vertical-end"><BiCollection/></i><i className="bxs-gallery-vertical-end"><BiSolidCollection /></i><p className="hidden md:flex">Proverbi</p>{countAccettati === false ? <></> : <span>{countAccettati}</span>}</label>
             {isOwner ? <label htmlFor="tab-salvati"><i className="bx-bookmark"><BiBookmark /></i><i className="bxs-bookmark"><BiSolidBookmark /></i><p className="hidden md:flex">Salvati</p>{countSalvati === false ? <></> : <span>{countSalvati}</span>}</label> : <></>}
-            <label htmlFor="tab-statistiche"><i className="bx-chart-bar-rows"><BiStats /></i><i className="bxs-chart-bar-rows"><BiStats /></i><p className="hidden md:flex">Statistiche</p></label>
+            <label htmlFor="tab-statistiche"><i className="bx-chart-bar-rows"><BiLineChart /></i><i className="bxs-chart-bar-rows"><BiLineChart /></i><p className="hidden md:flex">Statistiche</p></label>
           </nav>
           <div className="tab-content">
             <div className="tab-panel proverbi">

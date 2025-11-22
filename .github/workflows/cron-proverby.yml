@@ -1,0 +1,29 @@
+name: Proverby Cron Jobs
+
+on:
+  schedule:
+    # Daily job - 00:00 UTC
+    - cron: "0 0 * * *"
+    # Weekly job - Sunday 18:00 UTC
+    - cron: "0 18 * * 0"
+
+  workflow_dispatch: {} # Permette di avviare i job manualmente
+
+jobs:
+  aggiorna_daily:
+    if: github.event.schedule == '0 0 * * *'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call aggiorna_daily
+        run: |
+          curl -X GET "https://proverby.it/api/aggiorna_daily" \
+            -H "X-CRON-KEY: ${{ secrets.CRON_KEY }}"
+
+  aggiorna_weekly:
+    if: github.event.schedule == '0 18 * * 0'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call aggiorna_weekly
+        run: |
+          curl -X GET "https://proverby.it/api/aggiorna_weekly" \
+            -H "X-CRON-KEY: ${{ secrets.CRON_KEY }}"
