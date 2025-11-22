@@ -1,5 +1,5 @@
 "use client"
-import Ripple from "@/src/components/Ripple";
+import Ripple from "@/src/components/ui/Ripple";
 import { BiInfoCircle, BiX } from "react-icons/bi";
 
 interface PopupProps {

@@ -1,8 +1,8 @@
 import { getProverbioFromSEO } from "@/src/actions/proverbi_actions";
-import BreadCrumb from "@/src/components/BreadCrumb";
-import CardProverbio from "@/src/components/CardProverbio";
-import ProverbioBody from "@/src/components/ProverbioBody";
-import Footer from "@/src/components/Footer";
+import BreadCrumb from "@/src/components/ui/BreadCrumb";
+import CardProverbio from "@/src/components/proverbi/CardProverbio";
+import ProverbioBody from "@/src/components/proverbi/ProverbioBody";
+import Footer from "@/src/components/navigation/Footer";
 
 export async function generateMetadata({
     params,

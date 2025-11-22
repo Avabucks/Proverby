@@ -1,6 +1,6 @@
-import BreadCrumb from "@/src/components/BreadCrumb";
-import ProfiloLayout from "@/src/components/ProfiloLayout";
-import Footer from "@/src/components/Footer";
+import BreadCrumb from "@/src/components/ui/BreadCrumb";
+import ProfiloLayout from "@/src/components/user/ProfiloLayout";
+import Footer from "@/src/components/navigation/Footer";
 
 export async function generateMetadata({
   params,

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Ripple from "@/src/components/Ripple";
+import Ripple from "@/src/components/ui/Ripple";
 import { BiSun, BiMoon } from "react-icons/bi";
 
 export default function ThemeToggle() {

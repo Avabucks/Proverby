@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import { useRouter, usePathname } from "next/navigation";
 import { useUser } from "@/src/context/UserContext";
-import CardProverbio from "@/src/components/CardProverbio";
+import CardProverbio from "@/src/components/proverbi/CardProverbio";
 import { getProverbioFromSEO, aggiungiProverbio } from "@/src/actions/proverbi_actions";
 import confetti from "canvas-confetti"
 import { BiSend, BiErrorAlt } from "react-icons/bi"
@@ -116,7 +116,7 @@ export default function ProfiloLayout({ id }: Props) {
                     {!errorMsg.success ?
                         <section>
                             <div className="relative flex items-center gap-2.5 overflow-hidden border-solid border-2 border-[rgb(220,50,50)] text-[rgb(220,50,50)] p-5 rounded-(--border-radius) before:content-[''] before:absolute before:inset-0 before:w-full before:h-full before:bg-[rgb(220,50,50)] before:opacity-20">
-                                <BiErrorAlt className='text-[1.3rem]' />
+                                <div><BiErrorAlt className='text-[1.3rem]' /></div>
                                 {errorMsg.error}
                             </div>
                         </section>

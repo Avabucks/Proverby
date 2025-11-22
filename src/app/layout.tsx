@@ -3,7 +3,7 @@ import { Poppins } from "next/font/google";
 import "../styles/globals.css";
 import "../styles/animations.css";
 import "../styles/style.css";
-import Navbar from "@/src/components/NavBar";
+import Navbar from "@/src/components/navigation/NavBar";
 import localFont from "next/font/local";
 import { UserProvider } from "@/src/context/UserContext";
 import { cookies } from "next/headers";

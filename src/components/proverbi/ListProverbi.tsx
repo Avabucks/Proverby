@@ -4,8 +4,8 @@ import { useUser } from "@/src/context/UserContext";
 
 import Link from "next/link";
 import Image from "next/image";
-import Ripple from "@/src/components/Ripple";
-import LikeDislike from "@/src/components/LikeDislike";
+import Ripple from "@/src/components/ui/Ripple";
+import LikeDislike from "@/src/components/user/LikeDislike";
 import Popup from "@/src/components/popup/Popup";
 import DeletePopup from "@/src/components/popup/layout/DeletePopup";
 import { useRouter, usePathname } from "next/navigation";
@@ -219,3 +219,6 @@ export default function ListProverbi({ type, setCount, isOwner }: ListProps) {
     </>
   );
 }
+
+// TODO:
+// - like anche negli accepted se non isOwner

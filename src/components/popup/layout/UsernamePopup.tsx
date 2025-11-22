@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { setCookie } from "cookies-next";
 import { useUser } from "@/src/context/UserContext";
 import { setUsername, getUser } from "@/src/actions/users_actions";
-import Ripple from "@/src/components/Ripple";
+import Ripple from "@/src/components/ui/Ripple";
 import { toSeoFriendly } from "@/src/utils/utils";
 import { BiCheck } from "react-icons/bi";
 

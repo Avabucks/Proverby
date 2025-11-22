@@ -1,5 +1,5 @@
 "use client";
-import Ripple from "@/src/components/Ripple";
+import Ripple from "@/src/components/ui/Ripple";
 import { deleteProverbio } from "@/src/actions/proverbi_actions";
 import { BiX, BiTrash } from "react-icons/bi";
 

@@ -1,5 +1,5 @@
-import BreadCrumb from "@/src/components/BreadCrumb";
-import Footer from "@/src/components/Footer";
+import BreadCrumb from "@/src/components/ui/BreadCrumb";
+import Footer from "@/src/components/navigation/Footer";
 
 export async function generateMetadata() {
   return {

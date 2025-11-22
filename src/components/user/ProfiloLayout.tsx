@@ -5,7 +5,7 @@ import { useUser } from "@/src/context/UserContext";
 import { getUserFromUsername } from "@/src/actions/users_actions";
 import { firebaseLogOut } from "@/src/actions/firebase_actions";
 import Image from "next/image";
-import ListProverbi from "@/src/components/ListProverbi";
+import ListProverbi from "@/src/components/proverbi/ListProverbi";
 import { BiCollection, BiSolidCollection, BiBookmark, BiSolidBookmark, BiLineChart, BiMedal, BiExit } from "react-icons/bi";
 
 interface Props {
@@ -57,24 +57,24 @@ export default function ProfiloLayout({ username }: Props) {
   return (
     <>
       <div className="flex items-center justify-between py-[30px]">
-        <div className="flex items-center gap-[20px]">
-          {isLoading ? <div className="animate-pulse rounded-full w-[100px] md:w-[120px] h-[100px] md:h-[120px] bg-[var(--contrast-01)]"></div> :
+        <div className="flex items-center gap-5">
+          {isLoading ? <div className="animate-pulse rounded-full w-[100px] md:w-[120px] h-[100px] md:h-[120px] bg-(--contrast-01)"></div> :
             <Image className="animate-[fade-in_.5s] rounded-full w-[100px] md:w-[120px] h-[100px] md:h-[120px]" width={96} height={96} src={`${userPage?.photoURL}`} alt="foto_profilo" priority />
           }
           <div>
             {isLoading ?
               <>
-                <div className="animate-pulse rounded-full w-[200px] h-[24px] bg-[var(--contrast-01)]"></div>
-                <div className="animate-pulse rounded-full w-[160px] h-[15px] bg-[var(--contrast-01)] mt-[7px]"></div>
-                <div className="animate-pulse rounded-full w-[215px] h-[30px] bg-[var(--contrast-01)] mt-[9px]"></div>
+                <div className="animate-pulse rounded-full w-[200px] h-6 bg-(--contrast-01)"></div>
+                <div className="animate-pulse rounded-full w-40 h-[15px] bg-(--contrast-01) mt-[7px]"></div>
+                <div className="animate-pulse rounded-full w-[215px] h-[30px] bg-(--contrast-01) mt-[9px]"></div>
               </>
               :
               <>
                 <h1 className="text-[1.2rem] font-semibold overflow-hidden text-ellipsis whitespace-nowrap w-full">{userPage?.displayName}</h1>
-                <p className="text-[var(--text-color)]/60 mt-[-6px] duration-300">@{username}</p>
-                <div className="mt-[9px] flex items-center gap-[8px] px-[13px] py-[5px] rounded-full bg-[var(--primary)] text-white/90">
+                <p className="text-(--text-color)/60 -mt-1.5 duration-300">@{username}</p>
+                <div className="mt-[9px] flex items-center gap-2 px-[13px] py-[5px] rounded-full bg-(--primary) text-white/90">
                   <BiMedal className="text-[1.3rem] leading-0" />
-                  <p className="text-[.8rem] leading-[0]">Punti saggezza</p>
+                  <p className="text-[.8rem] leading-0">Punti saggezza</p>
                   <p className="text-[1rem] font-semibold leading-0">TODO</p>
                 </div>
               </>
@@ -84,9 +84,9 @@ export default function ProfiloLayout({ username }: Props) {
         {isOwner ?
           <div>
             {isLoading ?
-              <div className="hidden md:flex mt-[10px]"><div className="border-[3px] border-solid border-[var(--primary)] border-t-[rgba(0,0,0,0)] rounded-full w-[30px] h-[30px] animate-spin"></div></div>
+              <div className="hidden md:flex mt-2.5"><div className="border-[3px] border-solid border-(--primary) border-t-[rgba(0,0,0,0)] rounded-full w-[30px] h-[30px] animate-spin"></div></div>
               :
-              <div className="animate-[fade-in_.5s] hidden md:flex items-center gap-[7px] px-[25px] py-[15px] cursor-pointer rounded-[var(--border-radius)] border-[1px] border-solid border-[var(--contrast-01)] shadow-[0_5px_0_var(--contrast-01)] active:shadow-[0_0_0_var(--contrast-01)] active:translate-y-[5px] transition-[translate,box-shadow] duration-300 select-none" onClick={handleLogout}><BiExit className="text-[1.3rem] opacity-80" />Disconnettiti</div>
+              <div className="animate-[fade-in_.5s] hidden md:flex items-center gap-[7px] px-[25px] py-[15px] cursor-pointer rounded-(--border-radius) border border-solid border-(--contrast-01) shadow-[0_5px_0_var(--contrast-01)] active:shadow-[0_0_0_var(--contrast-01)] active:translate-y-[5px] transition-[translate,box-shadow] duration-300 select-none" onClick={handleLogout}><BiExit className="text-[1.3rem] opacity-80" />Disconnettiti</div>
             }
           </div>
           : <></>

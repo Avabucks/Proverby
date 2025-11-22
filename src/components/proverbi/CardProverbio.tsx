@@ -5,8 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { dailyProverbio, getProverbioFromSEO } from "@/src/actions/proverbi_actions";
-import LikeDislike from "@/src/components/LikeDislike";
-import SalvaProverbio from "@/src/components/SalvaProverbio";
+import LikeDislike from "@/src/components/user/LikeDislike";
+import SalvaProverbio from "@/src/components/user/SalvaProverbio";
 import { BiErrorAlt, BiLockOpenAlt, BiChevronLeft } from "react-icons/bi";
 
 interface Props {

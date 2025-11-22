@@ -1,4 +1,4 @@
-import Ripple from "@/src/components/Ripple";
+import Ripple from "@/src/components/ui/Ripple";
 import { BiLike, BiDislike } from "react-icons/bi";
 
 interface Props {

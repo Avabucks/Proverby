@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useState } from "react";
 import { useUser } from "@/src/context/UserContext";
-import Ripple from "@/src/components/Ripple";
+import Ripple from "@/src/components/ui/Ripple";
 import { salvaProverbio } from "@/src/actions/proverbi_actions";
 import { usePathname } from "next/navigation";
 import { BiBookmark, BiSolidBookmark } from "react-icons/bi";

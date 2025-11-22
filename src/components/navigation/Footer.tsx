@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Ripple from "@/src/components/Ripple";
-import CheckAdmin from "@/src/admin_components/CheckAdmin";
+import Ripple from "@/src/components/ui/Ripple";
+import CheckAdmin from "@/src/components/admin/CheckAdmin";
 import { BiLogoInstagram, BiLogoTiktok } from "react-icons/bi";
 import { SiBuymeacoffee } from "react-icons/si";
 

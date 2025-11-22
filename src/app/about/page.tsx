@@ -1,7 +1,7 @@
 import { Metadata } from "next";
-import BreadCrumb from "@/src/components/BreadCrumb";
+import BreadCrumb from "@/src/components/ui/BreadCrumb";
 import Link from "next/link";
-import Footer from "@/src/components/Footer";
+import Footer from "@/src/components/navigation/Footer";
 
 export const metadata: Metadata = {
   title: "Cos'è Proverby? - Proverby",

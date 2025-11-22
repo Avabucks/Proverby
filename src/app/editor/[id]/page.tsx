@@ -1,6 +1,6 @@
-import BreadCrumb from "@/src/components/BreadCrumb";
-import FormAggiungi from "@/src/components/FormAggiungi";
-import Footer from "@/src/components/Footer";
+import BreadCrumb from "@/src/components/ui/BreadCrumb";
+import FormAggiungi from "@/src/components/user/FormAggiungi";
+import Footer from "@/src/components/navigation/Footer";
 
 export async function generateMetadata({
   params,
