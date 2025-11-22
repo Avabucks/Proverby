@@ -13,17 +13,17 @@ export default function About() {
     <>
       <section className="animate-[fade-in_.3s] info">
         <BreadCrumb pagesLabel={["Home"]} pagesLink={["/"]}>Cos'è Proverby?</BreadCrumb>
-        <div className="mt-[20px]">
-          <h1 className="font-bold text-[2.6rem] leading-[2.5rem]">Cos'è Proverby?</h1>
+        <div className="mt-5">
+          <h1 className="font-bold text-[2.6rem] leading-10">Cos'è Proverby?</h1>
         </div>
         <div>
           <div>
-            <div className="flex flex-col gap-[10px]">
+            <div className="flex flex-col gap-2.5">
               <span>Proverby è un sito online che raccoglie proverbi, modi di dire ed espressioni popolari della tradizione italiana e internazionale, con l'obiettivo di conservarne il valore culturale e renderli facilmente accessibili a tutti. Gli utenti possono contribuire arricchendo il sito con nuovi proverbi, favorendo così la condivisione e la riscoperta della saggezza popolare.</span>
               <span>Aggiungere un proverbio è semplice:</span>
               <ul>
                 <li>Accedi alla community di Porverby;</li>
-                <li>Vai alla pagina dedicata all'inserimento <Link href="/editor/new" className="text-[var(--primary-light)] underline">qui</Link>;</li>
+                <li>Vai alla pagina dedicata all'inserimento <Link href="/editor/new" className="text-(--primary-light) underline">qui</Link>;</li>
                 <li>Indica il proverbio che vuoi condividere;</li>
                 <li>Inserisci il significato o la spiegazione del proverbio, per chiarirne il senso;</li>
                 <li>Aggiungi uno o più esempi di utilizzo del proverbio in un contesto reale;</li>
@@ -34,7 +34,7 @@ export default function About() {
           </div>
           <div>
             <h2>Gioca ai Quiz</h2>
-            <div className="flex flex-col gap-[10px]">
+            <div className="flex flex-col gap-2.5">
               <span>Su Proverby non ci si limita solo a leggere o inserire proverbi: è anche possibile mettersi alla prova con divertenti quiz.</span>
               <span>I quiz ti permettono di:</span>
               <ul>

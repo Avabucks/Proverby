@@ -74,7 +74,7 @@ export default function ProfiloLayout({ username }: Props) {
                 <p className="text-[var(--text-color)]/60 mt-[-6px] duration-300">@{username}</p>
                 <div className="mt-[9px] flex items-center gap-[8px] px-[13px] py-[5px] rounded-full bg-[var(--primary)] text-white/90">
                   <BiMedal className="text-[1.3rem] leading-0" />
-                  <p className="text-[.8rem] leading-[1px]">Punti saggezza</p>
+                  <p className="text-[.8rem] leading-[0]">Punti saggezza</p>
                   <p className="text-[1rem] font-semibold leading-0">TODO</p>
                 </div>
               </>

@@ -14,7 +14,7 @@ export default function Terms() {
         <BreadCrumb pagesLabel={["Home"]} pagesLink={["/"]}>Termini e condizioni</BreadCrumb>
         <div className="mt-[15px]">
           <h1 className="font-bold text-[2.6rem] leading-[2.7rem]">Termini e condizioni</h1>
-          <p className="mt-[10px] opacity-50 text-[.9rem]">Aggiornati a Settembre 2025</p>
+          <p className="mt-2.5 opacity-50 text-[.9rem]">Aggiornati a Settembre 2025</p>
         </div>
         <div>
           <div>
@@ -48,7 +48,7 @@ export default function Terms() {
           </div>
           <div>
             <h2>Eliminazione dei dati personali</h2>
-            <p>L'Utente può richiedere la cancellazione completa dei propri dati personali scrivendo a: <a href="mailto:info@proverby.it" className="text-[var(--primary-light)] underline">info@proverby.it</a>.
+            <p>L'Utente può richiedere la cancellazione completa dei propri dati personali scrivendo a: <a href="mailto:info@proverby.it" className="text-(--primary-light) underline">info@proverby.it</a>.
               La richiesta sarà gestita entro 30 giorni.
             </p>
           </div>
@@ -65,7 +65,7 @@ export default function Terms() {
           </div>
           <div>
             <h2>Privacy e Cookie</h2>
-            <p>Proverby rispetta la normativa vigente in materia di protezione dei dati personali (GDPR). I dati raccolti sono limitati a email, nickname e dati tecnici di navigazione (IP, browser, sistema operativo, pagine visitate). I dati vengono utilizzati esclusivamente per gestire il Profilo, migliorare l'esperienza di navigazione e, previo consenso, per inviare comunicazioni informative o pubblicitarie. Proverby utilizza cookie tecnici (necessari al funzionamento) e, previo consenso, cookie analitici e di profilazione pubblicitaria. L'Utente può modificare le preferenze sui cookie in qualsiasi momento tramite il banner o le impostazioni del browser. Gli Utenti hanno diritto di accedere, modificare o cancellare i propri dati, nonché di revocare il consenso al trattamento scrivendo a: <a href="mailto:info@proverby.it" className="text-[var(--primary-light)] underline">info@proverby.it</a>.</p>
+            <p>Proverby rispetta la normativa vigente in materia di protezione dei dati personali (GDPR). I dati raccolti sono limitati a email, nickname e dati tecnici di navigazione (IP, browser, sistema operativo, pagine visitate). I dati vengono utilizzati esclusivamente per gestire il Profilo, migliorare l'esperienza di navigazione e, previo consenso, per inviare comunicazioni informative o pubblicitarie. Proverby utilizza cookie tecnici (necessari al funzionamento) e, previo consenso, cookie analitici e di profilazione pubblicitaria. L'Utente può modificare le preferenze sui cookie in qualsiasi momento tramite il banner o le impostazioni del browser. Gli Utenti hanno diritto di accedere, modificare o cancellare i propri dati, nonché di revocare il consenso al trattamento scrivendo a: <a href="mailto:info@proverby.it" className="text-(--primary-light) underline">info@proverby.it</a>.</p>
           </div>
           <div id="licenza">
             <h2>Licenza e utilizzo dei contenuti</h2>
@@ -75,12 +75,12 @@ export default function Terms() {
               <li>Deve sempre citare l'autore e la fonte “Proverby.it”;</li>
               <li>Se modifica o rielabora i contenuti, deve distribuirli sotto la stessa licenza.</li>
             </ul>
-            <p>Ulteriori informazioni sulla licenza CC BY-SA 4.0 sono disponibili <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.it" target="_blank" className="text-[var(--primary-light)] underline">qui</a>.</p>
+            <p>Ulteriori informazioni sulla licenza CC BY-SA 4.0 sono disponibili <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.it" target="_blank" className="text-(--primary-light) underline">qui</a>.</p>
             <p>Gli Utenti non possono utilizzare il Sito per attività illegali, per accedere a dati riservati né per scopi contrari alla legge.</p>
           </div>
           <div>
             <h2>Attribuzione</h2>
-            <p>Design originale e risorse grafiche tratte da <a href="https://www.figma.com/community/file/1351126696463064535" target="_blank" rel="noopener noreferrer" className="text-[var(--primary-light)] underline">Figma Community</a>.</p>
+            <p>Design originale e risorse grafiche tratte da <a href="https://www.figma.com/community/file/1351126696463064535" target="_blank" rel="noopener noreferrer" className="text-(--primary-light) underline">Figma Community</a>.</p>
           </div>
           <div>
             <h2>Copyright e proprietà intellettuale</h2>
@@ -88,8 +88,8 @@ export default function Terms() {
           </div>
           <div>
             <h2>Contatti</h2>
-            <p className="flex flex-col gap-[10px]">Per qualsiasi domanda o segnalazione puoi scriverci a:
-              <a href="mailto:info@proverby.it" className="text-[var(--primary-light)] underline">info@proverby.it</a>
+            <p className="flex flex-col gap-2.5">Per qualsiasi domanda o segnalazione puoi scriverci a:
+              <a href="mailto:info@proverby.it" className="text-(--primary-light) underline">info@proverby.it</a>
             </p>
           </div>
         </div>

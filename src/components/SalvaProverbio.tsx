@@ -7,12 +7,11 @@ import { usePathname } from "next/navigation";
 import { BiBookmark, BiSolidBookmark } from "react-icons/bi";
 
 interface Props {
-    id: number;
     isSaved: boolean;
     setSaved: Function;
 }
 
-export default function SalvaProverbio({ id, isSaved, setSaved }: Props) {
+export default function SalvaProverbio({ isSaved, setSaved }: Props) {
     const { user } = useUser();
     const pathname = usePathname()
 
@@ -44,7 +43,7 @@ export default function SalvaProverbio({ id, isSaved, setSaved }: Props) {
             {isLogged ?
                 <>
                     {isLoading ?
-                        <div className="p-[10px]"><div className="border-[3px] border-solid border-[rgba(255,255,255,.8)] border-t-[rgba(0,0,0,0)] rounded-full w-[30px] h-[30px] animate-spin"></div></div>
+                        <div className="p-2.5"><div className="border-[3px] border-solid border-[rgba(255,255,255,.8)] border-t-[rgba(0,0,0,0)] rounded-full w-[30px] h-[30px] animate-spin"></div></div>
                         :
                         <div className="animate-[fade-in_.5s]">
                             {isSaved ?

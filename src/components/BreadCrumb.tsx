@@ -9,14 +9,14 @@ interface CardProverbioProps {
 
 export default function BreadCrumb({ children, pagesLabel, pagesLink }: CardProverbioProps) {
   return (
-    <div className="flex items-center gap-[5px] mt-[90px] md:mt-[110px] mb-[10px]">
+    <div className="flex items-center gap-[5px] mt-[90px] md:mt-[110px] mb-2.5">
       { pagesLabel?.map((page, i) => (
         <div className="flex items-center gap-[5px]" key={ i }>
           <Link className="font-medium" href={`${ pagesLink[i] }`}>{ page }</Link>
           <BiChevronRight className="text-[24px] opacity-70" />
         </div>
       ))}
-      <span className="text-[var(--primary)] font-medium opacity-90 overflow-hidden text-ellipsis whitespace-nowrap w-full">{ children }</span>
+      <span className="text-(--primary) font-medium opacity-90 overflow-hidden text-ellipsis whitespace-nowrap w-full">{ children }</span>
     </div>
   );
 }

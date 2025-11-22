@@ -115,7 +115,7 @@ export default function ProfiloLayout({ id }: Props) {
                 <div>
                     {!errorMsg.success ?
                         <section>
-                            <div className="relative flex items-center gap-[10px] overflow-hidden border-solid border-[2px] border-[rgb(220,50,50)] text-[rgb(220,50,50)] p-[20px] rounded-[var(--border-radius)] before:content-[''] before:absolute before:inset-0 before:w-full before:h-full before:bg-[rgb(220,50,50)] before:opacity-20">
+                            <div className="relative flex items-center gap-2.5 overflow-hidden border-solid border-2 border-[rgb(220,50,50)] text-[rgb(220,50,50)] p-5 rounded-(--border-radius) before:content-[''] before:absolute before:inset-0 before:w-full before:h-full before:bg-[rgb(220,50,50)] before:opacity-20">
                                 <BiErrorAlt className='text-[1.3rem]' />
                                 {errorMsg.error}
                             </div>
@@ -125,12 +125,12 @@ export default function ProfiloLayout({ id }: Props) {
                     <section className="mt-[-130px]">
                         {isLoading ?
                             <>
-                                <div className="animate-pulse rounded-full w-full h-[24px] bg-[var(--contrast-01)]"></div>
-                                <div className="animate-pulse rounded-full w-[300px] h-[15px] bg-[var(--contrast-01)] mt-[7px]"></div>
-                                <div className="animate-pulse rounded-full w-[215px] h-[15px] bg-[var(--contrast-01)] mt-[9px]"></div>
-                                <div className="animate-pulse rounded-full w-full h-[24px] bg-[var(--contrast-01)] mt-[40px]"></div>
-                                <div className="animate-pulse rounded-full w-[300px] h-[15px] bg-[var(--contrast-01)] mt-[7px]"></div>
-                                <div className="animate-pulse rounded-full w-[215px] h-[15px] bg-[var(--contrast-01)] mt-[9px] mb-[40px]"></div>
+                                <div className="animate-pulse rounded-full w-full h-6 bg-(--contrast-01)"></div>
+                                <div className="animate-pulse rounded-full w-[300px] h-[15px] bg-(--contrast-01) mt-[7px]"></div>
+                                <div className="animate-pulse rounded-full w-[215px] h-[15px] bg-(--contrast-01) mt-[9px]"></div>
+                                <div className="animate-pulse rounded-full w-full h-6 bg-(--contrast-01) mt-10"></div>
+                                <div className="animate-pulse rounded-full w-[300px] h-[15px] bg-(--contrast-01) mt-[7px]"></div>
+                                <div className="animate-pulse rounded-full w-[215px] h-[15px] bg-(--contrast-01) mt-[9px] mb-10"></div>
                             </>
                             :
                             <>
@@ -154,9 +154,9 @@ export default function ProfiloLayout({ id }: Props) {
                                             <div className="title">CONDIZIONI PER L'ACCETTAZIONE</div>
                                             <div className="mt-[15px]">
                                                 <ol className="list-decimal list-inside space-y-3">
-                                                    <li><span className="font-medium">Rispetto dei termini e condizioni del sito:</span> il contenuto non deve violare regole, copyright o includere materiale offensivo (<a href="/terms" target="_blank" className="text-[var(--primary-light)] underline">leggi termini e condizioni</a>).</li>
+                                                    <li><span className="font-medium">Rispetto dei termini e condizioni del sito:</span> il contenuto non deve violare regole, copyright o includere materiale offensivo (<a href="/terms" target="_blank" className="text-(--primary-light) underline">leggi termini e condizioni</a>).</li>
                                                     <li><span className="font-medium">Tipologia ammessa:</span> il proverbio può essere</li>
-                                                    <ul className="list-disc ml-[40px] space-y-1">
+                                                    <ul className="list-disc ml-10 space-y-1">
                                                         <li>inventato dall'utente,</li>
                                                         <li>una rivisitazione di proverbi esistenti <span className="opacity-50">(es. “Chi scrolla Tiktok, non piglia like.”),</span></li>
                                                         <li>un proverbio tradizionale già conosciuto <span className="opacity-50">(es. “Chi dorme, non piglia pesci.”),</span></li>
@@ -167,13 +167,13 @@ export default function ProfiloLayout({ id }: Props) {
                                                 </ol>
                                             </div>
                                         </div>
-                                        <div className="mt-[50px] flex flex-col gap-[20px] items-center">
+                                        <div className="mt-[50px] flex flex-col gap-5 items-center">
                                             {isSaving ?
-                                                <div className="py-[10px]">
-                                                    <div className="border-[3px] border-solid border-[var(--primary)] border-t-[rgba(0,0,0,0)] rounded-full w-[30px] h-[30px] animate-spin"></div>
+                                                <div className="py-2.5">
+                                                    <div className="border-[3px] border-solid border-(--primary) border-t-[rgba(0,0,0,0)] rounded-full w-[30px] h-[30px] animate-spin"></div>
                                                 </div>
                                                 :
-                                                <div className="animate-[fade-in_.3s] flex items-center justify-center gap-[5px] leading-0 w-full bg-[var(--primary)] py-[20px] text-[rgb(255,255,255)] rounded-[var(--border-radius)] shadow-[0_5px_0_var(--primary-dark)] active:shadow-[0_0_0_var(--primary-dark)] active:translate-y-[5px] transition-[translate,box-shadow] duration-300 cursor-pointer"
+                                                <div className="animate-[fade-in_.3s] flex items-center justify-center gap-[5px] leading-0 w-full bg-(--primary) py-5 text-[rgb(255,255,255)] rounded-(--border-radius) shadow-[0_5px_0_var(--primary-dark)] active:shadow-[0_0_0_var(--primary-dark)] active:translate-y-[5px] transition-[translate,box-shadow] duration-300 cursor-pointer"
                                                     onClick={handleAggiungi}>
                                                     <BiSend />Invia il proverbio <span className="hidden md:flex">e attendi che venga accettato</span>
                                                 </div>

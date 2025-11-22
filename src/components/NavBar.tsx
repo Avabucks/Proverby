@@ -87,39 +87,39 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 z-[1000] flex items-center content-between w-full pl-[15px] pr-[5px] md:pl-[50px] md:pr-[50px] h-[75px] md:h-[95px] ${(scrolled || (!scrolled && isNavOpen)) ? "bg-[var(--bg)] shadow-[0_4px_6px_-2px_var(--contrast-01)]" : ""} duration-[.3s]`}>
+      <nav className={`fixed top-0 left-0 z-1000 flex items-center content-between w-full pl-[15px] pr-[5px] md:pl-[50px] md:pr-[50px] h-[75px] md:h-[95px] ${(scrolled || (!scrolled && isNavOpen)) ? "bg-(--bg) shadow-[0_4px_6px_-2px_var(--contrast-01)]" : ""} duration-300`}>
         <div className="flex items-center justify-between w-full">
-          <div className="flex items-center md:ml-[-15px] md:gap-[20px]">
-            <div className="flex md:hidden items-center mx-[-10px]">
+          <div className="flex items-center md:ml-[-15px] md:gap-5">
+            <div className="flex md:hidden items-center -mx-2.5">
               <Ripple handleOnClick={handleNavClick} icon={BiMenu}></Ripple>
             </div>
             <Ripple>
               <div className="h-[55px]">
                 <Link className="flex items-center h-full" href="/" onClick={closeNav}>
-                  <Image className="relative mt-[2px] z-[10] max-w-[30vw] md:max-w-[18vw] h-full object-contain select-none" src={Logo} alt="Logo" width={155} priority />
+                  <Image className="relative mt-0.5 z-10 max-w-[30vw] md:max-w-[18vw] h-full object-contain select-none" src={Logo} alt="Logo" width={155} priority />
                 </Link>
               </div>
             </Ripple>
             <div>
-              <div className={`${!isNavOpen ? "opacity-0 pointer-events-none" : "bg-[var(--bg)]"} md:opacity-100 md:pointer-events-auto absolute top-[75px] left-0 md:relative md:top-0 w-full h-[calc(100vh-75px)] md:h-auto p-[7px] md:p-0 flex md:flex flex-col md:flex-row items-bt md:items-center gap-[10px] lg:gap-[20px] list-none duration-300`}>
-                <div className="hidden md:flex border-l-[1px] border-solid border-[var(--contrast-01)] h-[40px]"></div>
+              <div className={`${!isNavOpen ? "opacity-0 pointer-events-none" : "bg-(--bg)"} md:opacity-100 md:pointer-events-auto absolute top-[75px] left-0 md:relative md:top-0 w-full h-[calc(100vh-75px)] md:h-auto p-[7px] md:p-0 flex md:flex flex-col md:flex-row items-bt md:items-center gap-2.5 lg:gap-5 list-none duration-300`}>
+                <div className="hidden md:flex border-l border-solid border-(--contrast-01) h-10"></div>
                 <Link href="/sfoglia" onClick={closeNav}><Ripple icon={BiCollection}>Sfoglia</Ripple></Link>
                 <div onClick={() => (closeNav(), handleRandom())}><Ripple icon={BiDice2}><span className="md:hidden lg:hidden xl:flex flex-col">Proverbio</span>Casuale</Ripple></div>
                 <Link href="/quiz" onClick={closeNav}><Ripple icon={BiJoystick}>Quiz</Ripple></Link>
                 <Link href="/editor/new" className="flex md:hidden" onClick={closeNav}><Ripple icon={BiPlus}>Aggiungi<span className="md:hidden lg:hidden xl:flex flex-col">Proverbio</span></Ripple></Link>
-                <div className="flex md:hidden mx-auto w-[90%] border-b-[1px] border-solid border-[var(--contrast-01)]"></div>
+                <div className="flex md:hidden mx-auto w-[90%] border-b border-solid border-(--contrast-01)"></div>
                 <Link href="/about" className="flex md:hidden [@media(min-width:1800px)]:flex" onClick={closeNav}><Ripple icon={BiInfoCircle}>Cos’è Proverby?</Ripple></Link>
                 <Link href="/terms" className="flex md:hidden [@media(min-width:1800px)]:flex" onClick={closeNav}><Ripple icon={BiReceipt}>Termini e condizioni</Ripple></Link>
                 {user ?
                   <>
-                    <div className="flex md:hidden mx-auto w-[90%] border-b-[1px] border-solid border-[var(--contrast-01)]"></div>
+                    <div className="flex md:hidden mx-auto w-[90%] border-b border-solid border-(--contrast-01)"></div>
                     <Link href="/" className="flex md:hidden" onClick={handleLogout}><Ripple icon={BiExit}>Disconnettiti</Ripple></Link>
                   </>
                   : <></>}
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-[20px]">
+          <div className="flex items-center gap-5">
             {pathname == "/editor/new" ? <></> :
               <div onClick={() => {
                 if (user) router.push("/editor/new");
@@ -131,11 +131,11 @@ export default function Navbar() {
               </div>
             }
             <ThemeToggle></ThemeToggle>
-            <div className="border-l-[1px] border-solid border-[var(--contrast-01)] h-[40px]"></div>
+            <div className="border-l border-solid border-(--contrast-01) h-10"></div>
             {!user ?
               <>
                 {loading ?
-                  <div className="border-[3px] border-solid border-[var(--primary)] border-t-[rgba(0,0,0,0)] rounded-full w-[30px] h-[30px] animate-spin"></div>
+                  <div className="border-[3px] border-solid border-(--primary) border-t-[rgba(0,0,0,0)] rounded-full w-[30px] h-[30px] animate-spin"></div>
                   :
                   <Ripple handleOnClick={handleLogin} opt="outline" img={GoogleLogo} alt="google_logo"><span className="hidden md:flex">Accedi con Google</span></Ripple>
                 }
@@ -143,7 +143,7 @@ export default function Navbar() {
               :
               <Link className="ml-[-13px]" href={user.username != user.uid ? `/profilo/${user.username}` : ``} onClick={closeNav}>
                 <Ripple>
-                  <div className="flex items-center gap-[10px] h-[60px]">
+                  <div className="flex items-center gap-2.5 h-[60px]">
                     <div className="flex items-center">
                       <Image className="rounded-full max-w-none" src={user.photoURL} alt="fot_profilo" width={42} height={42} />
                     </div>
@@ -159,7 +159,7 @@ export default function Navbar() {
         </div>
       </nav>
       {pathname == "/editor/new" ? <></> :
-        <div className="fixed bottom-[25px] right-[25px] z-[1000] flex md:hidden bg-[var(--bg)] rounded-[var(--border-radius)] duration-300 transform-[scale(1.1)] origin-bottom-right">
+        <div className="fixed bottom-[25px] right-[25px] z-1000 flex md:hidden bg-(--bg) rounded-(--border-radius) duration-300 transform-[scale(1.1)] origin-bottom-right">
           <div onClick={() => {
             if (user) router.push("/editor/new");
             else handleLogin();

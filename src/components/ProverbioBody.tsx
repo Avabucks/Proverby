@@ -48,28 +48,28 @@ export default function ProverbioBody() {
     }, []);
 
     return (
-        <div className="flex flex-col gap-[10px]">
+        <div className="flex flex-col gap-2.5">
 
             <div className="flex flex-col items-start mt-[-130px]">
                 {isLoading ?
                     <>
-                        <div className="animate-pulse rounded-full w-full h-[24px] bg-[var(--contrast-01)]"></div>
-                        <div className="animate-pulse rounded-full w-[300px] h-[15px] bg-[var(--contrast-01)] mt-[7px]"></div>
-                        <div className="animate-pulse rounded-full w-[215px] h-[15px] bg-[var(--contrast-01)] mt-[9px]"></div>
-                        <div className="animate-pulse rounded-full w-full h-[24px] bg-[var(--contrast-01)] mt-[40px]"></div>
-                        <div className="animate-pulse rounded-full w-[300px] h-[15px] bg-[var(--contrast-01)] mt-[7px]"></div>
-                        <div className="animate-pulse rounded-full w-[215px] h-[15px] bg-[var(--contrast-01)] mt-[9px] mb-[40px]"></div>
+                        <div className="animate-pulse rounded-full w-full h-6 bg-(--contrast-01)"></div>
+                        <div className="animate-pulse rounded-full w-[300px] h-[15px] bg-(--contrast-01) mt-[7px]"></div>
+                        <div className="animate-pulse rounded-full w-[215px] h-[15px] bg-(--contrast-01) mt-[9px]"></div>
+                        <div className="animate-pulse rounded-full w-full h-6 bg-(--contrast-01) mt-10"></div>
+                        <div className="animate-pulse rounded-full w-[300px] h-[15px] bg-(--contrast-01) mt-[7px]"></div>
+                        <div className="animate-pulse rounded-full w-[215px] h-[15px] bg-(--contrast-01) mt-[9px] mb-10"></div>
                     </>
                     :
                     <div className="animate-[fade-in_.5s] flex flex-col items-start w-full">
-                        <div className="flex justify-between gap-[10px] w-full">
+                        <div className="flex justify-between gap-2.5 w-full">
                             <div className="flex flex-col items-start w-full">
                                 <h2 className="title">SPIEGAZIONE</h2>
-                                <p className="mt-[10px]">{proverbioObj?.spiegazione}</p>
+                                <p className="mt-2.5">{proverbioObj?.spiegazione}</p>
                             </div>
-                            <div className="hidden md:flex flex-col items-start gap-[10px]">
+                            <div className="hidden md:flex flex-col items-start gap-2.5">
                                 <h2 className="title text-nowrap">CONDIVIDI SU</h2>
-                                <div className="flex items-center gap-[20px] text-[1.8rem]">
+                                <div className="flex items-center gap-5 text-[1.8rem]">
                                     <a href={`https://wa.me/?text=${msg}`} target="_blank" aria-label="Share on whatsapp" className="opacity-50 hover:opacity-100 hover:duration-300"><BiLogoWhatsapp /></a>
                                     <a href={`https://twitter.com/intent/tweet?text=${msg}`} target="_blank" aria-label="Share on x" className="opacity-50 hover:opacity-100 hover:duration-300"><RiTwitterXFill /></a>
                                     <a href={`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.proverby.it%2Fproverbio%2F${pathname.split("/").filter(Boolean).pop()}`} target="_blank" aria-label="Share on facebook" className="opacity-50 hover:opacity-100 hover:duration-300"><BiLogoFacebookCircle /></a>
@@ -79,7 +79,7 @@ export default function ProverbioBody() {
                         {proverbioObj?.esempi ?
                             <div className="mt-[30px] flex flex-col items-start w-full">
                                 <h2 className="title">ESEMPI</h2>
-                                <div className="flex flex-col gap-[5px] mt-[10px] rounded-[var(--border-radius)] bg-[var(--contrast-007)] w-full p-[15px_20px] border-l-5 border-[var(--contrast-01)]">
+                                <div className="flex flex-col gap-[5px] mt-2.5 rounded-(--border-radius) bg-(--contrast-007) w-full p-[15px_20px] border-l-5 border-(--contrast-01)">
                                     {
                                         proverbioObj.esempi.map((esempio, i) => (
                                             <p key={i}>"{esempio}"</p>
@@ -95,19 +95,19 @@ export default function ProverbioBody() {
                 }
             </div>
 
-            <div className="flex md:hidden py-[40px_30px] flex flex-col items-center gap-[10px]">
+            <div className="md:hidden py-[40px_30px] flex flex-col items-center gap-2.5">
                 <h2 className="title">CONDIVIDI SU</h2>
-                <div className="flex items-center gap-[20px] text-[1.8rem]">
+                <div className="flex items-center gap-5 text-[1.8rem]">
                     <a href={`https://wa.me/?text=${msg}`} target="_blank" aria-label="Share on whatsapp" className="opacity-50 hover:opacity-100 hover:duration-300"><BiLogoWhatsapp /></a>
                     <a href={`https://twitter.com/intent/tweet?text=${msg}`} target="_blank" aria-label="Share on x" className="opacity-50 hover:opacity-100 hover:duration-300"><RiTwitterXFill /></a>
                     <a href={`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.proverby.it%2Fproverbio%2F${pathname.split("/").filter(Boolean).pop()}`} target="_blank" aria-label="Share on facebook" className="opacity-50 hover:opacity-100 hover:duration-300"><BiLogoFacebookCircle /></a>
                 </div>
             </div>
 
-            <div className="relative w-full border-solid border-[1px] border-[var(--contrast-01)] rounded-[var(--border-radius)] p-[20px_20px_100px_20px] text-center  mt-[0px] md:mt-[50px] mb-[75px]">
+            <div className="relative w-full border-solid border border-(--contrast-01) rounded-(--border-radius) p-[20px_20px_100px_20px] text-center  mt-0 md:mt-[50px] mb-[75px]">
                 <h2 className="font-semibold text-[1.4rem]">Esplora un proverbio casuale!</h2>
                 <p>Clicca sul pulsante qui sotto per esplorare un proverbio casuale.</p>
-                <div className="absolute left-[50%] top-[100%] transform-[translate(-50%,-50%)] flex items-center justify-center w-[140px] h-[140px] bg-[var(--primary)] rounded-full shadow-[0_5px_0_var(--primary-dark)] active:shadow-[0_0_0_var(--primary-dark)] active:transform-[translate(-50%,calc(-50%+5px))] duration-300 cursor-pointer" onClick={handleRandom}>
+                <div className="absolute left-[50%] top-full transform-[translate(-50%,-50%)] flex items-center justify-center w-[140px] h-[140px] bg-(--primary) rounded-full shadow-[0_5px_0_var(--primary-dark)] active:shadow-[0_0_0_var(--primary-dark)] active:transform-[translate(-50%,calc(-50%+5px))] duration-300 cursor-pointer" onClick={handleRandom}>
                     <div className="flex items-center transform-[rotate(20deg)]">
                         <BiSolidDice5 className={`text-white/90 text-[4rem] ${isSpin ? "animate-[spin_1s_cubic-bezier(0.25,0.1,0.25,1)]" : ""}`} />
                     </div>

@@ -10,6 +10,7 @@ interface DeletePopupProps {
 
 export default function DeletePopup({ setOpenDeletePopup, id }: DeletePopupProps) {
 
+  // TODO: toast
   async function handleDelete() {
     const result = await deleteProverbio(id)
     if (result) {
@@ -20,7 +21,7 @@ export default function DeletePopup({ setOpenDeletePopup, id }: DeletePopupProps
   return (
     <div>
       <p>Sei sicuro di voler eliminare il proverbio? L'operazione sarà irreversibile.</p>
-      <div className="mt-[20px] flex items-center justify-end gap-[10px]">
+      <div className="mt-5 flex items-center justify-end gap-2.5">
         <Ripple opt="outline" icon={BiX} handleOnClick={() => setOpenDeletePopup(false)}>Annulla</Ripple>
         <Ripple opt="delete" icon={BiTrash} handleOnClick={handleDelete}>Elimina</Ripple>
       </div>
