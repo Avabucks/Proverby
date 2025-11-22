@@ -1,5 +1,6 @@
 "use client"
 import Ripple from "@/src/components/Ripple";
+import { BiInfoCircle, BiX } from "react-icons/bi";
 
 interface PopupProps {
   children?: React.ReactNode;
@@ -20,10 +21,10 @@ export default function Popup({ children, title, width, isOpen, setPopup, canClo
         bg-[var(--bg)] rounded-[var(--border-radius)] duration-300 animate-[popup_.3s]`}>
         <div className="flex items-center justify-between px-[20px] h-[60px]">
           <div className="flex items-center gap-[10px]">
-            <i className='bx bx-info-circle text-[1.4rem] opacity-90'></i> 
+            <BiInfoCircle className='text-[1.4rem] opacity-90' />
             <p className="font-medium">{ title }</p>
           </div>
-          { canClose ? <Ripple handleOnClick={ () => setPopup(false) } icon="bx bx-x"></Ripple> : ``}
+          { canClose ? <Ripple handleOnClick={ () => setPopup(false) } icon={BiX}></Ripple> : ``}
         </div>
         <div className="mx-auto w-full border-b-[1px] border-solid border-[var(--contrast-01)]"></div>
         <div className="p-[20px]">

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BiChevronRight } from "react-icons/bi";
 
 interface CardProverbioProps {
   children?: React.ReactNode;
@@ -12,10 +13,10 @@ export default function BreadCrumb({ children, pagesLabel, pagesLink }: CardProv
       { pagesLabel?.map((page, i) => (
         <div className="flex items-center gap-[5px]" key={ i }>
           <Link className="font-medium" href={`${ pagesLink[i] }`}>{ page }</Link>
-          <i className="bx bx-chevron-right text-[24px]"></i>
+          <BiChevronRight className="text-[24px] opacity-70" />
         </div>
       ))}
-      <span className="text-[var(--primary-light)] font-medium opacity-90 overflow-hidden text-ellipsis whitespace-nowrap w-full">{ children }</span>
+      <span className="text-[var(--primary)] font-medium opacity-90 overflow-hidden text-ellipsis whitespace-nowrap w-full">{ children }</span>
     </div>
   );
 }

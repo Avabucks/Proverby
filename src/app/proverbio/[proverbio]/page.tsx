@@ -14,7 +14,16 @@ export async function generateMetadata({
 
     return {
         title: `${result?.proverbio.replaceAll(".", "")} - Proverby`,
-        description: `${result?.spiegazione}`,
+        description: result?.spiegazione || "Proverby è una raccolta di proverbi condivisi dalla community. Aggiungi i tuoi e accumula punti saggezza!",
+        openGraph: {
+            title: `${result?.proverbio.replaceAll(".", "")} - Proverby`,
+            description: `${result?.spiegazione}`,
+        },
+        twitter: {
+            card: 'summary',
+            title: `${result?.proverbio.replaceAll(".", "")} - Proverby`,
+            description: `${result?.spiegazione}`,
+        },
     };
 }
 

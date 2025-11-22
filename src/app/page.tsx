@@ -3,6 +3,7 @@ import Timer from "@/src/components/Timer";
 import ListProverbi from "@/src/components/ListProverbi";
 import Link from "next/link";
 import Footer from "@/src/components/Footer";
+import { BiRightArrowAlt } from "react-icons/bi";
 
 export default async function Home() {
   return (
@@ -18,7 +19,7 @@ export default async function Home() {
         <ListProverbi type="top10"></ListProverbi>
         <Link className="group my-[10px] flex items-center justify-between gap-[10px] px-[30px] py-[20px] rounded-[var(--border-radius)] w-full h-[77px] bg-[var(--contrast-01)] select-none" href="/sfoglia">
           <p>Sfoglia tutti i proverbi della community</p>
-          <i className='bx bx-arrow-right-stroke text-[1.6rem] opacity-80 duration-500 group-hover:translate-x-[10px]'></i>
+          <BiRightArrowAlt className='text-[1.6rem] opacity-80 duration-500 group-hover:translate-x-[10px]' />
         </Link>
       </section>
       <Footer ctaText="Aggiungi il tuo proverbio!" />

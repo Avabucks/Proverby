@@ -274,7 +274,7 @@ nav .bxs-chart-bar-rows {
   flex-direction: column;
 }
 
-.section.tab-profilo .tab-content .tab-panel h3 {
+.section.tab-profilo .tab-content .tab-panel h2 {
   font-size: 1.2rem;
   font-weight: 600;
   margin-block: 30px 10px;

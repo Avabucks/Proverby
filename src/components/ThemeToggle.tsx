@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Ripple from "@/src/components/Ripple";
+import { BiSun, BiMoon } from "react-icons/bi";
 
 export default function ThemeToggle() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
@@ -39,6 +40,6 @@ export default function ThemeToggle() {
   };
 
   return (
-    <Ripple handleOnClick={ toggleTheme } opt="outline" icon={theme === "dark" ? "bx bx-sun-dim" : "bx bx-moon"}></Ripple>
+    <Ripple handleOnClick={ toggleTheme } opt="outline" icon={theme === "dark" ? BiSun : BiMoon}></Ripple>
   );
 }

@@ -4,6 +4,7 @@ import { useUser } from "@/src/context/UserContext";
 import Ripple from "@/src/components/Ripple";
 import { salvaProverbio } from "@/src/actions/proverbi_actions";
 import { usePathname } from "next/navigation";
+import { BiBookmark, BiSolidBookmark } from "react-icons/bi";
 
 interface Props {
     id: number;
@@ -47,9 +48,9 @@ export default function SalvaProverbio({ id, isSaved, setSaved }: Props) {
                         :
                         <div className="animate-[fade-in_.5s]">
                             {isSaved ?
-                                <Ripple icon="bx bxs-bookmark" handleOnClick={handleSalva}></Ripple>
+                                <Ripple icon={BiSolidBookmark} handleOnClick={handleSalva}></Ripple>
                                 :
-                                <Ripple icon="bx bx-bookmark" handleOnClick={handleSalva}></Ripple>
+                                <Ripple icon={BiBookmark} handleOnClick={handleSalva}></Ripple>
                             }
                         </div>
                     }

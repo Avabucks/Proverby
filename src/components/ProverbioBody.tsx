@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { getProverbioFromSEO } from "@/src/actions/proverbi_actions";
 import { getRandomProverbioSEO } from "@/src/actions/proverbi_actions";
+import { BiSolidDice5, BiLogoWhatsapp, BiLogoFacebookCircle } from "react-icons/bi";
+import { RiTwitterXFill } from "react-icons/ri";
 
 interface Proverbio {
     spiegazione: string;
@@ -62,21 +64,21 @@ export default function ProverbioBody() {
                     <div className="animate-[fade-in_.5s] flex flex-col items-start w-full">
                         <div className="flex justify-between gap-[10px] w-full">
                             <div className="flex flex-col items-start w-full">
-                                <h3 className="title">SPIEGAZIONE</h3>
+                                <h2 className="title">SPIEGAZIONE</h2>
                                 <p className="mt-[10px]">{proverbioObj?.spiegazione}</p>
                             </div>
                             <div className="hidden md:flex flex-col items-start gap-[10px]">
-                                <h3 className="title text-nowrap">CONDIVIDI SU</h3>
+                                <h2 className="title text-nowrap">CONDIVIDI SU</h2>
                                 <div className="flex items-center gap-[20px] text-[1.8rem]">
-                                    <a href={`https://wa.me/?text=${msg}`} target="_blank" className="opacity-50 hover:opacity-100 hover:duration-300"><i className='bxl bx-whatsapp'></i></a>
-                                    <a href={`https://twitter.com/intent/tweet?text=${msg}`} target="_blank" className="opacity-50 hover:opacity-100 hover:duration-300"><i className='bxl bx-twitter-x'></i></a>
-                                    <a href={`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.proverby.it%2Fproverbio%2F${pathname.split("/").filter(Boolean).pop()}`} target="_blank" className="opacity-50 hover:opacity-100 hover:duration-300"><i className='bxl bx-facebook-circle'></i></a>
+                                    <a href={`https://wa.me/?text=${msg}`} target="_blank" aria-label="Share on whatsapp" className="opacity-50 hover:opacity-100 hover:duration-300"><BiLogoWhatsapp /></a>
+                                    <a href={`https://twitter.com/intent/tweet?text=${msg}`} target="_blank" aria-label="Share on x" className="opacity-50 hover:opacity-100 hover:duration-300"><RiTwitterXFill /></a>
+                                    <a href={`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.proverby.it%2Fproverbio%2F${pathname.split("/").filter(Boolean).pop()}`} target="_blank" aria-label="Share on facebook" className="opacity-50 hover:opacity-100 hover:duration-300"><BiLogoFacebookCircle /></a>
                                 </div>
                             </div>
                         </div>
                         {proverbioObj?.esempi ?
                             <div className="mt-[30px] flex flex-col items-start w-full">
-                                <h3 className="title">ESEMPI</h3>
+                                <h2 className="title">ESEMPI</h2>
                                 <div className="flex flex-col gap-[5px] mt-[10px] rounded-[var(--border-radius)] bg-[var(--contrast-007)] w-full p-[15px_20px] border-l-5 border-[var(--contrast-01)]">
                                     {
                                         proverbioObj.esempi.map((esempio, i) => (
@@ -94,20 +96,20 @@ export default function ProverbioBody() {
             </div>
 
             <div className="flex md:hidden py-[40px_30px] flex flex-col items-center gap-[10px]">
-                <h3 className="title">CONDIVIDI SU</h3>
+                <h2 className="title">CONDIVIDI SU</h2>
                 <div className="flex items-center gap-[20px] text-[1.8rem]">
-                    <a href={`https://wa.me/?text=${msg}`} target="_blank" className="opacity-50 hover:opacity-100 hover:duration-300"><i className='bxl bx-whatsapp'></i></a>
-                    <a href={`https://twitter.com/intent/tweet?text=${msg}`} target="_blank" className="opacity-50 hover:opacity-100 hover:duration-300"><i className='bxl bx-twitter-x'></i></a>
-                    <a href={`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.proverby.it%2Fproverbio%2F${pathname.split("/").filter(Boolean).pop()}`} target="_blank" className="opacity-50 hover:opacity-100 hover:duration-300"><i className='bxl bx-facebook-circle'></i></a>
+                    <a href={`https://wa.me/?text=${msg}`} target="_blank" aria-label="Share on whatsapp" className="opacity-50 hover:opacity-100 hover:duration-300"><BiLogoWhatsapp /></a>
+                    <a href={`https://twitter.com/intent/tweet?text=${msg}`} target="_blank" aria-label="Share on x" className="opacity-50 hover:opacity-100 hover:duration-300"><RiTwitterXFill /></a>
+                    <a href={`https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.proverby.it%2Fproverbio%2F${pathname.split("/").filter(Boolean).pop()}`} target="_blank" aria-label="Share on facebook" className="opacity-50 hover:opacity-100 hover:duration-300"><BiLogoFacebookCircle /></a>
                 </div>
             </div>
 
             <div className="relative w-full border-solid border-[1px] border-[var(--contrast-01)] rounded-[var(--border-radius)] p-[20px_20px_100px_20px] text-center  mt-[0px] md:mt-[50px] mb-[75px]">
-                <h3 className="font-semibold text-[1.4rem]">Esplora un proverbio casuale!</h3>
+                <h2 className="font-semibold text-[1.4rem]">Esplora un proverbio casuale!</h2>
                 <p>Clicca sul pulsante qui sotto per esplorare un proverbio casuale.</p>
                 <div className="absolute left-[50%] top-[100%] transform-[translate(-50%,-50%)] flex items-center justify-center w-[140px] h-[140px] bg-[var(--primary)] rounded-full shadow-[0_5px_0_var(--primary-dark)] active:shadow-[0_0_0_var(--primary-dark)] active:transform-[translate(-50%,calc(-50%+5px))] duration-300 cursor-pointer" onClick={handleRandom}>
                     <div className="flex items-center transform-[rotate(20deg)]">
-                        <i className={`bx bxs-dice-5 text-white/90 text-[4rem] ${isSpin ? "animate-[spin_1s_cubic-bezier(0.25,0.1,0.25,1)]" : ""}`}></i>
+                        <BiSolidDice5 className={`text-white/90 text-[4rem] ${isSpin ? "animate-[spin_1s_cubic-bezier(0.25,0.1,0.25,1)]" : ""}`} />
                     </div>
                 </div>
             </div>

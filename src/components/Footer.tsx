@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Ripple from "@/src/components/Ripple";
 import CheckAdmin from "@/src/admin_components/CheckAdmin";
+import { BiLogoInstagram, BiLogoTiktok } from "react-icons/bi";
+import { SiBuymeacoffee } from "react-icons/si";
 
 interface Props {
     ctaText?: string;
@@ -16,58 +18,58 @@ export default function Footer({ ctaText }: Props) {
                             <h1 className="text-[1.6rem] font-bold">Proverby</h1>
                             <p className="mt-[-20px] opacity-90 w-full md:w-[550px] leading-[1.7rem]">Proverby è una piattaforma che raccoglie proverbi condivisi dalla community: divertenti, saggi, originali o nati dall'esperienza quotidiana.</p>
                             <div className="flex items-center gap-[10px]">
-                                <a href="https://buymeacoffee.com/avabuckssoi" target="_blank"><Ripple opt="primary" icon="bxl bx-buy-me-a-coffee">Buy me a coffee</Ripple></a>
-                                <a href="https://www.instagram.com/proverby.it/" target="_blank"><Ripple opt="outline" icon="bxl bx-instagram"></Ripple></a>
-                                <a href="https://www.tiktok.com/@proverby.it" target="_blank"><Ripple opt="outline" icon="bxl bx-tiktok"></Ripple></a>
+                                <a href="https://buymeacoffee.com/avabuckssoi" target="_blank" aria-label="Buy me a coffee"><Ripple opt="primary" icon={SiBuymeacoffee}>Buy me a coffee</Ripple></a>
+                                <a href="https://www.instagram.com/proverby.it/" target="_blank" aria-label="Follow on instagram"><Ripple opt="outline" icon={BiLogoInstagram}></Ripple></a>
+                                <a href="https://www.tiktok.com/@proverby.it" target="_blank" aria-label="Follow on tiktok"><Ripple opt="outline" icon={BiLogoTiktok}></Ripple></a>
                             </div>
                         </div>
                         <div>
                             <div className="relative w-fit text-[var(--primary-light)] font-medium p-[5px_15px] after:absolute after:inset-0 after:content-[''] after:w-full after:h-full after:rounded-[var(--border-radius)] after:opacity-20 after:bg-[var(--primary-light)]">Pagine</div>
-                            <ul className="mt-[30px] space-y-3 overflow-hidden">
-                                <li className="relative duration-300 transform-[translateX(-15px)] hover:transform-[translateX(0)]">
+                            <div className="mt-[30px] space-y-3 overflow-hidden">
+                                <div className="relative duration-300 transform-[translateX(-15px)] hover:transform-[translateX(0)]">
                                     <Link href="/sfoglia">
                                         <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[5px] border-b-[5px] border-l-[8px] border-t-transparent border-b-transparent border-l-[var(--primary)]"></span>
                                         <span className="ml-[15px]">Sfoglia</span>
                                     </Link>
-                                </li>
-                                <li className="relative duration-300 transform-[translateX(-15px)] hover:transform-[translateX(0)]">
+                                </div>
+                                <div className="relative duration-300 transform-[translateX(-15px)] hover:transform-[translateX(0)]">
                                     <Link href="/about">
                                         <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[5px] border-b-[5px] border-l-[8px] border-t-transparent border-b-transparent border-l-[var(--primary)]"></span>
                                         <span className="ml-[15px]">Cos'è Proverby?</span>
                                     </Link>
-                                </li>
-                                <li className="relative duration-300 transform-[translateX(-15px)] hover:transform-[translateX(0)]">
+                                </div>
+                                <div className="relative duration-300 transform-[translateX(-15px)] hover:transform-[translateX(0)]">
                                     <Link href="/terms">
                                         <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[5px] border-b-[5px] border-l-[8px] border-t-transparent border-b-transparent border-l-[var(--primary)]"></span>
                                         <span className="ml-[15px]">Termini e condizioni</span>
                                     </Link>
-                                </li>
-                            </ul>
+                                </div>
+                            </div>
                         </div>
                         <div>
                             <div className="relative w-fit text-[var(--primary-light)] font-medium p-[5px_15px] after:absolute after:inset-0 after:content-[''] after:w-full after:h-full after:rounded-[var(--border-radius)] after:opacity-20 after:bg-[var(--primary-light)]">Account</div>
-                            <ul className="mt-[30px] space-y-3 overflow-hidden">
-                                <li className="relative duration-300 transform-[translateX(-15px)] hover:transform-[translateX(0)]">
+                            <div className="mt-[30px] space-y-3 overflow-hidden">
+                                <div className="relative duration-300 transform-[translateX(-15px)] hover:transform-[translateX(0)]">
                                     <Link href="/editor/new">
                                         <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[5px] border-b-[5px] border-l-[8px] border-t-transparent border-b-transparent border-l-[var(--primary)]"></span>
                                         <span className="ml-[15px]">Aggiungi Proverbio</span>
                                     </Link>
-                                </li>
-                                <li className="relative duration-300 transform-[translateX(-15px)] hover:transform-[translateX(0)]">
+                                </div>
+                                <div className="relative duration-300 transform-[translateX(-15px)] hover:transform-[translateX(0)]">
                                     <Link href="/quiz">
                                         <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[5px] border-b-[5px] border-l-[8px] border-t-transparent border-b-transparent border-l-[var(--primary)]"></span>
                                         <span className="ml-[15px]">Quiz</span>
                                     </Link>
-                                </li>
+                                </div>
                                 <CheckAdmin load={false} closeOnError={false}>
-                                    <li className="relative duration-300 transform-[translateX(-15px)] hover:transform-[translateX(0)]">
+                                    <div className="relative duration-300 transform-[translateX(-15px)] hover:transform-[translateX(0)]">
                                         <Link href="/admin">
                                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[5px] border-b-[5px] border-l-[8px] border-t-transparent border-b-transparent border-l-[var(--primary)]"></span>
                                             <span className="ml-[15px]">Admin</span>
                                         </Link>
-                                    </li>
+                                    </div>
                                 </CheckAdmin>
-                            </ul>
+                            </div>
                         </div>
                     </div>
                 </section>

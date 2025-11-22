@@ -7,6 +7,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { dailyProverbio, getProverbioFromSEO } from "@/src/actions/proverbi_actions";
 import LikeDislike from "@/src/components/LikeDislike";
 import SalvaProverbio from "@/src/components/SalvaProverbio";
+import { BiErrorAlt, BiLockOpenAlt, BiChevronLeft } from "react-icons/bi";
 
 interface Props {
     type: string;
@@ -111,8 +112,8 @@ export default function CardProverbio({ type, setString, proverbio }: Props) {
 
     return (
         <>
-            {(proverbioObj?.stato == 0 && user?.isAdmin == 0) ? <div className="flex items-center justify-center gap-[10px] p-[10px] w-full bg-[var(--primary-dark)] text-[rgb(255,255,255)]"><i className='bx bx-alert-triangle text-[1.2rem]'></i>Questo proverbio è in fase di revisione e sarà visibile solo a te finché non verrà approvato.</div> : <></>}
-            {(type != "giorno" && user?.isAdmin == 1) ? <div className="flex items-center justify-center gap-[10px] p-[10px] w-full bg-[var(--contrast-01)] text-[var(--text-color)]"><i className='bx bx-lock-open-alt text-[1.2rem]'></i>Visualizzazione Admin</div> : <></>}
+            {(proverbioObj?.stato == 0 && user?.isAdmin == 0) ? <div className="flex items-center justify-center gap-[10px] p-[10px] w-full bg-[var(--primary-dark)] text-[rgb(255,255,255)]"><BiErrorAlt className='text-[1.2rem]' />Questo proverbio è in fase di revisione e sarà visibile solo a te finché non verrà approvato.</div> : <></>}
+            {(type != "giorno" && user?.isAdmin == 1) ? <div className="flex items-center justify-center gap-[10px] p-[10px] w-full bg-[var(--contrast-01)] text-[var(--text-color)]"><BiLockOpenAlt className='text-[1.2rem]' />Visualizzazione Admin</div> : <></>}
             <div className={`card-proverby ${(type == "aggiungi" && counterChar > 0) ? "aggiungi-scritto" : type} w-full overflow-hidden ${type == "dettagli" ? "text-white/90" : ""} ${(type == "dettagli" || type == "aggiungi") ? "mt-[-60px] md:mt-[-90px]" : ""}`}>
                 <div className={`${(!isLoading && type == "giorno") ? "glare-hover cursor-pointer" : ""} relative block w-[80%] md:w-[90%] h-[70vh] sm:h-[35vh] min-h-[270px] bg-[var(--bg)] rounded-[var(--border-radius)] transition-all duration-300 mb-[170px] mt-[80px] md:mt-[110px] mx-auto`} onClick={() => { if (type == "giorno") router.push("/proverbio/" + proverbioObj?.seo_link) }}>
                     {
@@ -162,7 +163,7 @@ export default function CardProverbio({ type, setString, proverbio }: Props) {
                                             rows={1}
                                             ref={textareaRef}
                                             placeholder="Scrivi qui il tuo proverbio ..." />
-                                        <div className="flex items-center absolute bottom-[15px] right-[15px] leading-0">{counterChar} <i className="bx bx-chevron-left text-[24px]"></i> <span className="font-semibold">99</span> </div>
+                                        <div className="flex items-center absolute bottom-[15px] right-[15px] leading-0">{counterChar} <BiChevronLeft className="text-[24px]" /> <span className="font-semibold">99</span> </div>
                                     </div>}
                                 <Link className="absolute top-[85%] left-[50%] transform-[translate(-50%,-50%)] z-[3] flex items-center gap-[10px] text-[.9rem]" href={`/profilo/${proverbioObj?.username}`} onClick={(e) => { e.stopPropagation(); }}>by {proverbioObj?.username}<Image className="rounded-full max-w-none" src={`${proverbioObj?.photoURL}`} alt="fot_profilo" width={30} height={30} /></Link>
                                 {(type === "dettagli" && proverbioObj?.stato == 2) ?

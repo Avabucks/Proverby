@@ -6,6 +6,7 @@ import { getUserFromUsername } from "@/src/actions/users_actions";
 import { firebaseLogOut } from "@/src/actions/firebase_actions";
 import Image from "next/image";
 import ListProverbi from "@/src/components/ListProverbi";
+import { BiCollection, BiSolidCollection, BiBookmark, BiSolidBookmark, BiStats, BiMedal, BiExit } from "react-icons/bi";
 
 interface Props {
   username: string;
@@ -70,9 +71,9 @@ export default function ProfiloLayout({ username }: Props) {
               :
               <>
                 <h1 className="text-[1.2rem] font-semibold overflow-hidden text-ellipsis whitespace-nowrap w-full">{userPage?.displayName}</h1>
-                <p className="text-[var(--text-color)]/50 mt-[-6px] duration-300">@{username}</p>
+                <p className="text-[var(--text-color)]/60 mt-[-6px] duration-300">@{username}</p>
                 <div className="mt-[9px] flex items-center gap-[8px] px-[13px] py-[5px] rounded-full bg-[var(--primary)] text-white/90">
-                  <i className="bx bx-medal-alt-2 text-[1.3rem] leading-0"></i>
+                  <BiMedal className="text-[1.3rem] leading-0" />
                   <p className="text-[.8rem] leading-[1px]">Punti saggezza</p>
                   <p className="text-[1rem] font-semibold leading-0">TODO</p>
                 </div>
@@ -85,7 +86,7 @@ export default function ProfiloLayout({ username }: Props) {
             {isLoading ?
               <div className="hidden md:flex mt-[10px]"><div className="border-[3px] border-solid border-[var(--primary)] border-t-[rgba(0,0,0,0)] rounded-full w-[30px] h-[30px] animate-spin"></div></div>
               :
-              <div className="animate-[fade-in_.5s] hidden md:flex items-center gap-[7px] px-[25px] py-[15px] cursor-pointer rounded-[var(--border-radius)] border-[1px] border-solid border-[var(--contrast-01)] shadow-[0_5px_0_var(--contrast-01)] active:shadow-[0_0_0_var(--contrast-01)] active:translate-y-[5px] transition-[translate,box-shadow] duration-300 select-none" onClick={handleLogout}><i className="bx bx-arrow-out-right-square-half text-[1.3rem] opacity-80"></i>Disconnettiti</div>
+              <div className="animate-[fade-in_.5s] hidden md:flex items-center gap-[7px] px-[25px] py-[15px] cursor-pointer rounded-[var(--border-radius)] border-[1px] border-solid border-[var(--contrast-01)] shadow-[0_5px_0_var(--contrast-01)] active:shadow-[0_0_0_var(--contrast-01)] active:translate-y-[5px] transition-[translate,box-shadow] duration-300 select-none" onClick={handleLogout}><BiExit className="text-[1.3rem] opacity-80" />Disconnettiti</div>
             }
           </div>
           : <></>
@@ -98,19 +99,19 @@ export default function ProfiloLayout({ username }: Props) {
           <input type="radio" id="tab-statistiche" name="tab" />
 
           <nav>
-            <label htmlFor="tab-proverbi"><i className="bx bx-gallery-vertical-end"></i><i className="bx bxs-gallery-vertical-end"></i><p className="hidden md:flex">Proverbi</p>{countAccettati === false ? <></> : <span>{countAccettati}</span>}</label>
-            {isOwner ? <label htmlFor="tab-salvati"><i className="bx bx-bookmark"></i><i className="bx bxs-bookmark"></i><p className="hidden md:flex">Salvati</p>{countSalvati === false ? <></> : <span>{countSalvati}</span>}</label> : <></>}
-            <label htmlFor="tab-statistiche"><i className="bx bx-chart-bar-rows"></i><i className="bx bxs-chart-bar-rows"></i><p className="hidden md:flex">Statistiche</p></label>
+            <label htmlFor="tab-proverbi"><i className="bx-gallery-vertical-end"><BiCollection/></i><i className="bxs-gallery-vertical-end"><BiSolidCollection /></i><p className="hidden md:flex">Proverbi</p>{countAccettati === false ? <></> : <span>{countAccettati}</span>}</label>
+            {isOwner ? <label htmlFor="tab-salvati"><i className="bx-bookmark"><BiBookmark /></i><i className="bxs-bookmark"><BiSolidBookmark /></i><p className="hidden md:flex">Salvati</p>{countSalvati === false ? <></> : <span>{countSalvati}</span>}</label> : <></>}
+            <label htmlFor="tab-statistiche"><i className="bx-chart-bar-rows"><BiStats /></i><i className="bxs-chart-bar-rows"><BiStats /></i><p className="hidden md:flex">Statistiche</p></label>
           </nav>
           <div className="tab-content">
             <div className="tab-panel proverbi">
-              <h3>I PROVERBI DI {username.toUpperCase()}</h3>
+              <h2>I PROVERBI DI {username.toUpperCase()}</h2>
               <ListProverbi type="accepted" setCount={setCountAccettati} isOwner={isOwner}></ListProverbi>
               {isOwner ?
                 <>
-                  {countReviewed ? <h3>IN ATTESA DI REVISONE</h3> : <></>}
+                  {countReviewed ? <h2>IN ATTESA DI REVISONE</h2> : <></>}
                   <div className={`${!countReviewed ? "hidden" : ""}`}><ListProverbi type="review" setCount={setCountReviewed} isOwner={isOwner}></ListProverbi></div>
-                  {countDeclined ? <h3>RIFIUTATI</h3> : <></>}
+                  {countDeclined ? <h2>RIFIUTATI</h2> : <></>}
                   <div className={`${!countDeclined ? "hidden" : ""}`}><ListProverbi type="declined" setCount={setCountDeclined} isOwner={isOwner}></ListProverbi></div>
                 </> :
                 <>
@@ -121,7 +122,7 @@ export default function ProfiloLayout({ username }: Props) {
               <div className="tab-panel salvati">
                 {isOwner ?
                   <>
-                    <h3>I TUOI PROVERBI SALVATI</h3>
+                    <h2>I TUOI PROVERBI SALVATI</h2>
                     <ListProverbi type="salvati" setCount={setCountSalvati}></ListProverbi>
                   </> :
                   <>
@@ -130,7 +131,7 @@ export default function ProfiloLayout({ username }: Props) {
               </div>
               : <></>}
             <div className="tab-panel statistiche">
-              <h3>STATISTICHE DEI QUIZ FATTI DA {username.toUpperCase()}</h3>
+              <h2>STATISTICHE DEI QUIZ FATTI DA {username.toUpperCase()}</h2>
               <div>
                 <div>
                   <span>Partite giocate</span>

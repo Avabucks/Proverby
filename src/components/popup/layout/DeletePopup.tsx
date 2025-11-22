@@ -1,6 +1,7 @@
 "use client";
 import Ripple from "@/src/components/Ripple";
 import { deleteProverbio } from "@/src/actions/proverbi_actions";
+import { BiX, BiTrash } from "react-icons/bi";
 
 interface DeletePopupProps {
   setOpenDeletePopup: Function;
@@ -20,8 +21,8 @@ export default function DeletePopup({ setOpenDeletePopup, id }: DeletePopupProps
     <div>
       <p>Sei sicuro di voler eliminare il proverbio? L'operazione sarà irreversibile.</p>
       <div className="mt-[20px] flex items-center justify-end gap-[10px]">
-        <Ripple opt="outline" icon="bx bx-x" handleOnClick={() => setOpenDeletePopup(false)}>Annulla</Ripple>
-        <Ripple opt="delete" icon="bx bx-trash" handleOnClick={handleDelete}>Elimina</Ripple>
+        <Ripple opt="outline" icon={BiX} handleOnClick={() => setOpenDeletePopup(false)}>Annulla</Ripple>
+        <Ripple opt="delete" icon={BiTrash} handleOnClick={handleDelete}>Elimina</Ripple>
       </div>
     </div>
   );

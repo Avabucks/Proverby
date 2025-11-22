@@ -5,6 +5,7 @@ import { useUser } from "@/src/context/UserContext";
 import { setUsername, getUser } from "@/src/actions/users_actions";
 import Ripple from "@/src/components/Ripple";
 import { toSeoFriendly } from "@/src/utils/utils";
+import { BiCheck } from "react-icons/bi";
 
 interface Props {
   setOpenUsernamePopup: Function;
@@ -61,7 +62,7 @@ export default function UsernamePopup({ setOpenUsernamePopup }: Props) {
           value={username}
           onChange={handleChange}
           placeholder="Inserisci username" />
-        <Ripple handleOnClick={handleOnClick} icon="bx bx-finger-up">Imposta</Ripple>
+        <Ripple handleOnClick={handleOnClick} icon={BiCheck}>Imposta</Ripple>
       </div>
       {!errorMsg.success ? <p className="text-[.9rem] text-red-700 opacity-80">{errorMsg.error}</p> : ``}
     </div>

@@ -14,6 +14,8 @@ import Logo from "@/public/assets/logo.webp";
 import { checkUsernameSameUid } from "@/src/actions/users_actions";
 import { getRandomProverbioSEO } from "@/src/actions/proverbi_actions";
 import { firebaseLogIn, firebaseLogOut } from "@/src/actions/firebase_actions";
+import { BiMenu, BiCollection, BiJoystick, BiPlus, BiEditAlt, BiInfoCircle, BiExit, BiDice2, BiReceipt } from "react-icons/bi";
+
 
 export default function Navbar() {
   const { user, setUser } = useUser();
@@ -89,7 +91,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center md:ml-[-15px] md:gap-[20px]">
             <div className="flex md:hidden items-center mx-[-10px]">
-              <Ripple handleOnClick={handleNavClick} icon="bx bx-menu"></Ripple>
+              <Ripple handleOnClick={handleNavClick} icon={BiMenu}></Ripple>
             </div>
             <Ripple>
               <div className="h-[55px]">
@@ -101,17 +103,17 @@ export default function Navbar() {
             <div>
               <div className={`${!isNavOpen ? "opacity-0 pointer-events-none" : "bg-[var(--bg)]"} md:opacity-100 md:pointer-events-auto absolute top-[75px] left-0 md:relative md:top-0 w-full h-[calc(100vh-75px)] md:h-auto p-[7px] md:p-0 flex md:flex flex-col md:flex-row items-bt md:items-center gap-[10px] lg:gap-[20px] list-none duration-300`}>
                 <div className="hidden md:flex border-l-[1px] border-solid border-[var(--contrast-01)] h-[40px]"></div>
-                <Link href="/sfoglia" onClick={closeNav}><Ripple icon="bx bx-gallery-vertical-end">Sfoglia</Ripple></Link>
-                <a onClick={() => (closeNav(), handleRandom())}><Ripple icon="bx bx-dice-roll"><span className="md:hidden lg:hidden xl:flex flex-col">Proverbio</span>Casuale</Ripple></a>
-                <Link href="/quiz" onClick={closeNav}><Ripple icon="bx bx-joystick">Quiz</Ripple></Link>
-                <Link href="/editor/new" className="flex md:hidden" onClick={closeNav}><Ripple icon="bx bx-plus">Aggiungi<span className="md:hidden lg:hidden xl:flex flex-col">Proverbio</span></Ripple></Link>
+                <Link href="/sfoglia" onClick={closeNav}><Ripple icon={BiCollection}>Sfoglia</Ripple></Link>
+                <div onClick={() => (closeNav(), handleRandom())}><Ripple icon={BiDice2}><span className="md:hidden lg:hidden xl:flex flex-col">Proverbio</span>Casuale</Ripple></div>
+                <Link href="/quiz" onClick={closeNav}><Ripple icon={BiJoystick}>Quiz</Ripple></Link>
+                <Link href="/editor/new" className="flex md:hidden" onClick={closeNav}><Ripple icon={BiPlus}>Aggiungi<span className="md:hidden lg:hidden xl:flex flex-col">Proverbio</span></Ripple></Link>
                 <div className="flex md:hidden mx-auto w-[90%] border-b-[1px] border-solid border-[var(--contrast-01)]"></div>
-                <Link href="/about" className="flex md:hidden [@media(min-width:1800px)]:flex" onClick={closeNav}><Ripple icon="bx bx-badge-info">Cos’è Proverby?</Ripple></Link>
-                <Link href="/terms" className="flex md:hidden [@media(min-width:1800px)]:flex" onClick={closeNav}><Ripple icon="bx bx-article">Termini e condizioni</Ripple></Link>
+                <Link href="/about" className="flex md:hidden [@media(min-width:1800px)]:flex" onClick={closeNav}><Ripple icon={BiInfoCircle}>Cos’è Proverby?</Ripple></Link>
+                <Link href="/terms" className="flex md:hidden [@media(min-width:1800px)]:flex" onClick={closeNav}><Ripple icon={BiReceipt}>Termini e condizioni</Ripple></Link>
                 {user ?
                   <>
                     <div className="flex md:hidden mx-auto w-[90%] border-b-[1px] border-solid border-[var(--contrast-01)]"></div>
-                    <Link href="/" className="flex md:hidden" onClick={handleLogout}><Ripple icon="bx bx-arrow-out-right-square-half">Disconnettiti</Ripple></Link>
+                    <Link href="/" className="flex md:hidden" onClick={handleLogout}><Ripple icon={BiExit}>Disconnettiti</Ripple></Link>
                   </>
                   : <></>}
               </div>
@@ -125,7 +127,7 @@ export default function Navbar() {
                 closeNav();
               }}
                 className="animate-[bounce-in_.5s_cubic-bezier(0.68,-0.6,0.32,1.6)] hidden md:flex cursor-pointer">
-                <Ripple opt="accient" icon="bx bx-plus">Aggiungi<span className="md:hidden lg:hidden xl:flex flex-col">Proverbio</span></Ripple>
+                <Ripple opt="accient" icon={BiPlus}>Aggiungi<span className="md:hidden lg:hidden xl:flex flex-col">Proverbio</span></Ripple>
               </div>
             }
             <ThemeToggle></ThemeToggle>
@@ -164,7 +166,7 @@ export default function Navbar() {
             closeNav();
           }}
             className="animate-[bounce-in_.5s_cubic-bezier(0.68,-0.6,0.32,1.6)] cursor-pointer">
-            <Ripple opt="accient" icon="bx bx-edit-alt"></Ripple>
+            <Ripple opt="accient" icon={BiEditAlt}></Ripple>
           </div>
         </div>
       }

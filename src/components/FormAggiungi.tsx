@@ -5,6 +5,7 @@ import { useUser } from "@/src/context/UserContext";
 import CardProverbio from "@/src/components/CardProverbio";
 import { getProverbioFromSEO, aggiungiProverbio } from "@/src/actions/proverbi_actions";
 import confetti from "canvas-confetti"
+import { BiSend, BiErrorAlt } from "react-icons/bi"
 
 interface Props {
     id: string;
@@ -115,7 +116,7 @@ export default function ProfiloLayout({ id }: Props) {
                     {!errorMsg.success ?
                         <section>
                             <div className="relative flex items-center gap-[10px] overflow-hidden border-solid border-[2px] border-[rgb(220,50,50)] text-[rgb(220,50,50)] p-[20px] rounded-[var(--border-radius)] before:content-[''] before:absolute before:inset-0 before:w-full before:h-full before:bg-[rgb(220,50,50)] before:opacity-20">
-                                <i className='bx bx-alert-triangle text-[1.3rem]'></i>
+                                <BiErrorAlt className='text-[1.3rem]' />
                                 {errorMsg.error}
                             </div>
                         </section>
@@ -174,7 +175,7 @@ export default function ProfiloLayout({ id }: Props) {
                                                 :
                                                 <div className="animate-[fade-in_.3s] flex items-center justify-center gap-[5px] leading-0 w-full bg-[var(--primary)] py-[20px] text-[rgb(255,255,255)] rounded-[var(--border-radius)] shadow-[0_5px_0_var(--primary-dark)] active:shadow-[0_0_0_var(--primary-dark)] active:translate-y-[5px] transition-[translate,box-shadow] duration-300 cursor-pointer"
                                                     onClick={handleAggiungi}>
-                                                    <i className="bx bx-send-alt mr-[5px]"></i>Invia il proverbio <span className="hidden md:flex">e attendi che venga accettato</span>
+                                                    <BiSend />Invia il proverbio <span className="hidden md:flex">e attendi che venga accettato</span>
                                                 </div>
                                             }
                                         </div>

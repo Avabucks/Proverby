@@ -35,9 +35,14 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Proverby",
+    title: "Proverby | Proverbi della community",
     description: "Proverby è una piattaforma che raccoglie proverbi condivisi dalla community: divertenti, saggi, originali o nati dall'esperienza quotidiana. Aggiungi i tuoi proverbi e guadagna punti saggezza!",
     images: ["/assets/social.png"],
+  },
+  twitter: {
+    card: 'summary',
+    title: "Proverby | Proverbi della community",
+    description: "Proverby è una raccolta di proverbi condivisi dalla community. Aggiungi i tuoi e accumula punti saggezza!",
   },
   appleWebApp: {
     title: 'Proverby',
@@ -63,13 +68,6 @@ export default async function RootLayout({
   return (
     <html lang="it">
       <head>
-
-        <link rel="preload" href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css" as="style" />
-        <link rel="stylesheet" href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css" />
-        <link rel="preload" href="https://cdn.boxicons.com/fonts/brands/boxicons-brands.min.css" as="style" />
-        <link rel="stylesheet" href="https://cdn.boxicons.com/fonts/brands/boxicons-brands.min.css" />
-        <link rel="preload" href="https://cdn.boxicons.com/fonts/animations.min.css" as="style" />
-        <link rel="stylesheet" href="https://cdn.boxicons.com/fonts/animations.min.css" />
 
       </head>
       <body
