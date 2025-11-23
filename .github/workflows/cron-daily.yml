@@ -1,0 +1,15 @@
+name: Proverby Daily Cron
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  aggiorna_daily:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call aggiorna_daily
+        run: |
+          curl -v -L -X GET "https://proverby.it/api/aggiorna_daily" \
+            -H "X-CRON-KEY: ${{ secrets.CRON_KEY }}"

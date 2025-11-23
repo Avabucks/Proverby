@@ -3,9 +3,11 @@ import { useEffect, useState } from "react"
 import { useRouter, usePathname } from "next/navigation";
 import { useUser } from "@/src/context/UserContext";
 import CardProverbio from "@/src/components/proverbi/CardProverbio";
+import Ripple from "@/src/components/ui/Ripple";
 import { getProverbioFromSEO, aggiungiProverbio } from "@/src/actions/proverbi_actions";
 import confetti from "canvas-confetti"
-import { BiSend, BiErrorAlt } from "react-icons/bi"
+import { BiSend, BiErrorAlt, BiUser, BiPlus } from "react-icons/bi"
+import Link from "next/link";
 
 interface Props {
     id: string;
@@ -20,6 +22,7 @@ export default function ProfiloLayout({ id }: Props) {
     const [isSaving, setSaving] = useState(false)
     const [proverbio, setProverbioString] = useState("");
     const [spiegazione, setSpiegazioneString] = useState("");
+    const [esempi, setEsempiArray] = useState<string[]>([""]);
     const [isSuccess, setSuccess] = useState(false)
     const [errorMsg, setErrMsg] = useState<{ success?: boolean; error: string; } | { success?: boolean; error?: undefined; }>({ success: true });
 
@@ -48,6 +51,21 @@ export default function ProfiloLayout({ id }: Props) {
         }, 250)
     }
 
+    const handleChangeEsempi = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const index = Number(e.target.id); // assumiamo che l'id dell'input sia l'indice
+        const value = e.target.value;
+
+        setEsempiArray(prev => {
+            const newEsempi = [...prev]; // copia dell'array
+            newEsempi[index] = value;    // aggiorna solo l'elemento corrispondente
+            return newEsempi;
+        });
+    };
+
+    const handleAggiungiEsempio = () => {
+        if (esempi.length < 9) setEsempiArray(prev => [...prev, ""]);
+    }
+
     const handleAggiungi = async () => {
         if (!user) {
             setErrMsg({ success: false, error: "Utente non caricato" });
@@ -59,9 +77,6 @@ export default function ProfiloLayout({ id }: Props) {
             window.scrollTo({ top: 0, behavior: 'smooth' });
             return;
         }
-
-        // TODO:
-        const esempi = ["Es1", "es2"]
 
         setSaving(true)
         const result = await aggiungiProverbio(id, user.uid, user.username, proverbio, spiegazione, esempi, user.isAdmin)
@@ -110,7 +125,7 @@ export default function ProfiloLayout({ id }: Props) {
     }, [])
 
     return (
-        <div className="min-h-[70vh]">
+        <div>
             {!isSuccess ?
                 <div>
                     {!errorMsg.success ?
@@ -144,10 +159,23 @@ export default function ProfiloLayout({ id }: Props) {
                                             value={spiegazione}
                                             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setSpiegazioneString(e.target.value)}
                                             placeholder="Inserisci una spiegazione" />
-                                        <div className="flex flex-col items-start w-full mt-[50px]">
-                                            <div className="title">ESEMPI</div>
-                                            <div className="mt-[15px]">
-                                                TODO: esempi
+                                        <div className="flex flex-col items-start w-full mt-[45px]">
+                                            <div className="flex items-center justify-between gap-2.5 w-full">
+                                                <div className="title">ESEMPI</div>
+                                                <div className="scale-90"><Ripple opt="primary" icon={BiPlus} handleOnClick={handleAggiungiEsempio}></Ripple></div>
+                                            </div>
+                                            <div className="flex flex-col gap-2.5 mt-[5px] w-full">
+                                                {esempi.map((val, idx) => (
+                                                    <input
+                                                        type="text"
+                                                        key={idx}
+                                                        id={String(idx)}
+                                                        value={val}
+                                                        onChange={handleChangeEsempi}
+                                                        placeholder={`${idx + 1}. Inserisci un esempio (lascia vuoto per ignorare)`}
+                                                        className="input"
+                                                    />
+                                                ))}
                                             </div>
                                         </div>
                                         <div className="flex flex-col items-start w-full mt-[50px]">
@@ -188,8 +216,20 @@ export default function ProfiloLayout({ id }: Props) {
                     </section>
                 </div>
                 :
-                <section className="animate-[fade-in_.5s] flex flex-col items-center center h-full">
-                    TODO: Success (visualizza il profilo con css outline - aggiungine un altro con css accient [cambia state])
+                <section className="justify-center min-h-[70vh]">
+                    <div className="animate-[bounce-in_.5s_cubic-bezier(0.68,-0.6,0.32,1.6)]">
+                        <div className="flex flex-col items-center text-center gap-5">
+                            <h1 className="text-[3.5rem] font-bold w-full md:w-[650px] leading-15 bg-linear-to-br from-(--primary-light) to-(--primary-dark) bg-clip-text text-transparent">Grazie per aver condiviso un proverbio!</h1>
+                            <h2 className="opacity-70 w-full md:w-[600px] leading-6">Il tuo proverbio è stato inviato ed è in attesa di approvazione. Appena sarà approvato, sarà visibile alla community di Proverby.</h2>
+                        </div>
+                        <div className="w-full my-10 border-t border-t-solid border-t-(--contrast-01)"></div>
+                        <div className="flex justify-center w-full">
+                            <div className="flex flex-row gap-3 md:gap-5 items-center justify-center">
+                                <Link href={`/profilo/${user?.username}`} aria-label=""><Ripple opt="outline" icon={BiUser}><span className="hidden md:flex -mr-0.5">Visualizza</span><span>Profilo</span></Ripple></Link>
+                                <Ripple opt="accient" icon={BiPlus} handleOnClick={() => setSuccess(false)}>Aggiungi Proverbio</Ripple>
+                            </div>
+                        </div>
+                    </div>
                 </section>
             }
         </div>

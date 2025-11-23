@@ -76,7 +76,7 @@ export default function ProverbioBody() {
                                 </div>
                             </div>
                         </div>
-                        {proverbioObj?.esempi ?
+                        {(proverbioObj?.esempi && proverbioObj?.esempi.length > 0) ?
                             <div className="mt-[30px] flex flex-col items-start w-full">
                                 <h2 className="title">ESEMPI</h2>
                                 <div className="flex flex-col gap-[5px] mt-2.5 rounded-(--border-radius) bg-(--contrast-007) w-full p-[15px_20px] border-l-5 border-(--contrast-01)">

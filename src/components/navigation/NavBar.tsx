@@ -104,7 +104,7 @@ export default function Navbar() {
               <div className={`${!isNavOpen ? "opacity-0 pointer-events-none" : "bg-(--bg)"} md:opacity-100 md:pointer-events-auto absolute top-[75px] left-0 md:relative md:top-0 w-full h-[calc(100vh-75px)] md:h-auto p-[7px] md:p-0 flex md:flex flex-col md:flex-row items-bt md:items-center gap-2.5 lg:gap-5 list-none duration-300`}>
                 <div className="hidden md:flex border-l border-solid border-(--contrast-01) h-10"></div>
                 <Link href="/sfoglia" onClick={closeNav}><Ripple icon={BiCollection}>Sfoglia</Ripple></Link>
-                <div onClick={() => (closeNav(), handleRandom())}><Ripple icon={BiDice2}><span className="md:hidden lg:hidden xl:flex flex-col">Proverbio</span>Casuale</Ripple></div>
+                <div onClick={() => (closeNav(), handleRandom())}><Ripple icon={BiDice2}><span className="md:hidden lg:hidden xl:flex flex-col -mr-0.5">Proverbio</span><span>Casuale</span></Ripple></div>
                 <Link href="/quiz" onClick={closeNav}><Ripple icon={BiJoystick}>Quiz</Ripple></Link>
                 <Link href="/editor/new" className="flex md:hidden" onClick={closeNav}><Ripple icon={BiPlus}>Aggiungi<span className="md:hidden lg:hidden xl:flex flex-col">Proverbio</span></Ripple></Link>
                 <div className="flex md:hidden mx-auto w-[90%] border-b border-solid border-(--contrast-01)"></div>

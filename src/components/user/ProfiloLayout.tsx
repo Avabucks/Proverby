@@ -161,3 +161,6 @@ export default function ProfiloLayout({ username }: Props) {
     </>
   )
 }
+
+// TODO:
+// - count up https://reactbits.dev/text-animations/count-up

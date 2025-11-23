@@ -36,8 +36,6 @@ CREATE TABLE IF NOT EXISTS proverbi (
   stato INT DEFAULT 0 NOT NULL,
   data_accettazione DATE NOT NULL DEFAULT CURRENT_DATE,
   username VARCHAR(50) NOT NULL,
-  likes INT DEFAULT 0 NOT NULL,
-  dislikes INT DEFAULT 0 NOT NULL,
   score_week INT DEFAULT 0 NOT NULL,
   proverbio_del_giorno INT DEFAULT 0 NOT NULL,
   seo_link VARCHAR(255) NOT NULL UNIQUE
@@ -49,6 +47,17 @@ CREATE TABLE IF NOT EXISTS proverbi (
 
 CREATE TABLE IF NOT EXISTS salvati (
   id SERIAL PRIMARY KEY,
-  proverbio_id VARCHAR(255) NOT NULL,
+  proverbio_seo_link VARCHAR(255) NOT NULL,
   uid VARCHAR(255) NOT NULL
+);
+
+--
+-- Table structure for table 'likes'
+--
+
+CREATE TABLE IF NOT EXISTS likes (
+  id SERIAL PRIMARY KEY,
+  proverbio_id VARCHAR(255) NOT NULL,
+  fingerprint VARCHAR(255) NOT NULL,
+  like_state INT DEFAULT 0 NOT NULL
 );

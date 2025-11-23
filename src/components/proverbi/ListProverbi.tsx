@@ -127,10 +127,19 @@ export default function ListProverbi({ type, setCount, isOwner }: ListProps) {
                   <Link className="flex items-center gap-2.5 text-[.9rem]" href={`/profilo/${item.username}`} onClick={(e) => { e.stopPropagation(); }}>by {item.username}<Image className="rounded-full max-w-none" src={`${item.photoURL}`} alt="fot_profilo" width={30} height={30} /></Link>
                 </div>
               </div>
-              {type == "top10" || type == "salvati" ?
-                <>
+              {type == "top10" || type == "salvati" || (type == "accepted" && !isOwner) ?
+                <div className="flex items-center">
                   <LikeDislike id={item.id}></LikeDislike>
-                </> :
+                  {type == "accepted" ?
+                    <>
+                      <div className="mx-[5px_20px] h-[30px] border-l border-l-solid border-l-(--contrast-01)"></div>
+                      <div className="flex items-center gap-2 px-[13px] py-[5px] rounded-full bg-(--primary) text-white/90">
+                        <BiMedal className="text-[1.3rem] leading-0" />
+                        <p className="text-[1rem] font-semibold leading-0">TODO</p>
+                      </div>
+                    </>
+                    : <></>}
+                </div> :
                 <div className="flex items-center">
                   {isOwner || type == "admin" ?
                     <>
@@ -219,6 +228,3 @@ export default function ListProverbi({ type, setCount, isOwner }: ListProps) {
     </>
   );
 }
-
-// TODO:
-// - like anche negli accepted se non isOwner

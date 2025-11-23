@@ -40,7 +40,7 @@ export async function getProverbioFromSEO(seoLink: string, uid?: string, usernam
       `SELECT 1
       FROM salvati S
       JOIN users U ON S.uid = U.uid
-      JOIN proverbi P ON P.seo_link = S.proverbio_id
+      JOIN proverbi P ON P.seo_link = S.proverbio_seo_link
       WHERE P.seo_link = $1 AND U.uid = $2 AND U.username = $3`,
       [seoLink, uid, username]
     );
@@ -167,7 +167,7 @@ export async function salvatiProverbi(username?: string, uid?: string) {
         WHERE S.uid = $2
     ) AS "totProverbi"
      FROM salvati S
-     JOIN proverbi P ON P.seo_link=S.proverbio_id
+     JOIN proverbi P ON P.seo_link=S.proverbio_seo_link
      JOIN users U1 ON P.username=U1.username
      JOIN users U2 ON S.uid=U2.uid
      WHERE P.stato=2 AND U2.username = $1 AND S.uid = $2
@@ -197,7 +197,8 @@ export async function aggiungiProverbio(seoLink: string, uid: string, username: 
 
   proverbio = cleanString(proverbio)
   spiegazione = cleanString(spiegazione)
-  const esempiCleaned = esempi.map(e => cleanString(e));
+  const esempiCleaned = esempi.map(e => cleanString(e))
+    .filter(e => e !== "");
 
   let stato;
 
@@ -278,12 +279,12 @@ export async function salvaProverbio(uid: string, username: string, isSaved: boo
   let result;
   if (isSaved) {
     result = await pool.query(
-      'DELETE FROM salvati WHERE proverbio_id = $1 AND uid = $2',
+      'DELETE FROM salvati WHERE proverbio_seo_link = $1 AND uid = $2',
       [id, uid]
     );
   } else {
     result = await pool.query(
-      `INSERT INTO salvati (proverbio_id, uid)
+      `INSERT INTO salvati (proverbio_seo_link, uid)
         VALUES ($1, $2)`,
       [id, uid]
     );

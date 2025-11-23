@@ -18,7 +18,7 @@ export default function CheckAdmin({ children, load, closeOnError }: Props) {
         async function loadUser() {
             if (user) {
                 if (user.isAdmin === 1) setAdmin(true)
-                    else if (closeOnError) router.push("/")
+                else if (closeOnError) router.push("/")
             } else {
                 if (closeOnError) router.push("/")
             }
