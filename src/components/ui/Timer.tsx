@@ -8,7 +8,7 @@ export default function Timer() {
   useEffect(() => {
     const now = new Date();
 
-    const daysUntilSunday = (7 - now.getUTCDay()) % 7;
+    const daysUntilSunday = (now.getDay() == 0 && now.getHours() < 18) ? 0 : 7 - now.getDay();
 
     const isSundayBefore18UTC = now.getUTCDay() === 0 && now.getUTCHours() < 18;
 
