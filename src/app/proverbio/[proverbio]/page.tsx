@@ -25,15 +25,6 @@ export async function generateMetadata({
             title: `${result?.proverbio.replaceAll(".", "")} - Proverby`,
             description: "Proverby è una raccolta di proverbi condivisi dalla community. Aggiungi i tuoi e accumula punti saggezza!",
         },
-        icons: {
-            icon: '/favicon.ico',
-            shortcut: '/assets/apple-touch-icon.png',
-            apple: '/assets/apple-touch-icon.png',
-            other: {
-                rel: 'apple-touch-icon',
-                url: '/assets/apple-touch-icon.png',
-            },
-        },
     };
 }
 

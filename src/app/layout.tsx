@@ -26,13 +26,28 @@ export const metadata: Metadata = {
   title: "Proverby | Proverbi della community",
   description: "Proverby è una raccolta di proverbi condivisi dalla community. Aggiungi i tuoi e accumula punti saggezza!",
   icons: {
-    icon: '/favicon.ico',
-    shortcut: '/assets/apple-touch-icon.png',
-    apple: '/assets/apple-touch-icon.png',
-    other: {
-      rel: 'apple-touch-icon',
-      url: '/assets/apple-touch-icon.png',
-    },
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
+      { url: '/web-app-manifest-192x192.png', sizes: '192x192', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180' },
+    ],
+    other: [
+      {
+        rel: 'icon',
+        url: '/web-app-manifest-512x512.png',
+        sizes: '512x512',
+        type: 'image/png',
+      },
+      {
+        rel: 'manifest',
+        url: '/site.webmanifest',
+      },
+    ],
   },
   openGraph: {
     title: "Proverby | Proverbi della community",
@@ -47,10 +62,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     title: 'Proverby',
     startupImage: [
-      '/assets/apple-touch-icon.png',
-      {
-        url: '/assets/apple-touch-icon.png',
-      },
+      '/apple-touch-icon.png',
     ],
   },
 };
