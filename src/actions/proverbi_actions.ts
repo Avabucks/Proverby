@@ -344,8 +344,6 @@ export async function aggiungiProverbio(seoLink: string, uid: string, username: 
 
   if (result) {
     if (isAdmin == 0) {
-      return { success: true };
-
       const sended = await sendEmail({
         to: "info@proverby.it",
         subject: "Richiesta di accettazione del proverbio",
