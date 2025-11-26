@@ -149,7 +149,7 @@ export async function acceptedProverbi(fingerprint: string, username?: string, u
     JOIN users U ON P.username = U.username
     LEFT JOIN likes L ON P.id=L.proverbio_id AND L.fingerprint = $2
     WHERE P.stato = 2 AND P.username = $1
-     ORDER BY data_accettazione, id DESC`,
+     ORDER BY data_accettazione DESC, id DESC`,
     [username, saveFingerprint]
   );
 
@@ -172,7 +172,7 @@ export async function reviewProverbi(username?: string, uid?: string) {
     ) AS "totProverbi"
      FROM proverbi P JOIN users U ON P.username=U.username
      WHERE stato=0 AND P.username=$1 AND U.uid=$2
-     ORDER BY data_accettazione, id DESC`,
+     ORDER BY data_accettazione DESC, id DESC`,
     [username, uid]
   );
 
@@ -195,7 +195,7 @@ export async function declinedProverbi(username?: string, uid?: string) {
     ) AS "totProverbi"
      FROM proverbi P JOIN users U ON P.username=U.username
      WHERE stato=1 AND P.username=$1 AND U.uid=$2
-     ORDER BY data_accettazione, id DESC`,
+     ORDER BY data_accettazione DESC, id DESC`,
     [username, uid]
   );
 

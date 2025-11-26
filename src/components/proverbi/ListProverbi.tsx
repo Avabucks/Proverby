@@ -173,12 +173,12 @@ export default function ListProverbi({ type, setCount, isOwner }: ListProps) {
                     type == "review" ?
                       <div className="flex items-center gap-2 px-[13px] py-[5px]">
                         <p className="text-[rgb(255,140,50)] leading-0">In revisione</p>
-                        <BiAlarm className='rounded-full p-[5px] bg-[rgb(255,140,50)] text-[rgb(255,255,255)] text-[1.2rem]' />
+                        <div className='rounded-full p-[5px] bg-[rgb(255,140,50)] text-[rgb(255,255,255)] text-[1.2rem]'><BiAlarm /></div>
                       </div>
                       : type == "declined" ?
                         <div className="flex items-center gap-2 px-[13px] py-[5px]">
                           <p className="text-[rgb(220,50,50)] leading-0">Rifiutato</p>
-                          <BiX className='rounded-full p-[5px] bg-[rgb(220,50,50)] text-[rgb(255,255,255)] text-[1.2rem]' />
+                          <div className='rounded-full p-[5px] bg-[rgb(220,50,50)] text-[rgb(255,255,255)] text-[1.2rem]'><BiX /></div>
                         </div>
                         : type == "accepted" ?
                           <div className="flex items-center gap-2 px-[13px] py-[5px] rounded-full bg-(--primary) text-white/90">
