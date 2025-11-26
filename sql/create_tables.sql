@@ -66,6 +66,5 @@ CREATE TABLE IF NOT EXISTS likes (
   fingerprint VARCHAR(255) NOT NULL,
   like_state INT DEFAULT 0 NOT NULL,
   data_like DATE NOT NULL DEFAULT CURRENT_DATE,
-  user_uid VARCHAR(255),
   CONSTRAINT unique_proverbio_fingerprint UNIQUE (proverbio_id, fingerprint)
 );

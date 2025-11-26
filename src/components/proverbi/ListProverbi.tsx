@@ -46,14 +46,14 @@ export default function ListProverbi({ type, setCount, isOwner }: ListProps) {
   useEffect(() => {
 
     async function loadTopProverbi() {
-      const result = await top10Proverbi(fingerprint || "");
+      const result = await top10Proverbi(fingerprint || "", user?.uid);
       if (result) {
         setProverbiArray(result);
       }
       setLoading(false);
     }
     async function loadAcceptedProverbi() {
-      const result = await acceptedProverbi(fingerprint || "", pathname.split("/").filter(Boolean).pop());
+      const result = await acceptedProverbi(fingerprint || "", pathname.split("/").filter(Boolean).pop(), user?.uid);
       if (result) {
         setProverbiArray(result);
         if (setCount) setCount(result[0] ? result[0].totProverbi : 0);
@@ -92,7 +92,7 @@ export default function ListProverbi({ type, setCount, isOwner }: ListProps) {
       setLoading(false);
     }
     async function loadSimilarProverbi() {
-      const result = await similarProverbi(fingerprint || "", pathname.split("/").filter(Boolean).pop());
+      const result = await similarProverbi(fingerprint || "", pathname.split("/").filter(Boolean).pop(), user?.uid);
       if (result) {
         setProverbiArray(result);
       }

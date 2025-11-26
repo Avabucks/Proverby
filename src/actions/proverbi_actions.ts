@@ -50,7 +50,9 @@ export async function getProverbioFromSEO(seoLink: string, uid?: string, usernam
   }
 
   if (fingerprint) {
-    arr.likeState = await getLikeProverbio(fingerprint, arr.id)
+    let saveFingerprint
+    saveFingerprint = uid ? uid : fingerprint
+    arr.likeState = await getLikeProverbio(saveFingerprint, arr.id)
   }
 
   return arr;
@@ -71,9 +73,12 @@ export async function getRandomProverbioSEO() {
 
 }
 
-export async function top10Proverbi(fingerprint: string) {
+export async function top10Proverbi(fingerprint: string, uid?: string) {
 
   const lastMonday = getLastMondayUTC();
+
+  let saveFingerprint
+  saveFingerprint = uid ? uid : fingerprint
 
   const result = await pool.query(
     `SELECT P.*, U.foto_profilo AS "photoURL", COALESCE(L.like_state, 0) AS "likeState", 
@@ -105,16 +110,19 @@ export async function top10Proverbi(fingerprint: string) {
      WHERE stato=2 AND proverbio_del_giorno!=2
      ORDER BY "scoreProverbioWeek" DESC, id DESC
      LIMIT 10`,
-     [fingerprint, lastMonday]
+     [saveFingerprint, lastMonday]
   );
 
   return result.rows;
 
 }
 
-export async function acceptedProverbi(fingerprint: string, username?: string,) {
+export async function acceptedProverbi(fingerprint: string, username?: string, uid?: string) {
 
   if (!username) return false
+
+  let saveFingerprint
+  saveFingerprint = uid ? uid : fingerprint
 
   const result = await pool.query(
     `SELECT 
@@ -142,7 +150,7 @@ export async function acceptedProverbi(fingerprint: string, username?: string,) 
     LEFT JOIN likes L ON P.id=L.proverbio_id AND L.fingerprint = $2
     WHERE P.stato = 2 AND P.username = $1
      ORDER BY data_accettazione, id DESC`,
-    [username, fingerprint]
+    [username, saveFingerprint]
   );
 
   return result.rows;
@@ -199,6 +207,9 @@ export async function salvatiProverbi(fingerprint: string, username?: string, ui
 
   if (!username || !uid) return false
 
+  let saveFingerprint
+  saveFingerprint = uid ? uid : fingerprint
+
   const result = await pool.query(
     `SELECT 
     P.*,
@@ -227,16 +238,19 @@ export async function salvatiProverbi(fingerprint: string, username?: string, ui
     LEFT JOIN likes L ON P.id=L.proverbio_id AND L.fingerprint = $3
      WHERE P.stato=2 AND U2.username = $1 AND S.uid = $2
      ORDER BY S.id DESC`,
-    [username, uid, fingerprint]
+    [username, uid, saveFingerprint]
   );
 
   return result.rows;
 
 }
 
-export async function similarProverbi(fingerprint: string, seoLink?: string) {
+export async function similarProverbi(fingerprint: string, seoLink?: string, uid?: string) {
 
   if (!seoLink) return null
+
+  let saveFingerprint
+  saveFingerprint = uid ? uid : fingerprint
 
   const result = await pool.query(
     `
@@ -270,7 +284,7 @@ export async function similarProverbi(fingerprint: string, seoLink?: string) {
     ORDER BY sim DESC, P.id DESC
     LIMIT 5;
     `,
-    [seoLink, fingerprint]
+    [seoLink, saveFingerprint]
   );
 
   return result.rows;
@@ -399,12 +413,15 @@ export async function likeProverbio(fingerprint: string, likeState: number, id?:
 
   if (!id || fingerprint == "") return { success: false, error: "Errore del database" };
 
+  let saveFingerprint
+  saveFingerprint = user_uid ? user_uid : fingerprint
+
   const result = await pool.query(
-    `INSERT INTO likes (proverbio_id, fingerprint, like_state, user_uid)
-        VALUES ($1, $2, $3, $5)
+    `INSERT INTO likes (proverbio_id, fingerprint, like_state)
+        VALUES ($1, $2, $3)
         ON CONFLICT (proverbio_id, fingerprint) 
         DO UPDATE SET like_state = $3, data_like = $4`,
-    [id, fingerprint, likeState, new Date(), user_uid || ""]
+    [id, saveFingerprint, likeState, new Date() || ""]
   );
 
   if (result) {
