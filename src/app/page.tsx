@@ -25,7 +25,7 @@ export default async function Home() {
       </section>
       <section>
         <ListProverbi type="top10"></ListProverbi>
-        <Link className="group my-2.5 flex items-center justify-between gap-2.5 px-[30px] py-5 rounded-(--border-radius) w-full h-[77px] bg-(--contrast-01) select-none" href="/sfoglia">
+        <Link className="group my-2.5 flex items-center justify-between gap-2.5 px-[30px] py-5 rounded-(--border-radius) w-full h-[77px] bg-(--contrast-01) select-none duration-300" href="/sfoglia">
           <p>Sfoglia tutti i proverbi della community</p>
           <BiRightArrowAlt className='text-[1.6rem] opacity-80 duration-500 group-hover:translate-x-2.5' />
         </Link>
