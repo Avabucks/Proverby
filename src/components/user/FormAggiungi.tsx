@@ -52,12 +52,12 @@ export default function ProfiloLayout({ id }: Props) {
     }
 
     const handleChangeEsempi = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const index = Number(e.target.id); // assumiamo che l'id dell'input sia l'indice
+        const index = Number(e.target.id);
         const value = e.target.value;
 
         setEsempiArray(prev => {
-            const newEsempi = [...prev]; // copia dell'array
-            newEsempi[index] = value;    // aggiorna solo l'elemento corrispondente
+            const newEsempi = [...prev];
+            newEsempi[index] = value;
             return newEsempi;
         });
     };
@@ -112,6 +112,7 @@ export default function ProfiloLayout({ id }: Props) {
                 if (user && result && result.stato != 1 && (result.username == user.username || user.isAdmin == 1)) {
                     setProverbioString(result.proverbio);
                     setSpiegazioneString(result.spiegazione);
+                    setEsempiArray(result.esempi || [""]);
                     setLoading(false);
                 } else {
                     router.push("/")
