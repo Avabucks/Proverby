@@ -147,7 +147,7 @@ export default function ListProverbi({ type, setCount, isOwner }: ListProps) {
                       <div className="mx-[5px_20px] h-[30px] border-l border-l-solid border-l-(--contrast-01)"></div>
                       <div className="flex items-center gap-2 px-[13px] py-[5px] rounded-full bg-(--primary) text-white/90">
                         <BiMedal className="text-[1.3rem] leading-0" />
-                        <p className="text-[1rem] font-semibold leading-0"><CountUp to={(item.scoreProverbio && item.scoreProverbio > 0) ? item.scoreProverbio : 0}></CountUp></p>
+                        <p className="text-[1rem] font-semibold leading-0">{(item.scoreProverbio && item.scoreProverbio > 0) ? item.scoreProverbio : 0}</p>
                       </div>
                     </>
                     : <></>}
@@ -184,7 +184,7 @@ export default function ListProverbi({ type, setCount, isOwner }: ListProps) {
                         : type == "accepted" ?
                           <div className="flex items-center gap-2 px-[13px] py-[5px] rounded-full bg-(--primary) text-white/90">
                             <BiMedal className="text-[1.3rem] leading-0" />
-                            <p className="text-[1rem] font-semibold leading-0"><CountUp to={(item.scoreProverbio && item.scoreProverbio > 0) ? item.scoreProverbio : 0}></CountUp></p>
+                            <p className="text-[1rem] font-semibold leading-0">{(item.scoreProverbio && item.scoreProverbio > 0) ? item.scoreProverbio : 0}</p>
                           </div>
                           : <></>
                   }

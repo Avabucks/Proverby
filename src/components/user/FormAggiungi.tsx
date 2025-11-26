@@ -173,7 +173,7 @@ export default function ProfiloLayout({ id }: Props) {
                                                         value={val}
                                                         onChange={handleChangeEsempi}
                                                         placeholder={`${idx + 1}. Inserisci un esempio (lascia vuoto per ignorare)`}
-                                                        className="input"
+                                                        className="input text-[16px]"
                                                     />
                                                 ))}
                                             </div>
