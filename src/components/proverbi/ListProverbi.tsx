@@ -13,7 +13,6 @@ import { top10Proverbi, acceptedProverbi, reviewProverbi, declinedProverbi, salv
 import { adminProverbi, accettaProverbio, declinaProverbio } from "@/src/actions/admin_actions";
 import { BiAlarm, BiX, BiMedal, BiTrash, BiCheck, BiEditAlt, BiBookmark, BiCollection, BiPlus } from "react-icons/bi";
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from "react-icons/ai";
-import CountUp from "../ui/CountUp";
 
 interface ListProps {
   type: string;

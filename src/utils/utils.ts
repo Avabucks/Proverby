@@ -38,10 +38,6 @@ export function generateCodeSecure(): string {
 export function cleanString(str: string): string {
   let result = str;
 
-  if (result.startsWith('"') && result.endsWith('"')) {
-    result = result.slice(1, -1);
-  }
-
   if (result.length > 0) {
     result = result[0].toUpperCase() + result.slice(1);
   }

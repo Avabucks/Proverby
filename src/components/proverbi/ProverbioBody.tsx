@@ -4,6 +4,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { getProverbioFromSEO, getRandomProverbioSEO } from "@/src/actions/proverbi_actions";
 import { BiSolidDice5, BiLogoWhatsapp, BiLogoFacebookCircle } from "react-icons/bi";
 import { RiTwitterXFill } from "react-icons/ri";
+import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from "react-icons/ai";
 import ListProverbi from "./ListProverbi";
 
 interface Proverbio {
@@ -82,7 +83,7 @@ export default function ProverbioBody() {
                                 <div className="flex flex-col gap-[5px] mt-3 rounded-(--border-radius) bg-(--contrast-007) w-full p-[15px_20px] border-l-5 border-(--contrast-01)">
                                     {
                                         proverbioObj.esempi.map((esempio, i) => (
-                                            <p key={i}>"{esempio}"</p>
+                                            <div className="flex items-center gap-2.5" key={i}><div><AiOutlineDoubleLeft className="text-[1.2rem] opacity-20" /></div><p>{esempio}</p><div><AiOutlineDoubleRight className="text-[1.2rem] opacity-20" /></div></div>
                                         ))
                                     }
                                 </div>
