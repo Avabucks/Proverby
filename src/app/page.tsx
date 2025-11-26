@@ -17,9 +17,10 @@ export default async function Home() {
     <div className="animate-[fade-in_.3s]">
       <CardProverbio type="giorno"></CardProverbio>
       <section className="mt-[-110px] mb-2.5">
-        <div className="flex flex-col md:flex-row gap-[7px] items-center justify-between">
+        <div className="flex flex-col md:flex-row gap-2.5 items-center justify-between">
           <div className="title">TOP 10 PROVERBI DELLA SETTIMANA</div>
-          <div className="flex items-center gap-2.5"><span>Termina tra:</span><Timer></Timer></div>
+          <div className="hidden md:flex w-full border-b border-b-solid border-b-(--contrast-01) duration-300"></div>
+          <div className="flex items-center gap-2.5 text-nowrap"><span>Termina tra:</span><Timer></Timer></div>
         </div>
       </section>
       <section>

@@ -19,15 +19,16 @@ export default function CountUp({
   from = 0,
   direction = 'up',
   delay = 0,
-  duration = 2,
+  duration = .05,
   className = '',
   startWhen = true,
   separator = '',
   onStart,
   onEnd
 }: CountUpProps) {
+  const toNormalized = to > 999 ? to/1000 : to
   const ref = useRef<HTMLSpanElement>(null);
-  const motionValue = useMotionValue(direction === 'down' ? to : from);
+  const motionValue = useMotionValue(direction === 'down' ? toNormalized : from);
 
   const damping = 20 + 40 * (1 / duration);
   const stiffness = 100 * (1 / duration);
@@ -50,7 +51,7 @@ export default function CountUp({
     return 0;
   };
 
-  const maxDecimals = Math.max(getDecimalPlaces(from), getDecimalPlaces(to));
+  const maxDecimals = Math.max(getDecimalPlaces(from), getDecimalPlaces(toNormalized));
 
   const formatValue = useCallback(
     (latest: number) => {
@@ -71,9 +72,9 @@ export default function CountUp({
 
   useEffect(() => {
     if (ref.current) {
-      ref.current.textContent = formatValue(direction === 'down' ? to : from);
+      ref.current.textContent = formatValue(direction === 'down' ? toNormalized : from);
     }
-  }, [from, to, direction, formatValue]);
+  }, [from, toNormalized, direction, formatValue]);
 
   useEffect(() => {
     if (isInView && startWhen) {
@@ -82,7 +83,7 @@ export default function CountUp({
       }
 
       const timeoutId = setTimeout(() => {
-        motionValue.set(direction === 'down' ? from : to);
+        motionValue.set(direction === 'down' ? from : toNormalized);
       }, delay * 1000);
 
       const durationTimeoutId = setTimeout(
@@ -99,12 +100,12 @@ export default function CountUp({
         clearTimeout(durationTimeoutId);
       };
     }
-  }, [isInView, startWhen, motionValue, direction, from, to, delay, onStart, onEnd, duration]);
+  }, [isInView, startWhen, motionValue, direction, from, toNormalized, delay, onStart, onEnd, duration]);
 
   useEffect(() => {
     const unsubscribe = springValue.on('change', (latest: number) => {
       if (ref.current) {
-        ref.current.textContent = formatValue(latest);
+        ref.current.textContent = to > 999 ? formatValue(latest) + "K" : formatValue(latest);
       }
     });
 

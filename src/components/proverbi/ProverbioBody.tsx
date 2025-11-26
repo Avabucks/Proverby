@@ -1,10 +1,10 @@
 "use client"
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { getProverbioFromSEO } from "@/src/actions/proverbi_actions";
-import { getRandomProverbioSEO } from "@/src/actions/proverbi_actions";
+import { getProverbioFromSEO, getRandomProverbioSEO } from "@/src/actions/proverbi_actions";
 import { BiSolidDice5, BiLogoWhatsapp, BiLogoFacebookCircle } from "react-icons/bi";
 import { RiTwitterXFill } from "react-icons/ri";
+import ListProverbi from "./ListProverbi";
 
 interface Proverbio {
     spiegazione: string;
@@ -64,7 +64,7 @@ export default function ProverbioBody() {
                     <div className="animate-[fade-in_.5s] flex flex-col items-start w-full">
                         <div className="flex justify-between gap-2.5 w-full">
                             <div className="flex flex-col items-start w-full">
-                                <h2 className="title">SPIEGAZIONE</h2>
+                                <div className="flex items-center gap-2.5 w-full"><h2 className="title">SPIEGAZIONE</h2><div className="w-full border-b border-b-solid border-b-(--contrast-01) duration-300"></div></div>
                                 <p className="mt-2.5">{proverbioObj?.spiegazione}</p>
                             </div>
                             <div className="hidden md:flex flex-col items-start gap-2.5">
@@ -78,8 +78,8 @@ export default function ProverbioBody() {
                         </div>
                         {(proverbioObj?.esempi && proverbioObj?.esempi.length > 0) ?
                             <div className="mt-[30px] flex flex-col items-start w-full">
-                                <h2 className="title">ESEMPI</h2>
-                                <div className="flex flex-col gap-[5px] mt-2.5 rounded-(--border-radius) bg-(--contrast-007) w-full p-[15px_20px] border-l-5 border-(--contrast-01)">
+                                <div className="flex items-center gap-2.5 w-full"><h2 className="title">ESEMPI</h2><div className="w-full border-b border-b-solid border-b-(--contrast-01) duration-300"></div></div>
+                                <div className="flex flex-col gap-[5px] mt-3 rounded-(--border-radius) bg-(--contrast-007) w-full p-[15px_20px] border-l-5 border-(--contrast-01)">
                                     {
                                         proverbioObj.esempi.map((esempio, i) => (
                                             <p key={i}>"{esempio}"</p>
@@ -111,6 +111,13 @@ export default function ProverbioBody() {
                     <div className="flex items-center transform-[rotate(20deg)]">
                         <BiSolidDice5 className={`text-white/90 text-[4rem] ${isSpin ? "animate-[spin_1s_cubic-bezier(0.25,0.1,0.25,1)]" : ""}`} />
                     </div>
+                </div>
+            </div>
+
+            <div className="mt-[45px] flex flex-col items-start w-full">
+                <div className="flex items-center gap-2.5 w-full"><h2 className="title">ALTRI PROVERBI SIMILI</h2><div className="w-full border-b border-b-solid border-b-(--contrast-01) duration-300"></div></div>
+                <div className="mt-2.5 w-full">
+                    <ListProverbi type="similar"></ListProverbi>
                 </div>
             </div>
 

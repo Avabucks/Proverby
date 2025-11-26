@@ -52,3 +52,27 @@ export function cleanString(str: string): string {
 
   return result;
 }
+
+export function getLastMondayUTC(): string {
+    const now = new Date();
+
+    const dow = now.getUTCDay();
+
+    const result = new Date(Date.UTC(
+        now.getUTCFullYear(),
+        now.getUTCMonth(),
+        now.getUTCDate()
+    ));
+
+    if (dow === 0) {
+        result.setUTCDate(result.getUTCDate() - 6);
+    } else {
+        result.setUTCDate(result.getUTCDate() - (dow - 1));
+    }
+
+    const yyyy = result.getUTCFullYear();
+    const mm = String(result.getUTCMonth() + 1).padStart(2, "0");
+    const dd = String(result.getUTCDate()).padStart(2, "0");
+
+    return `${yyyy}-${mm}-${dd}`;
+}

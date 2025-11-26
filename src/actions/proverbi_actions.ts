@@ -1,6 +1,6 @@
 'use server';
 import { pool } from "@/src/lib/db";
-import { generateCodeSecure, cleanString } from "@/src/utils/utils";
+import { generateCodeSecure, cleanString, getLastMondayUTC } from "@/src/utils/utils";
 import { checkUsernameSameUid, getUser } from "@/src/actions/users_actions";
 import { sendEmail } from "@/src/utils/send_mail";
 
@@ -17,7 +17,7 @@ export async function dailyProverbio() {
 
 }
 
-export async function getProverbioFromSEO(seoLink: string, uid?: string, username?: string) {
+export async function getProverbioFromSEO(seoLink: string, uid?: string, username?: string, fingerprint?: string) {
 
   if (!seoLink) return null;
 
@@ -49,6 +49,10 @@ export async function getProverbioFromSEO(seoLink: string, uid?: string, usernam
 
   }
 
+  if (fingerprint) {
+    arr.likeState = await getLikeProverbio(fingerprint, arr.id)
+  }
+
   return arr;
 
 }
@@ -67,30 +71,67 @@ export async function getRandomProverbioSEO() {
 
 }
 
-export async function top10Proverbi() {
+export async function top10Proverbi(fingerprint: string) {
+
+  const lastMonday = getLastMondayUTC();
 
   const result = await pool.query(
-    `SELECT P.*, U.foto_profilo AS "photoURL"
-     FROM proverbi P JOIN users U ON P.username=U.username
+    `SELECT P.*, U.foto_profilo AS "photoURL", COALESCE(L.like_state, 0) AS "likeState", 
+    (
+        (
+            SELECT COUNT(*) 
+            FROM likes
+            WHERE like_state = 1 AND proverbio_id = P.id
+        ) * 20 -
+        (
+            SELECT COUNT(*) 
+            FROM likes
+            WHERE like_state = 2 AND proverbio_id = P.id
+        ) * 5
+    ) AS "scoreProverbio",
+    (
+        (
+            SELECT COUNT(*) 
+            FROM likes
+            WHERE like_state = 1 AND proverbio_id = P.id AND data_like::date >= $2
+        ) * 20 -
+        (
+            SELECT COUNT(*) 
+            FROM likes
+            WHERE like_state = 2 AND proverbio_id = P.id AND data_like::date >= $2
+        ) * 3
+    ) AS "scoreProverbioWeek"
+     FROM proverbi P JOIN users U ON P.username=U.username LEFT JOIN likes L ON P.id=L.proverbio_id AND L.fingerprint = $1
      WHERE stato=2 AND proverbio_del_giorno!=2
-     ORDER BY score_week DESC, id DESC
-     LIMIT 10`
+     ORDER BY "scoreProverbioWeek" DESC, id DESC
+     LIMIT 10`,
+     [fingerprint, lastMonday]
   );
 
   return result.rows;
 
 }
 
-export async function acceptedProverbi(username?: string) {
+export async function acceptedProverbi(fingerprint: string, username?: string,) {
 
   if (!username) return false
-
-  // TODO: calcolo punti del proverbio
 
   const result = await pool.query(
     `SELECT 
     P.*,
-    U.foto_profilo AS "photoURL",
+    U.foto_profilo AS "photoURL", COALESCE(L.like_state, 0) AS "likeState",
+    (
+        (
+            SELECT COUNT(*) 
+            FROM likes
+            WHERE like_state = 1 AND proverbio_id = P.id
+        ) * 20 -
+        (
+            SELECT COUNT(*) 
+            FROM likes
+            WHERE like_state = 2 AND proverbio_id = P.id
+        ) * 5
+    ) AS "scoreProverbio",
     (
         SELECT COUNT(*) 
         FROM proverbi 
@@ -98,9 +139,10 @@ export async function acceptedProverbi(username?: string) {
     ) AS "totProverbi"
     FROM proverbi P
     JOIN users U ON P.username = U.username
+    LEFT JOIN likes L ON P.id=L.proverbio_id AND L.fingerprint = $2
     WHERE P.stato = 2 AND P.username = $1
      ORDER BY data_accettazione, id DESC`,
-    [username]
+    [username, fingerprint]
   );
 
   return result.rows;
@@ -153,14 +195,26 @@ export async function declinedProverbi(username?: string, uid?: string) {
 
 }
 
-export async function salvatiProverbi(username?: string, uid?: string) {
+export async function salvatiProverbi(fingerprint: string, username?: string, uid?: string) {
 
   if (!username || !uid) return false
 
   const result = await pool.query(
     `SELECT 
     P.*,
-    U1.foto_profilo AS "photoURL",
+    U1.foto_profilo AS "photoURL", COALESCE(L.like_state, 0) AS "likeState",
+    (
+        (
+            SELECT COUNT(*) 
+            FROM likes
+            WHERE like_state = 1 AND proverbio_id = P.id
+        ) * 20 -
+        (
+            SELECT COUNT(*) 
+            FROM likes
+            WHERE like_state = 2 AND proverbio_id = P.id
+        ) * 5
+    ) AS "scoreProverbio",
     (
         SELECT COUNT(*) 
         FROM salvati S
@@ -170,14 +224,59 @@ export async function salvatiProverbi(username?: string, uid?: string) {
      JOIN proverbi P ON P.seo_link=S.proverbio_seo_link
      JOIN users U1 ON P.username=U1.username
      JOIN users U2 ON S.uid=U2.uid
+    LEFT JOIN likes L ON P.id=L.proverbio_id AND L.fingerprint = $3
      WHERE P.stato=2 AND U2.username = $1 AND S.uid = $2
      ORDER BY S.id DESC`,
-    [username, uid]
+    [username, uid, fingerprint]
   );
 
   return result.rows;
 
 }
+
+export async function similarProverbi(fingerprint: string, seoLink?: string) {
+
+  if (!seoLink) return null
+
+  const result = await pool.query(
+    `
+    WITH original AS (
+      SELECT proverbio
+      FROM proverbi
+      WHERE seo_link = $1
+      LIMIT 1
+    )
+    SELECT P.*, U.foto_profilo AS "photoURL", COALESCE(L.like_state, 0) AS "likeState",
+    (
+        (
+            SELECT COUNT(*) 
+            FROM likes
+            WHERE like_state = 1 AND proverbio_id = P.id
+        ) * 20 -
+        (
+            SELECT COUNT(*) 
+            FROM likes
+            WHERE like_state = 2 AND proverbio_id = P.id
+        ) * 5
+    ) AS "scoreProverbio",
+           similarity(P.proverbio, O.proverbio) AS sim
+    FROM proverbi P
+    CROSS JOIN original O
+    JOIN users U ON P.username = U.username
+    LEFT JOIN likes L ON P.id=L.proverbio_id AND L.fingerprint = $2
+    WHERE P.stato = 2
+      AND P.proverbio_del_giorno != 2
+      AND P.seo_link <> $1
+    ORDER BY sim DESC, P.id DESC
+    LIMIT 5;
+    `,
+    [seoLink, fingerprint]
+  );
+
+  return result.rows;
+
+}
+
 
 export async function deleteProverbio(id: number) {
 
@@ -245,7 +344,7 @@ export async function aggiungiProverbio(seoLink: string, uid: string, username: 
 
   if (result) {
     if (isAdmin == 0) {
-      return { success: true }; // TODO: togliere
+      return { success: true };
 
       const sended = await sendEmail({
         to: "info@proverby.it",
@@ -294,6 +393,45 @@ export async function salvaProverbio(uid: string, username: string, isSaved: boo
     return { success: true };
   } else {
     return { success: false, error: "Errore del database" };
+  }
+
+}
+
+export async function likeProverbio(fingerprint: string, likeState: number, id?: number, user_uid?: string) {
+
+  if (!id || fingerprint == "") return { success: false, error: "Errore del database" };
+
+  const result = await pool.query(
+    `INSERT INTO likes (proverbio_id, fingerprint, like_state, user_uid)
+        VALUES ($1, $2, $3, $5)
+        ON CONFLICT (proverbio_id, fingerprint) 
+        DO UPDATE SET like_state = $3, data_like = $4`,
+    [id, fingerprint, likeState, new Date(), user_uid || ""]
+  );
+
+  if (result) {
+    return { success: true };
+  } else {
+    return { success: false, error: "Errore del database" };
+  }
+
+}
+
+export async function getLikeProverbio(fingerprint: string, id?: number) {
+
+  if (!id || fingerprint == "") return 0;
+
+  const result = await pool.query(
+    `SELECT like_state
+      FROM likes
+      WHERE proverbio_id = $1 AND fingerprint = $2`,
+    [id, fingerprint]
+  );
+
+  if (result.rows[0]) {
+    return result.rows[0].like_state;
+  } else {
+    return 0;
   }
 
 }

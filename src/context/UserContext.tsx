@@ -1,8 +1,7 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { getCookie } from "cookies-next";
-import { getUser } from "@/src/actions/users_actions";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 interface User {
     uid: string;
@@ -20,23 +19,48 @@ interface User {
 interface UserContextType {
     user: User | null;
     setUser: (u: User | null) => void;
+    fingerprint: string;
 }
 
 export const UserContext = createContext<UserContextType>({
     user: null,
-    setUser: () => { },
+    setUser: () => {},
+    fingerprint: "",
 });
 
-export function UserProvider({ children, initialUser }: { children: ReactNode, initialUser: User }) {
+interface UserProviderProps {
+    children: ReactNode;
+    initialUser?: User;
+}
+
+export function UserProvider({ children, initialUser }: UserProviderProps) {
     const [user, setUser] = useState<User | null>(initialUser || null);
+    const [fingerprint, setFingerprint] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const loadFingerprint = async () => {
+            const fp = await FingerprintJS.load();
+            const result = await fp.get();
+            setFingerprint(`${result.visitorId ?? ""}${user?.uid ?? ""}`);
+            setLoading(false);
+        };
+
+        loadFingerprint();
+    }, [user]);
+
+    if (loading) {
+        // fallback mentre il fingerprint non è pronto
+        return <div></div>;
+    }
 
     return (
-        <UserContext.Provider value={{ user, setUser }}>
+        <UserContext.Provider value={{ user, setUser, fingerprint: fingerprint! }}>
             {children}
         </UserContext.Provider>
     );
 }
 
 export function useUser() {
-  return useContext(UserContext);
+    return useContext(UserContext);
 }

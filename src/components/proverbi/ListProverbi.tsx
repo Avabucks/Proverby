@@ -9,10 +9,11 @@ import LikeDislike from "@/src/components/user/LikeDislike";
 import Popup from "@/src/components/popup/Popup";
 import DeletePopup from "@/src/components/popup/layout/DeletePopup";
 import { useRouter, usePathname } from "next/navigation";
-import { top10Proverbi, acceptedProverbi, reviewProverbi, declinedProverbi, salvatiProverbi } from "@/src/actions/proverbi_actions";
+import { top10Proverbi, acceptedProverbi, reviewProverbi, declinedProverbi, salvatiProverbi, similarProverbi } from "@/src/actions/proverbi_actions";
 import { adminProverbi, accettaProverbio, declinaProverbio } from "@/src/actions/admin_actions";
 import { BiAlarm, BiX, BiMedal, BiTrash, BiCheck, BiEditAlt, BiBookmark, BiCollection, BiPlus } from "react-icons/bi";
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from "react-icons/ai";
+import CountUp from "../ui/CountUp";
 
 interface ListProps {
   type: string;
@@ -27,12 +28,14 @@ interface Proverbio {
   seo_link: string;
   photoURL: string;
   totProverbi: number;
+  likeState: number;
+  scoreProverbio?: number;
 }
 
 export default function ListProverbi({ type, setCount, isOwner }: ListProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const { user } = useUser();
+  const { user, fingerprint } = useUser();
 
   const [proverbiArray, setProverbiArray] = useState<Proverbio[]>([]);
   const [isLoading, setLoading] = useState(true);
@@ -43,14 +46,14 @@ export default function ListProverbi({ type, setCount, isOwner }: ListProps) {
   useEffect(() => {
 
     async function loadTopProverbi() {
-      const result = await top10Proverbi();
+      const result = await top10Proverbi(fingerprint || "");
       if (result) {
         setProverbiArray(result);
       }
       setLoading(false);
     }
     async function loadAcceptedProverbi() {
-      const result = await acceptedProverbi(pathname.split("/").filter(Boolean).pop());
+      const result = await acceptedProverbi(fingerprint || "", pathname.split("/").filter(Boolean).pop());
       if (result) {
         setProverbiArray(result);
         if (setCount) setCount(result[0] ? result[0].totProverbi : 0);
@@ -74,7 +77,7 @@ export default function ListProverbi({ type, setCount, isOwner }: ListProps) {
       setLoading(false);
     }
     async function loadSalvatiProverbi() {
-      const result = await salvatiProverbi(pathname.split("/").filter(Boolean).pop(), user?.uid);
+      const result = await salvatiProverbi(fingerprint || "", pathname.split("/").filter(Boolean).pop(), user?.uid);
       if (result) {
         setProverbiArray(result);
         if (setCount) setCount(result[0] ? result[0].totProverbi : 0);
@@ -88,6 +91,13 @@ export default function ListProverbi({ type, setCount, isOwner }: ListProps) {
       }
       setLoading(false);
     }
+    async function loadSimilarProverbi() {
+      const result = await similarProverbi(fingerprint || "", pathname.split("/").filter(Boolean).pop());
+      if (result) {
+        setProverbiArray(result);
+      }
+      setLoading(false);
+    }
 
     const loaders: { [key: string]: () => Promise<void> } = {
       "top10": loadTopProverbi,
@@ -96,6 +106,7 @@ export default function ListProverbi({ type, setCount, isOwner }: ListProps) {
       "declined": loadDeclinedProverbi,
       "salvati": loadSalvatiProverbi,
       "admin": loadAdminProverbi,
+      "similar": loadSimilarProverbi,
     };
 
     if (loaders[type]) {
@@ -117,7 +128,7 @@ export default function ListProverbi({ type, setCount, isOwner }: ListProps) {
           </div>
           :
           proverbiArray.length > 0 ? proverbiArray.map((item, i) => (
-            <div className={`animate-[slide-up_.5s] flex flex-col min-h-[72px] md:flex-row items-center gap-2.5 px-[15px] md:px-[25px] py-[15px] md:py-2.5 justify-between rounded-(--border-radius) border border-solid border-(--contrast-01) ${type == "declined" ? "" : "cursor-pointer shadow-[0_5px_0_var(--contrast-01)] active:shadow-[0_0_0_var(--contrast-01)] active:transform-[translateY(5px)]"} md:duration-300`} onClick={() => { if (type != "declined") router.push("/proverbio/" + item.seo_link) }} key={i}>
+            <div className={`animate-[slide-up_.5s] flex flex-col min-h-[72px] md:flex-row items-center gap-2.5 px-[15px] md:px-[25px] py-[15px] md:py-2.5 justify-between rounded-(--border-radius) border border-solid border-(--contrast-01) ${type == "declined" ? "" : "cursor-pointer shadow-[0_5px_0_var(--contrast-01)] active:shadow-[0_0_0_var(--contrast-01)] active:translate-y-[5px] transition-[translate,box-shadow] duration-300"}`} onClick={() => { if (type != "declined") router.push("/proverbio/" + item.seo_link) }} key={i}>
               <div className="flex flex-col md:flex-row items-center gap-2.5 md:gap-5">
                 <div className="flex gap-2.5 items-center">
                   <div><AiOutlineDoubleLeft className="text-[1.9rem] opacity-20" /></div>
@@ -125,18 +136,18 @@ export default function ListProverbi({ type, setCount, isOwner }: ListProps) {
                   <div><AiOutlineDoubleRight className="text-[1.9rem] opacity-20" /></div>
                 </div>
                 <div>
-                  <Link className="flex items-center gap-2.5 text-[.9rem]" href={`/profilo/${item.username}`} onClick={(e) => { e.stopPropagation(); }}>by {item.username}<Image className="rounded-full max-w-none" src={`${item.photoURL}`} alt="fot_profilo" width={30} height={30} /></Link>
+                  <Link className="flex items-center text-[.9rem] ml-0 md:-ml-3" href={`/profilo/${item.username}`} onClick={(e) => { e.stopPropagation(); }}><Ripple>by {item.username}<Image className="rounded-full max-w-none" src={`${item.photoURL}`} alt="fot_profilo" width={30} height={30} /></Ripple></Link>
                 </div>
               </div>
-              {type == "top10" || type == "salvati" || (type == "accepted" && !isOwner) ?
+              {type == "top10" || type == "salvati" || (type == "accepted" && !isOwner) || type == "top10" || type == "similar" ?
                 <div className="flex items-center">
-                  <LikeDislike id={item.id}></LikeDislike>
-                  {type == "accepted" ?
+                  <LikeDislike id={item.id} likeStateProverbio={item.likeState}></LikeDislike>
+                  {(type == "accepted" || type == "top10" || type == "salvati" || type == "similar") ?
                     <>
                       <div className="mx-[5px_20px] h-[30px] border-l border-l-solid border-l-(--contrast-01)"></div>
                       <div className="flex items-center gap-2 px-[13px] py-[5px] rounded-full bg-(--primary) text-white/90">
                         <BiMedal className="text-[1.3rem] leading-0" />
-                        <p className="text-[1rem] font-semibold leading-0">TODO</p>
+                        <p className="text-[1rem] font-semibold leading-0"><CountUp to={(item.scoreProverbio && item.scoreProverbio > 0) ? item.scoreProverbio : 0}></CountUp></p>
                       </div>
                     </>
                     : <></>}
@@ -173,7 +184,7 @@ export default function ListProverbi({ type, setCount, isOwner }: ListProps) {
                         : type == "accepted" ?
                           <div className="flex items-center gap-2 px-[13px] py-[5px] rounded-full bg-(--primary) text-white/90">
                             <BiMedal className="text-[1.3rem] leading-0" />
-                            <p className="text-[1rem] font-semibold leading-0">TODO</p>
+                            <p className="text-[1rem] font-semibold leading-0"><CountUp to={(item.scoreProverbio && item.scoreProverbio > 0) ? item.scoreProverbio : 0}></CountUp></p>
                           </div>
                           : <></>
                   }

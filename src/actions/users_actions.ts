@@ -23,13 +23,27 @@ export async function saveUser(displayName: string, email: string, uid: string, 
 
 export async function getUserFromUsername(username: string) {
 
-  // TODO: calcolo punti saggezza totali
-
   const result = await pool.query(
-    `SELECT uid, username, display_name AS "displayName", email, foto_profilo AS "photoURL", partite_giocate as "partiteGiocate", best_score as "bestScore", miglior_posizione as "migliorPosizione", posizione_attuale as "posizioneAttuale", is_admin as "isAdmin"
-     FROM users
-     WHERE username = $1
-     LIMIT 1`,
+    `SELECT uid, username, display_name AS "displayName", email, foto_profilo AS "photoURL", partite_giocate as "partiteGiocate", best_score as "bestScore", miglior_posizione as "migliorPosizione", posizione_attuale as "posizioneAttuale", is_admin as "isAdmin",
+      (
+          (
+              SELECT COUNT(*) 
+              FROM likes L
+              JOIN proverbi P ON P.id = L.proverbio_id
+              JOIN users U1 ON P.username = U1.username
+              WHERE like_state = 1 AND U1.uid = U.uid
+          ) * 20 -
+          (
+              SELECT COUNT(*) 
+              FROM likes L
+              JOIN proverbi P ON P.id = L.proverbio_id
+              JOIN users U1 ON P.username = U1.username
+              WHERE like_state = 2 AND U1.uid = U.uid
+          ) * 5
+      ) AS "puntiSaggezza"
+      FROM users U
+      WHERE username = $1
+      LIMIT 1`,
     [username]
   );
 

@@ -7,6 +7,7 @@ import { firebaseLogOut } from "@/src/actions/firebase_actions";
 import Image from "next/image";
 import ListProverbi from "@/src/components/proverbi/ListProverbi";
 import { BiCollection, BiSolidCollection, BiBookmark, BiSolidBookmark, BiLineChart, BiMedal, BiExit } from "react-icons/bi";
+import CountUp from "../ui/CountUp";
 
 interface Props {
   username: string;
@@ -18,7 +19,7 @@ export default function ProfiloLayout({ username }: Props) {
 
   const [isLoading, setLoading] = useState(true);
   const [isOwner, setOwner] = useState(false);
-  const [userPage, setUserPage] = useState<{ displayName: string, photoURL: string, uid: string, username: string, email: string, partiteGiocate: number, bestScore: number, migliorPosizione: number, posizioneAttuale: number } | null>(null);
+  const [userPage, setUserPage] = useState<{ displayName: string, photoURL: string, uid: string, username: string, email: string, partiteGiocate: number, bestScore: number, migliorPosizione: number, posizioneAttuale: number, puntiSaggezza: number } | null>(null);
   const [countAccettati, setCountAccettati] = useState(false);
   const [countReviewed, setCountReviewed] = useState(false);
   const [countDeclined, setCountDeclined] = useState(false);
@@ -75,7 +76,7 @@ export default function ProfiloLayout({ username }: Props) {
                 <div className="mt-[9px] flex items-center gap-2 px-[13px] py-[5px] rounded-full bg-(--primary) text-white/90">
                   <BiMedal className="text-[1.3rem] leading-0" />
                   <p className="text-[.8rem] leading-0">Punti saggezza</p>
-                  <p className="text-[1rem] font-semibold leading-0">TODO</p>
+                  <p className="text-[1rem] font-semibold leading-0"><CountUp to={(userPage?.puntiSaggezza && userPage?.puntiSaggezza > 0) ? userPage?.puntiSaggezza : 0}></CountUp></p>
                 </div>
               </>
             }
@@ -161,6 +162,3 @@ export default function ProfiloLayout({ username }: Props) {
     </>
   )
 }
-
-// TODO:
-// - count up https://reactbits.dev/text-animations/count-up

@@ -152,7 +152,7 @@ export default function ProfiloLayout({ id }: Props) {
                                 {user ?
                                     <>
                                         <div className="flex flex-col items-start w-full">
-                                            <div className="title">SPIEGAZIONE</div>
+                                            <div className="flex items-center gap-2.5 w-full"><h2 className="title">SPIEGAZIONE</h2><div className="w-full border-b border-b-solid border-b-(--contrast-01)"></div></div>
                                         </div>
                                         <textarea
                                             className="textarea w-full mt-[15px] text-[16px]"
@@ -161,7 +161,7 @@ export default function ProfiloLayout({ id }: Props) {
                                             placeholder="Inserisci una spiegazione" />
                                         <div className="flex flex-col items-start w-full mt-[45px]">
                                             <div className="flex items-center justify-between gap-2.5 w-full">
-                                                <div className="title">ESEMPI</div>
+                                                <div className="flex items-center gap-2.5 w-full"><h2 className="title">ESEMPI</h2><div className="w-full border-b border-b-solid border-b-(--contrast-01)"></div></div>
                                                 <div className="scale-90"><Ripple opt="primary" icon={BiPlus} handleOnClick={handleAggiungiEsempio}></Ripple></div>
                                             </div>
                                             <div className="flex flex-col gap-2.5 mt-[5px] w-full">

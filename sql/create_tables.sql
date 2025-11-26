@@ -6,6 +6,11 @@
 -- --------------------------------------------------------
 
 --
+-- Extension 'pg_trgm' for similarity
+--
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+
+--
 -- Table structure for table 'users'
 --
 
@@ -57,7 +62,10 @@ CREATE TABLE IF NOT EXISTS salvati (
 
 CREATE TABLE IF NOT EXISTS likes (
   id SERIAL PRIMARY KEY,
-  proverbio_id VARCHAR(255) NOT NULL,
+  proverbio_id INT NOT NULL,
   fingerprint VARCHAR(255) NOT NULL,
-  like_state INT DEFAULT 0 NOT NULL
+  like_state INT DEFAULT 0 NOT NULL,
+  data_like DATE NOT NULL DEFAULT CURRENT_DATE,
+  user_uid VARCHAR(255),
+  CONSTRAINT unique_proverbio_fingerprint UNIQUE (proverbio_id, fingerprint)
 );

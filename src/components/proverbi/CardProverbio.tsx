@@ -7,7 +7,8 @@ import { useRouter, usePathname } from "next/navigation";
 import { dailyProverbio, getProverbioFromSEO } from "@/src/actions/proverbi_actions";
 import LikeDislike from "@/src/components/user/LikeDislike";
 import SalvaProverbio from "@/src/components/user/SalvaProverbio";
-import { BiErrorAlt, BiLockOpenAlt, BiChevronLeft } from "react-icons/bi";
+import { BiErrorAlt, BiLockOpenAlt, BiChevronLeft, BiVolumeFull } from "react-icons/bi";
+import Ripple from "@/src/components/ui/Ripple";
 
 interface Props {
     type: string;
@@ -22,17 +23,19 @@ interface Proverbio {
     seo_link?: string;
     photoURL: string;
     stato?: number;
+    likeState?: number;
 }
 
 export default function CardProverbio({ type, setString, proverbio }: Props) {
     const router = useRouter();
     const pathname = usePathname().split("/").filter(Boolean).pop();
-    const { user } = useUser();
+    const { user, fingerprint } = useUser();
 
     const [proverbioObj, setProverbioObj] = useState<Proverbio>();
     const [isLoading, setLoading] = useState(true);
     const [counterChar, setCounterChar] = useState(0);
     const [isSaved, setSaved] = useState(false);
+    const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -54,7 +57,28 @@ export default function CardProverbio({ type, setString, proverbio }: Props) {
         }
     };
 
+    const speak = (textToSpeech?: string) => {
+        if (textToSpeech) {
+            const utter = new SpeechSynthesisUtterance(textToSpeech);
+            utter.rate = 1;
+            utter.pitch = 1;
+
+            const googleVoice = voices.find(v =>
+                v.name.toLowerCase().includes("google") &&
+                v.lang === "it-IT"
+            );
+
+            if (googleVoice) utter.voice = googleVoice;
+
+            window.speechSynthesis.speak(utter);
+        }
+    };
+
     useEffect(() => {
+        const loadVoices = () => setVoices(window.speechSynthesis.getVoices());
+        window.speechSynthesis.addEventListener("voiceschanged", loadVoices);
+        loadVoices();
+
         async function loadDailyProverbio() {
             const result = await dailyProverbio();
             if (result) {
@@ -64,7 +88,7 @@ export default function CardProverbio({ type, setString, proverbio }: Props) {
         }
 
         async function loadProverbioFromSEO() {
-            const result = await getProverbioFromSEO(pathname || "", user?.uid, user?.username);
+            const result = await getProverbioFromSEO(pathname || "", user?.uid, user?.username, fingerprint || "");
             if (result && (result.stato == 2 || (result.stato == 0 && user && user.username == result.username) || user?.isAdmin == 1)) {
                 setProverbioObj(result);
                 if (user && result.stato == 2) setSaved(result.isSaved)
@@ -100,6 +124,9 @@ export default function CardProverbio({ type, setString, proverbio }: Props) {
         if (loaders[type]) {
             loaders[type]();
         }
+
+        return () =>
+            window.speechSynthesis.removeEventListener("voiceschanged", loadVoices);
 
     }, []);
 
@@ -165,11 +192,16 @@ export default function CardProverbio({ type, setString, proverbio }: Props) {
                                             placeholder="Scrivi qui il tuo proverbio ..." />
                                         <div className="flex items-center absolute bottom-[15px] right-[15px] leading-0">{counterChar} <BiChevronLeft className="text-[24px]" /> <span className="font-semibold">99</span> </div>
                                     </div>}
-                                <Link className="absolute top-[85%] left-[50%] transform-[translate(-50%,-50%)] z-3 flex items-center gap-2.5 text-[.9rem]" href={`/profilo/${proverbioObj?.username}`} onClick={(e) => { e.stopPropagation(); }}>by {proverbioObj?.username}<Image className="rounded-full max-w-none" src={`${proverbioObj?.photoURL}`} alt="fot_profilo" width={30} height={30} /></Link>
+                                <Link className="absolute bottom-15 md:bottom-2.5 left-[50%] translate-x-[-50%] z-3 flex items-center text-[.9rem]" href={`/profilo/${proverbioObj?.username}`} onClick={(e) => { e.stopPropagation(); }}><Ripple>by {proverbioObj?.username}<Image className="rounded-full max-w-none" src={`${proverbioObj?.photoURL}`} alt="fot_profilo" width={30} height={30} /></Ripple></Link>
                                 {(type === "dettagli" && proverbioObj?.stato == 2) ?
                                     <>
-                                        <div className="absolute bottom-2.5 left-2.5 z-3 text-[rgb(255,255,255)]"><LikeDislike id={proverbioObj?.id || 0}></LikeDislike></div>
+                                        <div className="absolute bottom-2.5 left-2.5 z-3 text-[rgb(255,255,255)]"><LikeDislike id={proverbioObj?.id || 0} likeStateProverbio={proverbioObj?.likeState || 0}></LikeDislike></div>
                                         <div className="absolute top-2.5 left-2.5 z-3 text-[rgb(255,255,255)]"><SalvaProverbio isSaved={isSaved} setSaved={setSaved}></SalvaProverbio></div>
+                                    </>
+                                    : <></>}
+                                {(type === "giorno" || type === "dettagli") ?
+                                    <>
+                                        <div className="absolute bottom-2.5 right-2.5 z-3"><Ripple icon={BiVolumeFull} handleOnClick={(e) => { e.stopPropagation(); speak(proverbioObj?.proverbio) }}></Ripple></div>
                                     </>
                                     : <></>}
                             </div>
