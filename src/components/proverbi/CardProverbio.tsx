@@ -175,7 +175,7 @@ export default function CardProverbio({ type, setString, proverbio }: Props) {
                                     </div>
                                 </div>
                                 {type != "aggiungi" ?
-                                    <h1 className="absolute top-1/2 left-1/2 transform-[translate(-50%,-50%)] w-[90%] text-center text-[2rem] sm:text-[3.1vw] leading-10 sm:leading-[3.3vw] font-bold">{proverbioObj?.proverbio?.replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim()}.</h1>
+                                    <h1 className="absolute top-1/2 left-1/2 transform-[translate(-50%,-50%)] w-[90%] text-center text-[2rem] sm:text-[3.1vw] leading-10 sm:leading-[3.3vw] font-bold">{proverbioObj?.proverbio?.replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim()}</h1>
                                     :
                                     <div>
                                         <textarea className="absolute min-h-0 top-1/2 left-1/2 transform-[translate(-50%,-50%)] w-[90%] text-center text-[2rem] sm:text-[3.1vw] leading-10 sm:leading-[3.3vw] font-bold whitespace-pre-wrap wrap-break-word overflow-hidden"

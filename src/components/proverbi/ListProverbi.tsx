@@ -132,7 +132,7 @@ export default function ListProverbi({ type, setCount, isOwner }: ListProps) {
               <div className="flex flex-col md:flex-row items-center gap-2.5 md:gap-5">
                 <div className="flex gap-2.5 items-center">
                   <div><AiOutlineDoubleLeft className="text-[1.9rem] opacity-20" /></div>
-                  <p className="text-center">{item.proverbio.replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim()}.</p>
+                  <p className="text-center">{item.proverbio.replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim()}</p>
                   <div><AiOutlineDoubleRight className="text-[1.9rem] opacity-20" /></div>
                 </div>
                 <div>
