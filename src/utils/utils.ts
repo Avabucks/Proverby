@@ -9,10 +9,10 @@ export function toSeoFriendly(str: string): string {
   return str
     .toLowerCase()                    // minuscole
     .normalize("NFD")                 // separa lettere e accenti
-    .replace(/[\u0300-\u036f]/g, "") // rimuove accenti
-    .replace(/[^a-z0-9 ]/g, "")      // rimuove caratteri non alfanumerici
+    .replaceAll(/[\u0300-\u036f]/g, "") // rimuove accenti
+    .replaceAll(/[^a-z0-9 ]/g, "")      // rimuove caratteri non alfanumerici
     .trim()                           // rimuove spazi iniziali/finali
-    .replace(/\s+/g, "_");            // sostituisce spazi con underscore
+    .replaceAll(/\s+/g, "_");            // sostituisce spazi con underscore
 }
 
 const BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";

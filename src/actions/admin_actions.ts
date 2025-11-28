@@ -105,7 +105,7 @@ export async function accettaProverbio(id: number, uid: string) {
       </html>
       `
   });
-  return { success: true };
+  return { success: sended };
 
 }
 
@@ -196,6 +196,6 @@ export async function declinaProverbio(id: number, uid: string) {
       </html>
       `
   });
-  return { success: true };
+  return { success: sended };
 
 }
