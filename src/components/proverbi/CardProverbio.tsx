@@ -158,49 +158,17 @@ export default function CardProverbio({ type, setString, proverbio }: Readonly<P
         if (type === "giorno") {
             return (
                 <>
-                    <div className="absolute left-[calc(100%-25px)] top-[15%] sm:top-[20%] z-1 w-[350px] 2xl:w-1/4 aspect-square pointer-events-none transform-[translate(-50%,-50%)] transition duration-500 select-none emoji">
-                        <Image
-                            src="/assets/emojis/esplosione.webp"
-                            alt="Esplosione"
-                            fill
-                            className="object-contain"
-                            priority
-                        />
-                    </div>
-                    <div className="absolute left-[11%] md:left-[2%] top-[calc(100%-40px)] z-1 w-[350px] 2xl:w-1/4 aspect-square pointer-events-none transform-[translate(-50%,-50%)] transition duration-500 select-none emoji">
-                        <Image
-                            src="/assets/emojis/fuoco.webp"
-                            alt="Fuoco emoji"
-                            fill
-                            className="object-contain"
-                            priority
-                        />
-                    </div>
+                    <div className="bg-[url('/assets/emojis/esplosione.webp')] absolute left-[calc(100%-25px)] top-[15%] sm:top-[23%] z-1 w-[350px] 2xl:w-1/4 aspect-square pointer-events-none bg-contain transform-[translate(-50%,-50%)] transition duration-500 select-none emoji"></div>
+                    <div className="bg-[url('/assets/emojis/fuoco.webp')] absolute left-[11%] md:left-[2%] top-[calc(100%-30px)] z-1 w-[350px] 2xl:w-1/4 aspect-square pointer-events-none bg-contain transform-[translate(-50%,-50%)] transition duration-500 select-none emoji"></div>
                 </>
             );
         } else if (type === "dettagli") {
             return (
-                <div className="absolute left-[calc(100%-25px)] top-[15%] sm:top-[20%] z-1 w-[350px] 2xl:w-1/4 aspect-square pointer-events-none transform-[translate(-50%,-50%)] transition duration-500 select-none emoji">
-                    <Image
-                        src="/assets/emojis/scrittura.webp"
-                        alt="Esplosione"
-                        fill
-                        className="object-contain"
-                        priority
-                    />
-                </div>
+                <div className="bg-[url('/assets/emojis/scrittura.webp')] absolute left-[calc(100%-25px)] top-[15%] sm:top-[23%] z-1 w-[350px] 2xl:w-1/4 aspect-square pointer-events-none bg-contain transform-[translate(-50%,-50%)] transition duration-500 select-none emoji"></div>
             );
         } else if (type === "aggiungi") {
             return (
-                <div className="absolute left-[calc(100%-25px)] top-[15%] sm:top-[20%] z-1 w-[350px] 2xl:w-1/4 aspect-square pointer-events-none transform-[translate(-50%,-50%)] transition duration-500 select-none emoji">
-                    <Image
-                        src="/assets/emojis/pensieroso.webp"
-                        alt="Esplosione"
-                        fill
-                        className="object-contain"
-                        priority
-                    />
-                </div>
+                <div className="bg-[url('/assets/emojis/pensieroso.webp')] absolute left-[calc(100%-25px)] top-[15%] sm:top-[23%] z-1 w-[350px] 2xl:w-1/4 aspect-square pointer-events-none bg-contain transform-[translate(-50%,-50%)] transition duration-500 select-none emoji"></div>
             );
         }
     }
