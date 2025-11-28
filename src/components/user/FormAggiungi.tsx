@@ -195,7 +195,7 @@ export default function ProfiloLayout({ id }: Readonly<Props>) {
                                                 {esempi.map((val, idx) => (
                                                     <input
                                                         type="text"
-                                                        key={`${idx}-${val}`}
+                                                        key={`${idx}`}
                                                         id={String(idx)}
                                                         value={val}
                                                         onChange={handleChangeEsempi}
