@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📜 Proverby
 
-## Getting Started
+**Proverby** è una piattaforma che raccoglie proverbi condivisi dalla community:  
+divertenti, saggi, originali o nati dall’esperienza quotidiana.  
 
-First, run the development server:
+Un archivio digitale pensato per **valorizzare la cultura popolare** e renderla accessibile a tutti.
+
+> 💬 *"La saggezza di tutti, in un unico luogo."*
+
+---
+
+## 🚀 Tecnologie Utilizzate
+
+Proverby è sviluppato con:
+
+- **Next.js** (TypeScript)
+- **React**
+- **API Routes Next.js**
+- **Database** PostgreSQL
+- **Tailwind**
+
+---
+
+## ✨ Funzionalità
+
+- 📚 Esplora proverbi da tutta Italia  
+- 🔍 Ricerca per parole chiave  
+- 📝 Aggiungi proverbi originali  
+- 👍 Vota o salva i proverbi preferiti  
+- 👥 Community-driven  
+- 🌐 UI moderna e responsive  
+
+> Se vuoi, posso aggiungere screenshot, badge o GIF.
+
+---
+
+## 🛠️ Installazione & Avvio del Progetto
 
 ```bash
+# Clona il repository
+git clone https://github.com/tuo-username/proverby.git
+
+# Entra nella cartella
+cd proverby
+
+# Installa le dipendenze
+npm install
+
+# Avvia il server di sviluppo
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
