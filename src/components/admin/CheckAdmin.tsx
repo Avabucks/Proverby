@@ -9,19 +9,17 @@ interface Props {
     closeOnError: boolean;
 }
 
-export default function CheckAdmin({ children, load, closeOnError }: Props) {
+export default function CheckAdmin({ children, load, closeOnError }: Readonly<Props>) {
     const router = useRouter();
-    const [isAdmin, setAdmin] = useState(false)
+    const [isAdmin, setIsAdmin] = useState(false)
     const { user } = useUser();
 
     useEffect(() => {
         async function loadUser() {
             if (user) {
-                if (user.isAdmin === 1) setAdmin(true)
+                if (user.isAdmin === 1) setIsAdmin(true)
                 else if (closeOnError) router.push("/")
-            } else {
-                if (closeOnError) router.push("/")
-            }
+            } else if (closeOnError) router.push("/")
         }
 
         loadUser();
