@@ -8,6 +8,7 @@ import localFont from "next/font/local";
 import { UserProvider } from "@/src/context/UserContext";
 import { cookies } from "next/headers";
 import { getUser } from "@/src/actions/users_actions";
+import Analytics from "../components/ui/Analytics";
 
 const yourmate = localFont({
   src: "./fonts/Yourmate.otf",
@@ -87,6 +88,7 @@ export default async function RootLayout({
         data-scroll-behavior="smooth"
       >
         <UserProvider initialUser={user}>
+          <Analytics></Analytics>
           <Navbar />
           <main>{children}</main>
         </UserProvider>

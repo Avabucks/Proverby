@@ -16,7 +16,12 @@ const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
 
-export const analytics: Analytics | null = 
-  typeof globalThis !== "undefined" && (await isSupported()) 
-    ? getAnalytics(app) 
-    : null;
+export const loadAnalytics = async (): Promise<Analytics | null> => {
+  if (globalThis.window === undefined) return null;
+
+  const supported = await isSupported();
+  if (!supported) return null;
+
+  const app = getApp();
+  return getAnalytics(app);
+};
