@@ -75,3 +75,8 @@ export async function GET(request: Request) {
     if (sended) return NextResponse.json({ error: 'Errore server' }, { status: 500 });
   }
 }
+
+// TODO (se giorno oggi == getprimolunediUTC [funzione utils]):
+// azzera score_week di quiz e salva posizione in classifica
+// mail ad admin con miglior proverbio
+// mail ad admin se fallisce

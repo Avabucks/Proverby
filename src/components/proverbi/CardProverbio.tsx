@@ -26,7 +26,7 @@ interface Proverbio {
     likeState?: number;
 }
 
-export default function CardProverbio({ type, setString, proverbio }: Props) {
+export default function CardProverbio({ type, setString, proverbio }: Readonly<Props>) {
     const router = useRouter();
     const pathname = usePathname().split("/").filter(Boolean).pop();
     const { user, fingerprint } = useUser();
