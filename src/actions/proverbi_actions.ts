@@ -45,13 +45,13 @@ export async function getProverbioFromSEO(seoLink: string, uid?: string, usernam
       [seoLink, uid, username]
     );
 
-    arr.isSaved = savedResult.rows.length > 0 ? true : false;
+    arr.isSaved = savedResult.rows.length > 0;
 
   }
 
   if (fingerprint) {
     let saveFingerprint
-    saveFingerprint = uid ? uid : fingerprint
+    saveFingerprint = uid || fingerprint
     arr.likeState = await getLikeProverbio(saveFingerprint, arr.id)
   }
 
@@ -78,7 +78,7 @@ export async function top10Proverbi(fingerprint: string, uid?: string) {
   const lastMonday = getLastMondayUTC();
 
   let saveFingerprint
-  saveFingerprint = uid ? uid : fingerprint
+  saveFingerprint = uid || fingerprint
 
   const result = await pool.query(
     `SELECT P.*, U.foto_profilo AS "photoURL", COALESCE(L.like_state, 0) AS "likeState", 
@@ -122,7 +122,7 @@ export async function acceptedProverbi(fingerprint: string, username?: string, u
   if (!username) return false
 
   let saveFingerprint
-  saveFingerprint = uid ? uid : fingerprint
+  saveFingerprint = uid || fingerprint
 
   const result = await pool.query(
     `SELECT 
@@ -208,7 +208,7 @@ export async function salvatiProverbi(fingerprint: string, username?: string, ui
   if (!username || !uid) return false
 
   let saveFingerprint
-  saveFingerprint = uid ? uid : fingerprint
+  saveFingerprint = uid || fingerprint
 
   const result = await pool.query(
     `SELECT 
@@ -250,7 +250,7 @@ export async function similarProverbi(fingerprint: string, seoLink?: string, uid
   if (!seoLink) return null
 
   let saveFingerprint
-  saveFingerprint = uid ? uid : fingerprint
+  saveFingerprint = uid || fingerprint
 
   const result = await pool.query(
     `
@@ -299,8 +299,9 @@ export async function deleteProverbio(id: number) {
       'DELETE FROM proverbi WHERE id = $1',
       [id]
     );
-    return true;
+    return result.rowCount;
   } catch (err) {
+    console.error("Error deleting proverbio:", err);
     return false;
   }
 
@@ -331,8 +332,7 @@ export async function aggiungiProverbio(seoLink: string, uid: string, username: 
       [proverbio, spiegazione, esempiCleaned, stato, new Date(), username, seoLink]
     );
 
-  } else {
-    if (isAdmin == 0) {
+  } else if (isAdmin == 0) {
       stato = 0
       result = await pool.query(
         `UPDATE proverbi
@@ -354,7 +354,6 @@ export async function aggiungiProverbio(seoLink: string, uid: string, username: 
         [proverbio, spiegazione, esempiCleaned, seoLink]
       );
     }
-  }
 
   if (result) {
     if (isAdmin == 0) {
@@ -368,7 +367,7 @@ export async function aggiungiProverbio(seoLink: string, uid: string, username: 
             <a href="https://www.proverby.it/admin">Vai all'admin</a>
           <div>`
       });
-      return { success: true };
+      return { success: sended.success || true };
     } else {
       return { success: true };
     }
@@ -414,14 +413,14 @@ export async function likeProverbio(fingerprint: string, likeState: number, id?:
   if (!id || fingerprint == "") return { success: false, error: "Errore del database" };
 
   let saveFingerprint
-  saveFingerprint = user_uid ? user_uid : fingerprint
+  saveFingerprint = user_uid || fingerprint
 
   const result = await pool.query(
     `INSERT INTO likes (proverbio_id, fingerprint, like_state)
         VALUES ($1, $2, $3)
         ON CONFLICT (proverbio_id, fingerprint) 
         DO UPDATE SET like_state = $3, data_like = $4`,
-    [id, saveFingerprint, likeState, new Date() || ""]
+    [id, saveFingerprint, likeState, new Date()]
   );
 
   if (result) {

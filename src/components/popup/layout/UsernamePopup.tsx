@@ -11,12 +11,12 @@ interface Props {
   setOpenUsernamePopup: Function;
 }
 
-export default function UsernamePopup({ setOpenUsernamePopup }: Props) {
+export default function UsernamePopup({ setOpenUsernamePopup }: Readonly<Props>) {
 
   const { user, setUser } = useUser();
 
-  const [username, setUsernameString] = useState("");
-  const [errorMsg, setErrMsg] = useState<{ success?: boolean; error: string; } | { success?: boolean; error?: undefined; }>({});
+  const [usernameString, setUsernameString] = useState("");
+  const [errorMsg, setErrorMsg] = useState<{ success?: boolean; error?: string; }>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length <= 15) {
@@ -25,25 +25,25 @@ export default function UsernamePopup({ setOpenUsernamePopup }: Props) {
   };
 
   const handleOnClick = () => {
-    if (username === "") setErrMsg({ success: false, error: "Questo campo non può essere vuoto" })
-    else setErrMsg({ success: true, })
+    if (usernameString === "") setErrorMsg({ success: false, error: "Questo campo non può essere vuoto" })
+    else setErrorMsg({ success: true, })
   };
 
   useEffect(() => {
     const updateUsername = async () => {
       if (user && errorMsg.success === true) {
-        const result = await setUsername(user.uid || "", toSeoFriendly(username));
-        setErrMsg(result || { success: false, error: "Errore generico" });
+        const result = await setUsername(user.uid || "", toSeoFriendly(usernameString));
+        setErrorMsg(result || { success: false, error: "Errore generico" });
 
         if (result.success) {
           const userCookie = {
             uid: user.uid,
-            username: toSeoFriendly(username),
+            username: toSeoFriendly(usernameString),
           };
 
           setCookie("user", JSON.stringify(userCookie), { maxAge: 365 * 24 * 60 * 60 });
 
-          const returnUser = await getUser(toSeoFriendly(username), user.uid)
+          const returnUser = await getUser(toSeoFriendly(usernameString), user.uid)
           setUser(returnUser)
           setOpenUsernamePopup(false)
 
@@ -59,12 +59,12 @@ export default function UsernamePopup({ setOpenUsernamePopup }: Props) {
       <div className="flex gap-2.5 items-center justify-between">
         <input className="input w-full text-[16px]"
           type="text"
-          value={username}
+          value={usernameString}
           onChange={handleChange}
           placeholder="Inserisci username" />
         <Ripple handleOnClick={handleOnClick} icon={BiCheck}>Imposta</Ripple>
       </div>
-      {!errorMsg.success ? <p className="text-[.9rem] text-red-700 opacity-80">{errorMsg.error}</p> : ``}
+      {(errorMsg.success === false) && (<p className="text-[.9rem] text-red-700 opacity-80">{errorMsg.error}</p>)}
     </div>
   );
 }

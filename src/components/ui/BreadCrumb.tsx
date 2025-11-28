@@ -1,17 +1,17 @@
 import Link from "next/link";
 import { BiChevronRight } from "react-icons/bi";
 
-interface CardProverbioProps {
+interface Props {
   children?: React.ReactNode;
   pagesLabel: string[];
   pagesLink: string[];
 }
 
-export default function BreadCrumb({ children, pagesLabel, pagesLink }: CardProverbioProps) {
+export default function BreadCrumb({ children, pagesLabel, pagesLink }: Readonly<Props>) {
   return (
     <div className="flex items-center gap-[5px] mt-[90px] md:mt-[110px] mb-2.5">
       { pagesLabel?.map((page, i) => (
-        <div className="flex items-center gap-[5px]" key={ i }>
+        <div className="flex items-center gap-[5px]" key={`${i}-${page}`}>
           <Link className="font-medium" href={`${ pagesLink[i] }`}>{ page }</Link>
           <BiChevronRight className="text-[24px] opacity-70" />
         </div>

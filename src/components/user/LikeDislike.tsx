@@ -9,19 +9,19 @@ interface Props {
     likeStateProverbio: number;
 }
 
-export default function ListProverbi({ id, likeStateProverbio }: Props) {
+export default function ListProverbi({ id, likeStateProverbio }: Readonly<Props>) {
     const { user, fingerprint } = useUser();
-    const [likeState, setLike] = useState<number>(0);
+    const [likeState, setLikeState] = useState<number>(0);
 
     useEffect(() => {
-        setLike(likeStateProverbio)
+        setLikeState(likeStateProverbio)
     }, []);
 
     let lock = false
     async function handleLike(nextLike: number) {
         if (lock) return;
         lock = true
-        setLike(nextLike)
+        setLikeState(nextLike)
         const result = await likeProverbio(fingerprint || "", nextLike, id, user?.uid)
         if (!result) {
             console.log(JSON.parse(result).error) // TODO: toast on error

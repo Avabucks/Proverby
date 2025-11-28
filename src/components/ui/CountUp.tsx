@@ -1,7 +1,7 @@
 import { useInView, useMotionValue, useSpring } from 'motion/react';
 import { useCallback, useEffect, useRef } from 'react';
 
-interface CountUpProps {
+interface Props {
   to: number;
   from?: number;
   direction?: 'up' | 'down';
@@ -25,7 +25,7 @@ export default function CountUp({
   separator = '',
   onStart,
   onEnd
-}: CountUpProps) {
+}: Readonly<Props>) {
   const toNormalized = to > 999 ? to/1000 : to
   const ref = useRef<HTMLSpanElement>(null);
   const motionValue = useMotionValue(direction === 'down' ? toNormalized : from);
@@ -44,7 +44,7 @@ export default function CountUp({
     const str = num.toString();
     if (str.includes('.')) {
       const decimals = str.split('.')[1];
-      if (parseInt(decimals) !== 0) {
+      if (Number.parseInt(decimals) !== 0) {
         return decimals.length;
       }
     }
@@ -65,7 +65,7 @@ export default function CountUp({
 
       const formattedNumber = Intl.NumberFormat('en-US', options).format(latest);
 
-      return separator ? formattedNumber.replace(/,/g, separator) : formattedNumber;
+      return separator ? formattedNumber.replaceAll(',', separator) : formattedNumber;
     },
     [maxDecimals, separator]
   );

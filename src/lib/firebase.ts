@@ -12,15 +12,11 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
 
-let analytics: Analytics | null = null;
-if (typeof window !== "undefined") {
-  isSupported().then((yes) => {
-    if (yes) analytics = getAnalytics(app);
-  });
-}
-
-export { analytics };
+export const analytics: Analytics | null = 
+  typeof globalThis !== "undefined" && (await isSupported()) 
+    ? getAnalytics(app) 
+    : null;

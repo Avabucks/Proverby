@@ -3,12 +3,12 @@ import Ripple from "@/src/components/ui/Ripple";
 import { deleteProverbio } from "@/src/actions/proverbi_actions";
 import { BiX, BiTrash } from "react-icons/bi";
 
-interface DeletePopupProps {
+interface Props {
   setOpenDeletePopup: Function;
   id: number;
 }
 
-export default function DeletePopup({ setOpenDeletePopup, id }: DeletePopupProps) {
+export default function DeletePopup({ setOpenDeletePopup, id }: Readonly<Props>) {
 
   // TODO: toast
   async function handleDelete() {

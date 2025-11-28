@@ -1,10 +1,8 @@
 "use client";
 import { auth, googleProvider } from "@/src/lib/firebase";
-import { signInWithPopup } from "firebase/auth";
+import { signInWithPopup, getAuth, signOut } from "firebase/auth";
 import { saveUser, getUsername, getUser } from "@/src/actions/users_actions";
-import { getAuth, signOut } from "firebase/auth";
-import { deleteCookie } from "cookies-next";
-import { setCookie } from "cookies-next";
+import { deleteCookie, setCookie } from "cookies-next";
 
 export async function firebaseLogIn() {
   try {
@@ -25,7 +23,8 @@ export async function firebaseLogIn() {
     const returnUser = await getUser(uname, user.uid)
     return returnUser
 
-  } catch (error: any) {
+  } catch (error) {
+    console.error("Errore durante il login:", error);
     return false
   }
 

@@ -75,7 +75,7 @@ export default async function RootLayout({
 
   const cookieStore = await cookies();
   const token = cookieStore.get("user")?.value;
-  const user = token ? await getUser(JSON.parse(token as string).username, JSON.parse(token as string).uid) : null;
+  const user = token ? await getUser(JSON.parse(token).username, JSON.parse(token).uid) : null;
 
   return (
     <html lang="it">

@@ -13,12 +13,12 @@ interface Props {
   username: string;
 }
 
-export default function ProfiloLayout({ username }: Props) {
+export default function ProfiloLayout({ username }: Readonly<Props>) {
   const router = useRouter();
   const { user, setUser } = useUser();
 
-  const [isLoading, setLoading] = useState(true);
-  const [isOwner, setOwner] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isOwner, setIsOwner] = useState(false);
   const [userPage, setUserPage] = useState<{ displayName: string, photoURL: string, uid: string, username: string, email: string, partiteGiocate: number, bestScore: number, migliorPosizione: number, posizioneAttuale: number, puntiSaggezza: number } | null>(null);
   const [countAccettati, setCountAccettati] = useState(false);
   const [countReviewed, setCountReviewed] = useState(false);
@@ -26,7 +26,7 @@ export default function ProfiloLayout({ username }: Props) {
   const [countSalvati, setCountSalvati] = useState(false);
 
   const handleLogout = async () => {
-    setLoading(true)
+    setIsLoading(true)
     const result = await firebaseLogOut()
     if (result) {
       setUser(null);
@@ -42,10 +42,10 @@ export default function ProfiloLayout({ username }: Props) {
         setUserPage(userPage)
         if (user) {
           if (user.username === username) {
-            setOwner(true);
+            setIsOwner(true);
           }
         }
-        setLoading(false);
+        setIsLoading(false);
       } else {
         router.push("/")
       }
@@ -54,6 +54,14 @@ export default function ProfiloLayout({ username }: Props) {
     loadUser();
 
   }, [user]);
+
+  const renderLoadingSkeleton = () => (
+    <>
+      <div className="animate-pulse rounded-full w-[200px] h-6 bg-(--contrast-01)"></div>
+      <div className="animate-pulse rounded-full w-40 h-[15px] bg-(--contrast-01) mt-[7px]"></div>
+      <div className="animate-pulse rounded-full w-[215px] h-[30px] bg-(--contrast-01) mt-[9px]"></div>
+    </>
+  )
 
   return (
     <>
@@ -64,11 +72,7 @@ export default function ProfiloLayout({ username }: Props) {
           }
           <div>
             {isLoading ?
-              <>
-                <div className="animate-pulse rounded-full w-[200px] h-6 bg-(--contrast-01)"></div>
-                <div className="animate-pulse rounded-full w-40 h-[15px] bg-(--contrast-01) mt-[7px]"></div>
-                <div className="animate-pulse rounded-full w-[215px] h-[30px] bg-(--contrast-01) mt-[9px]"></div>
-              </>
+              renderLoadingSkeleton()
               :
               <>
                 <h1 className="text-[1.2rem] font-semibold overflow-hidden text-ellipsis whitespace-nowrap w-full">{userPage?.displayName}</h1>
@@ -82,16 +86,17 @@ export default function ProfiloLayout({ username }: Props) {
             }
           </div>
         </div>
-        {isOwner ?
+        {isOwner && (
           <div>
             {isLoading ?
               <div className="hidden md:flex mt-2.5"><div className="border-[3px] border-solid border-(--primary) border-t-[rgba(0,0,0,0)] rounded-full w-[30px] h-[30px] animate-spin"></div></div>
               :
-              <div className="animate-[fade-in_.5s] hidden md:flex items-center gap-[7px] px-[25px] py-[15px] cursor-pointer rounded-(--border-radius) border border-solid border-(--contrast-01) shadow-[0_5px_0_var(--contrast-01)] active:shadow-[0_0_0_var(--contrast-01)] active:translate-y-[5px] transition-[translate,box-shadow] duration-300 select-none" onClick={handleLogout}><BiExit className="text-[1.3rem] opacity-80" />Disconnettiti</div>
+              <button className="animate-[fade-in_.5s] hidden md:flex items-center gap-[7px] px-[25px] py-[15px] cursor-pointer rounded-(--border-radius) border border-solid border-(--contrast-01) shadow-[0_5px_0_var(--contrast-01)] active:shadow-[0_0_0_var(--contrast-01)] active:translate-y-[5px] transition-[translate,box-shadow] duration-300 select-none" onClick={handleLogout}>
+                <BiExit className="text-[1.3rem] opacity-80" />Disconnettiti
+              </button>
             }
           </div>
-          : <></>
-        }
+        )}
       </div>
       <div className="section tab-profilo">
         <div className="tabbar">
@@ -100,7 +105,7 @@ export default function ProfiloLayout({ username }: Props) {
           <input type="radio" id="tab-statistiche" name="tab" />
 
           <nav>
-            <label htmlFor="tab-proverbi"><i className="bx-gallery-vertical-end"><BiCollection/></i><i className="bxs-gallery-vertical-end"><BiSolidCollection /></i><p className="hidden md:flex">Proverbi</p>{countAccettati === false ? <></> : <span>{countAccettati}</span>}</label>
+            <label htmlFor="tab-proverbi"><i className="bx-gallery-vertical-end"><BiCollection /></i><i className="bxs-gallery-vertical-end"><BiSolidCollection /></i><p className="hidden md:flex">Proverbi</p>{countAccettati === false ? <></> : <span>{countAccettati}</span>}</label>
             {isOwner ? <label htmlFor="tab-salvati"><i className="bx-bookmark"><BiBookmark /></i><i className="bxs-bookmark"><BiSolidBookmark /></i><p className="hidden md:flex">Salvati</p>{countSalvati === false ? <></> : <span>{countSalvati}</span>}</label> : <></>}
             <label htmlFor="tab-statistiche"><i className="bx-chart-bar-rows"><BiLineChart /></i><i className="bxs-chart-bar-rows"><BiLineChart /></i><p className="hidden md:flex">Statistiche</p></label>
           </nav>
@@ -108,29 +113,21 @@ export default function ProfiloLayout({ username }: Props) {
             <div className="tab-panel proverbi">
               <h2>I PROVERBI DI {username.toUpperCase()}</h2>
               <ListProverbi type="accepted" setCount={setCountAccettati} isOwner={isOwner}></ListProverbi>
-              {isOwner ?
+              {isOwner &&
                 <>
                   {countReviewed ? <h2>IN ATTESA DI REVISONE</h2> : <></>}
-                  <div className={`${!countReviewed ? "hidden" : ""}`}><ListProverbi type="review" setCount={setCountReviewed} isOwner={isOwner}></ListProverbi></div>
+                  <div className={`${!countReviewed && "hidden"}`}><ListProverbi type="review" setCount={setCountReviewed} isOwner={isOwner}></ListProverbi></div>
                   {countDeclined ? <h2>RIFIUTATI</h2> : <></>}
-                  <div className={`${!countDeclined ? "hidden" : ""}`}><ListProverbi type="declined" setCount={setCountDeclined} isOwner={isOwner}></ListProverbi></div>
-                </> :
-                <>
+                  <div className={`${!countDeclined && "hidden"}`}><ListProverbi type="declined" setCount={setCountDeclined} isOwner={isOwner}></ListProverbi></div>
                 </>
               }
             </div>
-            {isOwner ?
+            {isOwner && (
               <div className="tab-panel salvati">
-                {isOwner ?
-                  <>
-                    <h2>I TUOI PROVERBI SALVATI</h2>
-                    <ListProverbi type="salvati" setCount={setCountSalvati}></ListProverbi>
-                  </> :
-                  <>
-                  </>
-                }
+                <h2>I TUOI PROVERBI SALVATI</h2>
+                <ListProverbi type="salvati" setCount={setCountSalvati}></ListProverbi>
               </div>
-              : <></>}
+            )}
             <div className="tab-panel statistiche">
               <h2>STATISTICHE DEI QUIZ FATTI DA {username.toUpperCase()}</h2>
               <div>

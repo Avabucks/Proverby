@@ -100,15 +100,15 @@
 
 /* -------- CardProverbio -------- */
 
-.card-proverby>div:hover .emoji:nth-child(1) {
+.card-proverby>button:hover .emoji:nth-child(1) {
   transform: translate(calc(-50% + 10px), calc(-50% - 10px));
 }
 
-.card-proverby>div:hover .emoji:nth-child(2) {
+.card-proverby>button:hover .emoji:nth-child(2) {
   transform: translate(calc(-50% - 10px), calc(-50% + 10px));
 }
 
-.card-proverby>div .bg-card::before {
+.card-proverby>button .bg-card::before {
   content: '';
   position: absolute;
   top: 0;
@@ -119,27 +119,27 @@
   transition: .3s;
 }
 
-.card-proverby.giorno>div .bg-card::before {
+.card-proverby.giorno>button .bg-card::before {
   opacity: .4;
   background-image: url('/assets/shadow.webp');
 }
 
-.card-proverby.dettagli>div .bg-card::before {
+.card-proverby.dettagli>button .bg-card::before {
   background-color: var(--primary);
 }
 
-.card-proverby.aggiungi>div .bg-card::before {
+.card-proverby.aggiungi>button .bg-card::before {
   background-color: var(--contrast-01);
 }
 
-.card-proverby.aggiungi-scritto>div {
+.card-proverby.aggiungi-scritto>button {
   color: rgb(255,255,255);
 }
-.card-proverby.aggiungi-scritto>div .bg-card::before {
+.card-proverby.aggiungi-scritto>button .bg-card::before {
   background-color: var(--primary);
 }
 
-.card-proverby.giorno>div:active {
+.card-proverby.giorno>button:active {
   transform: scale(.99);
 }
 

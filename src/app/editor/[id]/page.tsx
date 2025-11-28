@@ -23,9 +23,9 @@ export async function generateMetadata({
 
 export default async function Profilo({
   params,
-}: {
+}: Readonly<{
   params: Promise<{ id: string }>
-}) {
+}>) {
   const { id } = await params
 
   return (

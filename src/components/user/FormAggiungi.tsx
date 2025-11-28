@@ -13,18 +13,18 @@ interface Props {
     id: string;
 }
 
-export default function ProfiloLayout({ id }: Props) {
+export default function ProfiloLayout({ id }: Readonly<Props>) {
     const router = useRouter();
-    const pathname = usePathname().split("/").filter(Boolean).pop();
+    const pathname = usePathname().split("/").findLast(Boolean);
     const { user } = useUser();
 
-    const [isLoading, setLoading] = useState(true)
-    const [isSaving, setSaving] = useState(false)
-    const [proverbio, setProverbioString] = useState("");
-    const [spiegazione, setSpiegazioneString] = useState("");
-    const [esempi, setEsempiArray] = useState<string[]>([""]);
-    const [isSuccess, setSuccess] = useState(false)
-    const [errorMsg, setErrMsg] = useState<{ success?: boolean; error: string; } | { success?: boolean; error?: undefined; }>({ success: true });
+    const [isLoading, setIsLoading] = useState(true)
+    const [isSaving, setIsSaving] = useState(false)
+    const [proverbio, setProverbio] = useState("");
+    const [spiegazione, setSpiegazione] = useState("");
+    const [esempi, setEsempi] = useState<string[]>([""]);
+    const [isSuccess, setIsSuccess] = useState(false)
+    const [errorMsg, setErrorMsg] = useState<{ success?: boolean; error?: string; }>({ success: true });
 
     const handleConfetti = () => {
         const duration = 5 * 1000
@@ -32,7 +32,7 @@ export default function ProfiloLayout({ id }: Props) {
         const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 }
         const randomInRange = (min: number, max: number) =>
             Math.random() * (max - min) + min
-        const interval = window.setInterval(() => {
+        const interval = globalThis.setInterval(() => {
             const timeLeft = animationEnd - Date.now()
             if (timeLeft <= 0) {
                 return clearInterval(interval)
@@ -55,7 +55,7 @@ export default function ProfiloLayout({ id }: Props) {
         const index = Number(e.target.id);
         const value = e.target.value;
 
-        setEsempiArray(prev => {
+        setEsempi(prev => {
             const newEsempi = [...prev];
             newEsempi[index] = value;
             return newEsempi;
@@ -63,32 +63,32 @@ export default function ProfiloLayout({ id }: Props) {
     };
 
     const handleAggiungiEsempio = () => {
-        if (esempi.length < 9) setEsempiArray(prev => [...prev, ""]);
+        if (esempi.length < 9) setEsempi(prev => [...prev, ""]);
     }
 
     const handleAggiungi = async () => {
         if (!user) {
-            setErrMsg({ success: false, error: "Utente non caricato" });
+            setErrorMsg({ success: false, error: "Utente non caricato" });
             window.scrollTo({ top: 0, behavior: 'smooth' });
             return;
         }
         if (proverbio.length == 0 || spiegazione.length == 0) {
-            setErrMsg({ success: false, error: "Il proverbio e la spiegazione non possono essere vuoti" });
+            setErrorMsg({ success: false, error: "Il proverbio e la spiegazione non possono essere vuoti" });
             window.scrollTo({ top: 0, behavior: 'smooth' });
             return;
         }
 
-        setSaving(true)
+        setIsSaving(true)
         const result = await aggiungiProverbio(id, user.uid, user.username, proverbio, spiegazione, esempi, user.isAdmin)
         if (result.success && user?.isAdmin == 0) {
-            setSuccess(true)
+            setIsSuccess(true)
             handleConfetti();
         } else if (result.success && user?.isAdmin == 1) {
             router.push("/admin")
         } else {
-            setErrMsg(result)
+            setErrorMsg(result)
         }
-        setSaving(false);
+        setIsSaving(false);
     };
 
     useEffect(() => {
@@ -107,47 +107,73 @@ export default function ProfiloLayout({ id }: Props) {
         }
 
         async function loadProverbioFromSEO() {
-            if (pathname != "new") {
+            if (pathname === "new") {
+                setIsLoading(false);
+            } else {
                 const result = await getProverbioFromSEO(pathname || "");
                 if (user && result && result.stato != 1 && (result.username == user.username || user.isAdmin == 1)) {
-                    setProverbioString(result.proverbio);
-                    setSpiegazioneString(result.spiegazione);
-                    setEsempiArray(result.esempi || [""]);
-                    setLoading(false);
+                    setProverbio(result.proverbio);
+                    setSpiegazione(result.spiegazione);
+                    setEsempi(result.esempi || [""]);
+                    setIsLoading(false);
                 } else {
                     router.push("/")
                 }
-            } else {
-                setLoading(false);
             }
         }
 
         loadUser()
     }, [])
 
+    const renderLoadingSkeleton = () => (
+        <>
+            <div className="animate-pulse rounded-full w-full h-6 bg-(--contrast-01)"></div>
+            <div className="animate-pulse rounded-full w-[300px] h-[15px] bg-(--contrast-01) mt-[7px]"></div>
+            <div className="animate-pulse rounded-full w-[215px] h-[15px] bg-(--contrast-01) mt-[9px]"></div>
+            <div className="animate-pulse rounded-full w-full h-6 bg-(--contrast-01) mt-10"></div>
+            <div className="animate-pulse rounded-full w-[300px] h-[15px] bg-(--contrast-01) mt-[7px]"></div>
+            <div className="animate-pulse rounded-full w-[215px] h-[15px] bg-(--contrast-01) mt-[9px] mb-10"></div>
+        </>
+    )
+
+    const renderSuccess = () => {
+        return (
+            <section className="justify-center min-h-[70vh]">
+                <div className="animate-[bounce-in_.5s_cubic-bezier(0.68,-0.6,0.32,1.6)]">
+                    <div className="flex flex-col items-center text-center gap-5">
+                        <h1 className="text-[3.5rem] font-bold w-full md:w-[650px] leading-15 bg-linear-to-br from-(--primary-light) to-(--primary-dark) bg-clip-text text-transparent">Grazie per aver condiviso un proverbio!</h1>
+                        <h2 className="opacity-70 w-full md:w-[600px] leading-6">Il tuo proverbio è stato inviato ed è in attesa di approvazione. Appena sarà approvato, sarà visibile alla community di Proverby.</h2>
+                    </div>
+                    <div className="w-full my-10 border-t border-t-solid border-t-(--contrast-01)"></div>
+                    <div className="flex justify-center w-full">
+                        <div className="flex flex-row gap-3 md:gap-5 items-center justify-center">
+                            <Link href={`/profilo/${user?.username}`} aria-label=""><Ripple opt="outline" icon={BiUser}><span className="hidden md:flex -mr-0.5">Visualizza</span><span>Profilo</span></Ripple></Link>
+                            <Ripple opt="accient" icon={BiPlus} handleOnClick={() => setIsSuccess(false)}>Aggiungi Proverbio</Ripple>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
     return (
         <div>
-            {!isSuccess ?
+            {isSuccess ?
+                renderSuccess()
+                :
                 <div>
-                    {!errorMsg.success ?
+                    {(errorMsg.success === false) && (
                         <section>
                             <div className="relative flex items-center gap-2.5 overflow-hidden border-solid border-2 border-[rgb(220,50,50)] text-[rgb(220,50,50)] p-5 rounded-(--border-radius) before:content-[''] before:absolute before:inset-0 before:w-full before:h-full before:bg-[rgb(220,50,50)] before:opacity-20">
                                 <div><BiErrorAlt className='text-[1.3rem]' /></div>
                                 {errorMsg.error}
                             </div>
                         </section>
-                        : <></>}
-                    <CardProverbio type="aggiungi" setString={setProverbioString} proverbio={proverbio}></CardProverbio>
+                    )}
+                    <CardProverbio type="aggiungi" setString={setProverbio} proverbio={proverbio}></CardProverbio>
                     <section className="mt-[-130px]">
                         {isLoading ?
-                            <>
-                                <div className="animate-pulse rounded-full w-full h-6 bg-(--contrast-01)"></div>
-                                <div className="animate-pulse rounded-full w-[300px] h-[15px] bg-(--contrast-01) mt-[7px]"></div>
-                                <div className="animate-pulse rounded-full w-[215px] h-[15px] bg-(--contrast-01) mt-[9px]"></div>
-                                <div className="animate-pulse rounded-full w-full h-6 bg-(--contrast-01) mt-10"></div>
-                                <div className="animate-pulse rounded-full w-[300px] h-[15px] bg-(--contrast-01) mt-[7px]"></div>
-                                <div className="animate-pulse rounded-full w-[215px] h-[15px] bg-(--contrast-01) mt-[9px] mb-10"></div>
-                            </>
+                            renderLoadingSkeleton()
                             :
                             <>
                                 {user ?
@@ -158,7 +184,7 @@ export default function ProfiloLayout({ id }: Props) {
                                         <textarea
                                             className="textarea w-full mt-[15px] text-[16px]"
                                             value={spiegazione}
-                                            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setSpiegazioneString(e.target.value)}
+                                            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setSpiegazione(e.target.value)}
                                             placeholder="Inserisci una spiegazione" />
                                         <div className="flex flex-col items-start w-full mt-[45px]">
                                             <div className="flex items-center justify-between gap-2.5 w-full">
@@ -169,7 +195,7 @@ export default function ProfiloLayout({ id }: Props) {
                                                 {esempi.map((val, idx) => (
                                                     <input
                                                         type="text"
-                                                        key={idx}
+                                                        key={`${idx}-${val}`}
                                                         id={String(idx)}
                                                         value={val}
                                                         onChange={handleChangeEsempi}
@@ -202,10 +228,10 @@ export default function ProfiloLayout({ id }: Props) {
                                                     <div className="border-[3px] border-solid border-(--primary) border-t-[rgba(0,0,0,0)] rounded-full w-[30px] h-[30px] animate-spin"></div>
                                                 </div>
                                                 :
-                                                <div className="animate-[fade-in_.3s] flex items-center justify-center gap-[5px] leading-0 w-full bg-(--primary) py-5 text-[rgb(255,255,255)] rounded-(--border-radius) shadow-[0_5px_0_var(--primary-dark)] active:shadow-[0_0_0_var(--primary-dark)] active:translate-y-[5px] transition-[translate,box-shadow] duration-300 cursor-pointer"
+                                                <button className="animate-[fade-in_.3s] flex items-center justify-center gap-[5px] leading-0 w-full bg-(--primary) py-5 text-[rgb(255,255,255)] rounded-(--border-radius) shadow-[0_5px_0_var(--primary-dark)] active:shadow-[0_0_0_var(--primary-dark)] active:translate-y-[5px] transition-[translate,box-shadow] duration-300 cursor-pointer"
                                                     onClick={handleAggiungi}>
                                                     <BiSend />Invia il proverbio <span className="hidden md:flex">e attendi che venga accettato</span>
-                                                </div>
+                                                </button>
                                             }
                                         </div>
                                     </>
@@ -216,22 +242,6 @@ export default function ProfiloLayout({ id }: Props) {
                         }
                     </section>
                 </div>
-                :
-                <section className="justify-center min-h-[70vh]">
-                    <div className="animate-[bounce-in_.5s_cubic-bezier(0.68,-0.6,0.32,1.6)]">
-                        <div className="flex flex-col items-center text-center gap-5">
-                            <h1 className="text-[3.5rem] font-bold w-full md:w-[650px] leading-15 bg-linear-to-br from-(--primary-light) to-(--primary-dark) bg-clip-text text-transparent">Grazie per aver condiviso un proverbio!</h1>
-                            <h2 className="opacity-70 w-full md:w-[600px] leading-6">Il tuo proverbio è stato inviato ed è in attesa di approvazione. Appena sarà approvato, sarà visibile alla community di Proverby.</h2>
-                        </div>
-                        <div className="w-full my-10 border-t border-t-solid border-t-(--contrast-01)"></div>
-                        <div className="flex justify-center w-full">
-                            <div className="flex flex-row gap-3 md:gap-5 items-center justify-center">
-                                <Link href={`/profilo/${user?.username}`} aria-label=""><Ripple opt="outline" icon={BiUser}><span className="hidden md:flex -mr-0.5">Visualizza</span><span>Profilo</span></Ripple></Link>
-                                <Ripple opt="accient" icon={BiPlus} handleOnClick={() => setSuccess(false)}>Aggiungi Proverbio</Ripple>
-                            </div>
-                        </div>
-                    </div>
-                </section>
             }
         </div>
     )

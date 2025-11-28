@@ -88,7 +88,7 @@ export default function Terms() {
           </div>
           <div>
             <h2>Contatti</h2>
-            <p className="flex flex-col gap-2.5">Per qualsiasi domanda o segnalazione puoi scriverci a:
+            <p className="flex flex-col gap-2.5">Per qualsiasi domanda o segnalazione puoi scriverci a::{' '}
               <a href="mailto:info@proverby.it" className="text-(--primary-light) underline">info@proverby.it</a>
             </p>
           </div>

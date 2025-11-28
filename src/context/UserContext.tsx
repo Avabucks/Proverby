@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import { createContext, useContext, useState, ReactNode, useEffect, useMemo } from "react";
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 interface User {
@@ -28,12 +28,12 @@ export const UserContext = createContext<UserContextType>({
     fingerprint: "",
 });
 
-interface UserProviderProps {
+interface Props {
     children: ReactNode;
     initialUser?: User;
 }
 
-export function UserProvider({ children, initialUser }: UserProviderProps) {
+export function UserProvider({ children, initialUser }: Readonly<Props>) {
     const [user, setUser] = useState<User | null>(initialUser || null);
     const [fingerprint, setFingerprint] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
@@ -49,13 +49,17 @@ export function UserProvider({ children, initialUser }: UserProviderProps) {
         loadFingerprint();
     }, [user]);
 
+    const contextValue = useMemo(
+        () => ({ user, setUser, fingerprint: fingerprint! }),
+        [user, fingerprint]
+    );
+
     if (loading) {
-        // fallback mentre il fingerprint non è pronto
         return <div></div>;
     }
 
     return (
-        <UserContext.Provider value={{ user, setUser, fingerprint: fingerprint! }}>
+        <UserContext.Provider value={contextValue}>
             {children}
         </UserContext.Provider>
     );

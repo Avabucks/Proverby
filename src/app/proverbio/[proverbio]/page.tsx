@@ -30,9 +30,9 @@ export async function generateMetadata({
 
 export default async function Profilo({
     params,
-}: {
+}: Readonly<{
     params: Promise<{ proverbio: string }>
-}) {
+}>) {
     const { proverbio } = await params
     const result = await getProverbioFromSEO(proverbio)
 

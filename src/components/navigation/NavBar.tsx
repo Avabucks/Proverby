@@ -15,6 +15,7 @@ import { checkUsernameSameUid } from "@/src/actions/users_actions";
 import { getRandomProverbioSEO } from "@/src/actions/proverbi_actions";
 import { firebaseLogIn, firebaseLogOut } from "@/src/actions/firebase_actions";
 import { BiMenu, BiCollection, BiJoystick, BiPlus, BiEditAlt, BiInfoCircle, BiExit, BiDice2, BiReceipt } from "react-icons/bi";
+import clsx from "clsx";
 
 
 export default function Navbar() {
@@ -24,24 +25,37 @@ export default function Navbar() {
 
   const [scrolled, setScrolled] = useState(false);
   const [openUsernamePopup, setOpenUsernamePopup] = useState(false);
-  const [isNavOpen, setNavOpen] = useState(false);
+  const [isNavOpen, setIsNavOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const profileUrl = user?.username && user?.username !== user?.uid && `/profilo/${user.username}`;
+  const navClasses = clsx(
+    "md:opacity-100 md:pointer-events-auto absolute top-[75px] left-0 md:relative md:top-0 w-full h-[calc(100vh-75px)] md:h-auto p-[7px] md:p-0 flex md:flex flex-col md:flex-row items-bt md:items-center gap-2.5 lg:gap-5 list-none duration-300",
+    isNavOpen ? "bg-(--bg)" : "opacity-0 pointer-events-none"
+  );
 
   const handleScroll = () => {
     setScrolled(window.scrollY > 10);
   };
 
-  const handleRandom = async () => {
+  const handleClickRandom = async () => {
     const result = await getRandomProverbioSEO()
     router.push(`/proverbio/${result}`)
+    closeNav()
   };
 
-  const handleNavClick = () => {
-    setNavOpen(isNavOpen ? false : true);
+  const handleClickNav = () => {
+    setIsNavOpen(!isNavOpen);
   };
+
+  const handleClickNew = () => {
+    if (user) router.push("/editor/new");
+    else handleLogin();
+    closeNav();
+  }
 
   const closeNav = () => {
-    setNavOpen(false);
+    setIsNavOpen(false);
   };
 
   const handleLogin = async () => {
@@ -91,7 +105,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center md:ml-[-15px] md:gap-5">
             <div className="flex md:hidden items-center -mx-2.5">
-              <Ripple handleOnClick={handleNavClick} icon={BiMenu}></Ripple>
+              <Ripple handleOnClick={handleClickNav} icon={BiMenu}></Ripple>
             </div>
             <Ripple>
               <div className="h-[55px]">
@@ -101,10 +115,10 @@ export default function Navbar() {
               </div>
             </Ripple>
             <div>
-              <div className={`${!isNavOpen ? "opacity-0 pointer-events-none" : "bg-(--bg)"} md:opacity-100 md:pointer-events-auto absolute top-[75px] left-0 md:relative md:top-0 w-full h-[calc(100vh-75px)] md:h-auto p-[7px] md:p-0 flex md:flex flex-col md:flex-row items-bt md:items-center gap-2.5 lg:gap-5 list-none duration-300`}>
+              <div className={navClasses}>
                 <div className="hidden md:flex border-l border-solid border-(--contrast-01) h-10"></div>
                 <Link href="/sfoglia" onClick={closeNav}><Ripple icon={BiCollection}>Sfoglia</Ripple></Link>
-                <div onClick={() => (closeNav(), handleRandom())}><Ripple icon={BiDice2}><span className="md:hidden lg:hidden xl:flex flex-col -mr-0.5">Proverbio</span><span>Casuale</span></Ripple></div>
+                <button onClick={handleClickRandom}><Ripple icon={BiDice2}><span className="md:hidden lg:hidden xl:flex flex-col -mr-0.5">Proverbio</span><span>Casuale</span></Ripple></button>
                 <Link href="/quiz" onClick={closeNav}><Ripple icon={BiJoystick}>Quiz</Ripple></Link>
                 <Link href="/editor/new" className="flex md:hidden" onClick={closeNav}><Ripple icon={BiPlus}>Aggiungi<span className="md:hidden lg:hidden xl:flex flex-col">Proverbio</span></Ripple></Link>
                 <div className="flex md:hidden mx-auto w-[90%] border-b border-solid border-(--contrast-01)"></div>
@@ -121,18 +135,28 @@ export default function Navbar() {
           </div>
           <div className="flex items-center gap-5">
             {pathname == "/editor/new" ? <></> :
-              <div onClick={() => {
-                if (user) router.push("/editor/new");
-                else handleLogin();
-                closeNav();
-              }}
+              <button onClick={handleClickNew}
                 className="animate-[bounce-in_.5s_cubic-bezier(0.68,-0.6,0.32,1.6)] hidden md:flex cursor-pointer">
                 <Ripple opt="accient" icon={BiPlus}>Aggiungi<span className="md:hidden lg:hidden xl:flex flex-col">Proverbio</span></Ripple>
-              </div>
+              </button>
             }
             <ThemeToggle></ThemeToggle>
             <div className="border-l border-solid border-(--contrast-01) h-10"></div>
-            {!user ?
+            {user ?
+              <Link className="ml-[-13px]" href={profileUrl || "#"} onClick={closeNav}>
+                <Ripple>
+                  <div className="flex items-center gap-2.5 h-[60px]">
+                    <div className="flex items-center">
+                      <Image className="rounded-full max-w-none" src={user.photoURL} alt="fot_profilo" width={42} height={42} />
+                    </div>
+                    <div className={`hidden ${(user.username !== user.uid) && ("xl:flex")} flex-col`}>
+                      <span className="font-semibold text-[1.1rem]">{user.username}</span>
+                      <span className="font-medium text-[.9rem] mt-[-3px] opacity-40">Visualizza Profilo</span>
+                    </div>
+                  </div>
+                </Ripple>
+              </Link>
+              :
               <>
                 {loading ?
                   <div className="border-[3px] border-solid border-(--primary) border-t-[rgba(0,0,0,0)] rounded-full w-[30px] h-[30px] animate-spin"></div>
@@ -140,34 +164,16 @@ export default function Navbar() {
                   <Ripple handleOnClick={handleLogin} opt="outline" img={GoogleLogo} alt="google_logo"><span className="hidden md:flex">Accedi con Google</span></Ripple>
                 }
               </>
-              :
-              <Link className="ml-[-13px]" href={user.username != user.uid ? `/profilo/${user.username}` : ``} onClick={closeNav}>
-                <Ripple>
-                  <div className="flex items-center gap-2.5 h-[60px]">
-                    <div className="flex items-center">
-                      <Image className="rounded-full max-w-none" src={user.photoURL} alt="fot_profilo" width={42} height={42} />
-                    </div>
-                    <div className={`hidden ${user.username != user.uid ? "xl:flex" : ""} flex-col`}>
-                      <span className="font-semibold text-[1.1rem]">{user.username}</span>
-                      <span className="font-medium text-[.9rem] mt-[-3px] opacity-40">Visualizza Profilo</span>
-                    </div>
-                  </div>
-                </Ripple>
-              </Link>
             }
           </div>
         </div>
       </nav>
       {pathname == "/editor/new" ? <></> :
         <div className="fixed bottom-[25px] right-[25px] z-1000 flex md:hidden bg-(--bg) rounded-(--border-radius) duration-300 transform-[scale(1.1)] origin-bottom-right">
-          <div onClick={() => {
-            if (user) router.push("/editor/new");
-            else handleLogin();
-            closeNav();
-          }}
+          <button onClick={handleClickNew}
             className="animate-[bounce-in_.5s_cubic-bezier(0.68,-0.6,0.32,1.6)] cursor-pointer">
             <Ripple opt="accient" icon={BiEditAlt}></Ripple>
-          </div>
+          </button>
         </div>
       }
       <Popup width="md" isOpen={openUsernamePopup} canClose={false} title="Devi impostare il tuo username" setPopup={setOpenUsernamePopup}><UsernamePopup setOpenUsernamePopup={setOpenUsernamePopup}></UsernamePopup></Popup>

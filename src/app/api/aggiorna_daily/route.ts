@@ -62,6 +62,7 @@ export async function GET(request: Request) {
     if (sended) return NextResponse.json(final.rows[0]);
 
   } catch (error) {
+    console.error('Daily proverb update failed:', error);
     const sended = await sendEmail({
       to: "info@proverby.it",
       subject: "Aggiornamento proverbio del giorno fallita",

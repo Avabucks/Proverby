@@ -11,31 +11,31 @@ interface Props {
     setSaved: Function;
 }
 
-export default function SalvaProverbio({ isSaved, setSaved }: Props) {
+export default function SalvaProverbio({ isSaved, setSaved }: Readonly<Props>) {
     const { user } = useUser();
     const pathname = usePathname()
 
-    const [isLogged, setLogged] = useState(false);
-    const [isLoading, setLoading] = useState(false);
+    const [isLogged, setIsLogged] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if (user) {
-            setLogged(true)
+            setIsLogged(true)
         }
     }, [user])
 
     const handleSalva = async () => {
-        setLoading(true)
+        setIsLoading(true)
         if (user) {
             setSaved(!isSaved)
-            const result = await salvaProverbio(user.uid, user.username, isSaved, pathname.split("/").filter(Boolean).pop())
+            const result = await salvaProverbio(user.uid, user.username, isSaved, pathname.split("/").findLast(Boolean))
             if (result) {
                 console.log("Salvato") // TODO: toast
             } else {
                 console.log("Errore") // TODO: toast
             }
         }
-        setLoading(false)
+        setIsLoading(false)
     };
 
     return (

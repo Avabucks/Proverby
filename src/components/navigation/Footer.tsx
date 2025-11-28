@@ -4,11 +4,7 @@ import CheckAdmin from "@/src/components/admin/CheckAdmin";
 import { BiLogoInstagram, BiLogoTiktok } from "react-icons/bi";
 import { SiBuymeacoffee } from "react-icons/si";
 
-interface Props {
-    ctaText?: string;
-}
-
-export default function Footer({ }: Props) {
+export default function Footer() {
     return (
         <div className="animate-[fade-in_.5s] mt-[50px]">
             <footer className="flex flex-col items-center w-full border-t-solid border-t border-t-(--contrast-01) duration-300">

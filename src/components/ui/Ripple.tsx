@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import Image from "next/image";
 import { IconType } from "react-icons";
 
@@ -10,11 +11,16 @@ interface RippleProps {
   alt?: string;
 }
 
-export default function Ripple({ handleOnClick, children, opt, icon: Icon, img, alt }: RippleProps) {
+export default function Ripple({ handleOnClick, children, opt, icon: Icon, img, alt }: Readonly<RippleProps>) {
+
+  const rippleClasses = clsx(
+    "ripple px-[15px]",
+    opt
+  );
   return (
-    <div onClick={handleOnClick} className={`ripple ${opt || ""} px-[15px]`}>
+    <div onClick={handleOnClick} className={rippleClasses}>
       {Icon && <i><Icon className="text-[1.3rem] md:text-[1.4rem]" aria-label="Icona" /></i>}
-      {img ? <Image src={img} alt={alt || ""} width={20}></Image> : ""}
+      {img && alt && <Image src={img} alt={alt} width={20}></Image>}
       {children}
     </div>
   );
