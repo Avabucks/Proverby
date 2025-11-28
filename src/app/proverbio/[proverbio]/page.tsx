@@ -45,7 +45,7 @@ export default async function Profilo({
             <section>
                 <ProverbioBody></ProverbioBody>
             </section>
-            <Footer ctaText="Hai un proverbio migliore? Aggiungilo" />
+            <Footer />
         </>
     )
 }

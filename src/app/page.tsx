@@ -30,7 +30,7 @@ export default async function Home() {
           <BiRightArrowAlt className='text-[1.6rem] opacity-80 duration-300 group-hover:translate-x-2.5' />
         </Link>
       </section>
-      <Footer ctaText="Aggiungi il tuo proverbio!" />
+      <Footer />
     </div>
   );
 }

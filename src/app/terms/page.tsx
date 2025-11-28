@@ -94,7 +94,7 @@ export default function Terms() {
           </div>
         </div>
       </section>
-      <Footer ctaText="Aggiungi il tuo proverbio!" />
+      <Footer />
     </>
   );
 }

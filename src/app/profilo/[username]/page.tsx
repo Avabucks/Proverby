@@ -28,7 +28,7 @@ export default async function Profilo({
         <BreadCrumb pagesLabel={["Home", "Profilo"]} pagesLink={["/", "/"]}>{username}</BreadCrumb>
         <ProfiloLayout username={`${username}`}></ProfiloLayout>
       </section>
-      <Footer ctaText="Aggiungi il tuo proverbio!" />
+      <Footer />
     </>
   )
 }

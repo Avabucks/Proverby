@@ -15,7 +15,7 @@ export default async function Profilo() {
         <BreadCrumb pagesLabel={["Home"]} pagesLink={["/"]}>Quiz</BreadCrumb>
         TODO: Quiz, coming soon
       </section>
-      <Footer ctaText="Aggiungi il tuo proverbio!" />
+      <Footer />
     </>
   )
 }

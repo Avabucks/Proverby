@@ -47,7 +47,7 @@ export default function About() {
           </div>
         </div>
       </section>
-      <Footer ctaText="Aggiungi il tuo proverbio!" />
+      <Footer />
     </>
   );
 }

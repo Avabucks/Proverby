@@ -34,7 +34,7 @@ export default async function Profilo({
         <BreadCrumb pagesLabel={["Home"]} pagesLink={["/"]}>{ id == "new" ? "Aggiungi Proverbio" : "Modifica Proverbio" }</BreadCrumb>
       </section>
       <FormAggiungi id={ id }></FormAggiungi>
-      <Footer ctaText="Aggiungi il tuo proverbio!" />
+      <Footer />
     </>
   )
 }
