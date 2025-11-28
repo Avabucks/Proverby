@@ -8,5 +8,5 @@ export default function Analytics() {
     loadAnalytics();
   }, []);
 
-  return null; // non renderizza niente
+  return null;
 }
