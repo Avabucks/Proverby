@@ -14,7 +14,7 @@ import { adminProverbi, accettaProverbio, declinaProverbio } from "@/src/actions
 import { BiAlarm, BiX, BiMedal, BiTrash, BiCheck, BiEditAlt, BiBookmark, BiCollection, BiPlus } from "react-icons/bi";
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from "react-icons/ai";
 
-interface ListProps {
+interface Props {
   type: string;
   setCount?: Function;
   isOwner?: boolean;
@@ -31,7 +31,7 @@ interface Proverbio {
   scoreProverbio?: number;
 }
 
-export default function ListProverbi({ type, setCount, isOwner }: ListProps) {
+export default function ListProverbi({ type, setCount, isOwner }: Readonly<Props>) {
   const router = useRouter();
   const pathname = usePathname();
   const { user, fingerprint } = useUser();
