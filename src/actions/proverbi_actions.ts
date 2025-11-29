@@ -110,7 +110,7 @@ export async function top10Proverbi(fingerprint: string, uid?: string) {
      WHERE stato=2 AND proverbio_del_giorno!=2
      ORDER BY "scoreProverbioWeek" DESC, id DESC
      LIMIT 10`,
-     [saveFingerprint, lastMonday]
+    [saveFingerprint, lastMonday]
   );
 
   return result.rows;
@@ -291,6 +291,49 @@ export async function similarProverbi(fingerprint: string, seoLink?: string, uid
 
 }
 
+export async function newProverbi(fingerprint: string, uid?: string) {
+
+  let saveFingerprint
+  saveFingerprint = uid || fingerprint
+
+  const result = await pool.query(
+    `SELECT P.*, U.foto_profilo AS "photoURL", COALESCE(L.like_state, 0) AS "likeState", 
+    (
+        (
+            SELECT COUNT(*) 
+            FROM likes
+            WHERE like_state = 1 AND proverbio_id = P.id
+        ) * 20 -
+        (
+            SELECT COUNT(*) 
+            FROM likes
+            WHERE like_state = 2 AND proverbio_id = P.id
+        ) * 5
+    ) AS "scoreProverbio"
+     FROM proverbi P JOIN users U ON P.username=U.username LEFT JOIN likes L ON P.id=L.proverbio_id AND L.fingerprint = $1
+     WHERE stato=2
+     ORDER BY data_accettazione DESC, id DESC
+     LIMIT 20`,
+    [saveFingerprint]
+  );
+
+  return result.rows;
+
+}
+
+export async function getAlfabetoProverbi() {
+
+  const result = await pool.query(
+    `SELECT UPPER(SUBSTRING(proverbio, 1, 1)) AS first_letter
+     FROM proverbi
+     WHERE stato = 2
+     GROUP BY first_letter
+     ORDER BY first_letter`
+  );
+
+  return result.rows;
+
+}
 
 export async function deleteProverbio(id: number) {
 
@@ -333,27 +376,27 @@ export async function aggiungiProverbio(seoLink: string, uid: string, username: 
     );
 
   } else if (isAdmin == 0) {
-      stato = 0
-      result = await pool.query(
-        `UPDATE proverbi
+    stato = 0
+    result = await pool.query(
+      `UPDATE proverbi
         SET proverbio = $1,
         spiegazione = $2,
         esempi = $3,
         stato = $4,
         data_accettazione = $5
         WHERE seo_link = $6`,
-        [proverbio, spiegazione, esempiCleaned, stato, new Date(), seoLink]
-      );
-    } else if (isAdmin == 1) {
-      result = await pool.query(
-        `UPDATE proverbi
+      [proverbio, spiegazione, esempiCleaned, stato, new Date(), seoLink]
+    );
+  } else if (isAdmin == 1) {
+    result = await pool.query(
+      `UPDATE proverbi
         SET proverbio = $1,
         spiegazione = $2,
         esempi = $3
         WHERE seo_link = $4`,
-        [proverbio, spiegazione, esempiCleaned, seoLink]
-      );
-    }
+      [proverbio, spiegazione, esempiCleaned, seoLink]
+    );
+  }
 
   if (result) {
     if (isAdmin == 0) {

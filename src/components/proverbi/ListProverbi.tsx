@@ -9,7 +9,7 @@ import LikeDislike from "@/src/components/user/LikeDislike";
 import Popup from "@/src/components/popup/Popup";
 import DeletePopup from "@/src/components/popup/layout/DeletePopup";
 import { useRouter, usePathname } from "next/navigation";
-import { top10Proverbi, acceptedProverbi, reviewProverbi, declinedProverbi, salvatiProverbi, similarProverbi } from "@/src/actions/proverbi_actions";
+import { top10Proverbi, acceptedProverbi, reviewProverbi, declinedProverbi, salvatiProverbi, similarProverbi, newProverbi } from "@/src/actions/proverbi_actions";
 import { adminProverbi, accettaProverbio, declinaProverbio } from "@/src/actions/admin_actions";
 import { BiAlarm, BiX, BiMedal, BiTrash, BiCheck, BiEditAlt, BiBookmark, BiCollection, BiPlus } from "react-icons/bi";
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from "react-icons/ai";
@@ -97,6 +97,13 @@ export default function ListProverbi({ type, setCount, isOwner }: Readonly<Props
       }
       setIsLoading(false);
     }
+    async function loadNewProverbi() {
+      const result = await newProverbi(fingerprint || "", user?.uid);
+      if (result) {
+        setProverbiArray(result);
+      }
+      setIsLoading(false);
+    }
 
     const loaders: { [key: string]: () => Promise<void> } = {
       "top10": loadTopProverbi,
@@ -106,6 +113,7 @@ export default function ListProverbi({ type, setCount, isOwner }: Readonly<Props
       "salvati": loadSalvatiProverbi,
       "admin": loadAdminProverbi,
       "similar": loadSimilarProverbi,
+      "new": loadNewProverbi,
     };
 
     if (loaders[type]) {
@@ -175,8 +183,8 @@ export default function ListProverbi({ type, setCount, isOwner }: Readonly<Props
   };
 
   const renderActionButtons = (item: Proverbio) => {
-    const showLikeDislike = type === "top10" || type === "salvati" || (type === "accepted" && !isOwner) || type === "similar";
-    const showScore = type === "accepted" || type === "top10" || type === "salvati" || type === "similar";
+    const showLikeDislike = type === "top10" || type === "salvati" || (type === "accepted" && !isOwner) || type === "similar" || type === "new";
+    const showScore = type === "accepted" || type === "top10" || type === "salvati" || type === "similar" || type === "new";
 
     if (showLikeDislike) {
       return (

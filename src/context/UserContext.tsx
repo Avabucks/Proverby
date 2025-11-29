@@ -42,7 +42,7 @@ export function UserProvider({ children, initialUser }: Readonly<Props>) {
         const loadFingerprint = async () => {
             const fp = await FingerprintJS.load();
             const result = await fp.get();
-            setFingerprint(`${result.visitorId ?? ""}${user?.uid ?? ""}`);
+            setFingerprint(`${result.visitorId ?? ""}`);
             setLoading(false);
         };
 

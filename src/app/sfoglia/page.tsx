@@ -1,5 +1,7 @@
 import BreadCrumb from "@/src/components/ui/BreadCrumb";
 import Footer from "@/src/components/navigation/Footer";
+import ListProverbi from "@/src/components/proverbi/ListProverbi";
+import AlfabetoProverbi from "@/src/components/proverbi/AlfabetoProverbi";
 
 export async function generateMetadata() {
   return {
@@ -13,9 +15,16 @@ export default async function Profilo() {
     <>
       <section className="animate-[fade-in_.3s]">
         <BreadCrumb pagesLabel={["Home"]} pagesLink={["/"]}>Sfoglia</BreadCrumb>
-        TODO: Sfoglia
+        <AlfabetoProverbi></AlfabetoProverbi>
+        <div className="flex flex-col md:flex-row gap-2.5 items-center justify-between">
+          <div className="title">PROVERBI AGGIUNTI DI RECENTE</div>
+          <div className="hidden md:flex w-full border-b border-b-solid border-b-(--contrast-01) duration-300"></div>
+        </div>
+        <ListProverbi type="new"></ListProverbi>
       </section>
       <Footer />
     </>
   )
 }
+
+// TODO: Input cerca proverbi
