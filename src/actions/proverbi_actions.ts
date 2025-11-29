@@ -321,7 +321,7 @@ export async function newProverbi(fingerprint: string, uid?: string) {
 
 }
 
-export async function filtredProverbi(filter: string, fingerprint: string, uid?: string) {
+export async function filteredProverbi(filter: string, fingerprint: string, uid?: string) {
 
   if (filter == "") return []
 

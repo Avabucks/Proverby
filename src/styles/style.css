@@ -55,7 +55,6 @@
 
 .ripple.outline {
   outline: 1px solid var(--contrast-01);
-  transition: .3s;
 }
 
 .ripple.primary {

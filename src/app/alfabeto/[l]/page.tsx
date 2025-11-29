@@ -1,6 +1,7 @@
 import BreadCrumb from "@/src/components/ui/BreadCrumb";
 import Footer from "@/src/components/navigation/Footer";
 import ListProverbi from "@/src/components/proverbi/ListProverbi";
+import AlfabetoProverbi from "@/src/components/proverbi/AlfabetoProverbi";
 
 export async function generateMetadata({
   params,
@@ -28,7 +29,8 @@ export default async function Profilo({
     <>
       <section className="animate-[fade-in_.3s]">
         <BreadCrumb pagesLabel={["Home", "Sfoglia"]} pagesLink={["/", "/sfoglia"]}>Proverbi con la lettera {upperL}</BreadCrumb>
-        <ListProverbi type="filtred" filter={upperL}></ListProverbi>
+        <AlfabetoProverbi initLetter={upperL} />
+        <ListProverbi type="filtered" filter={upperL}></ListProverbi>
       </section>
       <Footer />
     </>

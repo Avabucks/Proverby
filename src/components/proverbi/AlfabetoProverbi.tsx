@@ -6,7 +6,11 @@ import { useEffect, useState } from "react";
 import Ripple from "../ui/Ripple";
 import Link from "next/link";
 
-export default function AlfabetoProverbi() {
+interface Props {
+    initLetter?: string;
+}
+
+export default function AlfabetoProverbi({ initLetter }: Readonly<Props>) {
 
     const [isLoading, setIsLoading] = useState(true);
     const [alfabetoProverbi, setAlfabetoProverbi] = useState<{ first_letter: string; }[]>([]);
@@ -16,7 +20,6 @@ export default function AlfabetoProverbi() {
             const result = await getAlfabetoProverbi();
             if (result) {
                 setAlfabetoProverbi(result);
-                console.log(result);
             }
             setIsLoading(false);
         }
@@ -27,7 +30,7 @@ export default function AlfabetoProverbi() {
 
     // TODO: Skeleton loading style
     const renderLoadingSkeleton = () => (
-        <div className="flex gap-2.5 p-1 overflow-hidden">
+        <div className="flex gap-2.5 p-px overflow-hidden">
             {Array.from({ length: 20 }).map((_, idx) => (
                 <div key={idx} className="animate-pulse rounded-(--border-radius) h-[50px] aspect-square bg-(--contrast-01)"></div>
             ))}
@@ -44,28 +47,41 @@ export default function AlfabetoProverbi() {
         ).sort((a, b) => a.localeCompare(b));
 
         return (
-            <div className="flex gap-2.5 flex-nowrap overflow-x-auto p-1 scrollbar-hide">
-                {alfabeto.map((lettera) => (
-                    <Link key={lettera} className={clsx(!lettereProverbi.includes(lettera) && "opacity-50 pointer-events-none")} href={`/alfabeto/${lettera}`}>
-                        <Ripple opt="outline aspect-square">
-                            {lettera}
+            <div className="flex items-center">
+                {initLetter && (
+                    <div className="w-[85px] md:w-[73px] flex items-center p-px gap-2.5 flex-nowrap overflow-x-auto scrollbar-hide pointer-events-none">
+                        <Ripple opt="primary aspect-square">
+                            {initLetter}
                         </Ripple>
-                    </Link>
-                ))}
-                {lettereSpeciali.map((lettera) => (
-                    <Link key={lettera} href={`/alfabeto/${lettera}`}>
-                        <Ripple opt="outline aspect-square">
-                            {lettera}
-                        </Ripple>
-                    </Link>
-                ))}
+                        <div className="h-10 border-l border-l-solid border-l-(--contrast-01)"></div>
+                    </div>
+                )}
+                <div className="flex items-center w-full p-px gap-2.5 flex-nowrap overflow-x-auto scrollbar-hide">
+                    {alfabeto.map((lettera) => (
+                        <Link key={lettera} className={clsx(!lettereProverbi.includes(lettera) && "opacity-50 pointer-events-none", lettera === initLetter && "hidden")} href={`/alfabeto/${lettera}`}>
+                            <Ripple opt="outline aspect-square">
+                                {lettera}
+                            </Ripple>
+                        </Link>
+                    ))}
+                    {lettereSpeciali.map((lettera) => (
+                        <Link key={lettera} className={clsx(lettera === initLetter && "hidden")} href={`/alfabeto/${lettera}`}>
+                            <Ripple opt="outline aspect-square">
+                                {lettera}
+                            </Ripple>
+                        </Link>
+                    ))}
+                </div>
             </div>
         );
     }
 
 
     return (
-        <>{isLoading ? renderLoadingSkeleton() : renderAlfabeto()}</>
+        <>
+            <div className="flex items-center gap-2.5 w-full"><h2 className="title">ALFABETO</h2><div className="w-full border-b border-b-solid border-b-(--contrast-01) duration-300"></div></div>
+            {isLoading ? renderLoadingSkeleton() : renderAlfabeto()}
+        </>
     );
 }
 

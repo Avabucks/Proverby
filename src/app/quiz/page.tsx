@@ -1,5 +1,6 @@
 import BreadCrumb from "@/src/components/ui/BreadCrumb";
 import Footer from "@/src/components/navigation/Footer";
+import QuizComingSoon from "@/src/components/quiz/QuizComingSoon";
 
 export async function generateMetadata() {
   return {
@@ -13,7 +14,7 @@ export default async function Profilo() {
     <>
       <section className="animate-[fade-in_.3s]">
         <BreadCrumb pagesLabel={["Home"]} pagesLink={["/"]}>Quiz</BreadCrumb>
-        TODO: Quiz, coming soon
+        <QuizComingSoon />
       </section>
       <Footer />
     </>

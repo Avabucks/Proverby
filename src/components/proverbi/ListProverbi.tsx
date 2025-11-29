@@ -9,7 +9,7 @@ import LikeDislike from "@/src/components/user/LikeDislike";
 import Popup from "@/src/components/popup/Popup";
 import DeletePopup from "@/src/components/popup/layout/DeletePopup";
 import { useRouter, usePathname } from "next/navigation";
-import { top10Proverbi, acceptedProverbi, reviewProverbi, declinedProverbi, salvatiProverbi, similarProverbi, newProverbi, filtredProverbi } from "@/src/actions/proverbi_actions";
+import { top10Proverbi, acceptedProverbi, reviewProverbi, declinedProverbi, salvatiProverbi, similarProverbi, newProverbi, filteredProverbi } from "@/src/actions/proverbi_actions";
 import { adminProverbi, accettaProverbio, declinaProverbio } from "@/src/actions/admin_actions";
 import { BiAlarm, BiX, BiMedal, BiTrash, BiCheck, BiEditAlt, BiBookmark, BiCollection, BiPlus } from "react-icons/bi";
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from "react-icons/ai";
@@ -105,8 +105,8 @@ export default function ListProverbi({ type, setCount, isOwner, filter }: Readon
       }
       setIsLoading(false);
     }
-    async function loadFiltredProverbi(filterParam: string) {
-      const result = await filtredProverbi(filterParam, fingerprint || "", user?.uid);
+    async function loadFilteredProverbi(filterParam: string) {
+      const result = await filteredProverbi(filterParam, fingerprint || "", user?.uid);
       if (result) {
         setProverbiArray(result);
       }
@@ -122,7 +122,7 @@ export default function ListProverbi({ type, setCount, isOwner, filter }: Readon
       "admin": loadAdminProverbi,
       "similar": loadSimilarProverbi,
       "new": loadNewProverbi,
-      "filtred": () => loadFiltredProverbi(filter || ""),
+      "filtered": () => loadFilteredProverbi(filter || ""),
     };
 
     if (loaders[type]) {
@@ -192,8 +192,8 @@ export default function ListProverbi({ type, setCount, isOwner, filter }: Readon
   };
 
   const renderActionButtons = (item: Proverbio) => {
-    const showLikeDislike = type === "top10" || type === "salvati" || (type === "accepted" && !isOwner) || type === "similar" || type === "new";
-    const showScore = type === "accepted" || type === "top10" || type === "salvati" || type === "similar" || type === "new";
+    const showLikeDislike = type === "top10" || type === "salvati" || (type === "accepted" && !isOwner) || type === "similar" || type === "new" || type === "filtered";
+    const showScore = type === "accepted" || type === "top10" || type === "salvati" || type === "similar" || type === "new" || type === "filtered";
 
     if (showLikeDislike) {
       return (
