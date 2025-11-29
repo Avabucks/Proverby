@@ -3,6 +3,8 @@
 import { getAlfabetoProverbi } from "@/src/actions/proverbi_actions";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
+import Ripple from "../ui/Ripple";
+import Link from "next/link";
 
 export default function AlfabetoProverbi() {
 
@@ -25,12 +27,10 @@ export default function AlfabetoProverbi() {
 
     // TODO: Skeleton loading style
     const renderLoadingSkeleton = () => (
-        <div className="flex flex-col gap-5">
-            <div className="animate-pulse rounded-(--border-radius) w-full h-[77px] bg-(--contrast-01)"></div>
-            <div className="animate-pulse rounded-(--border-radius) w-full h-[77px] bg-(--contrast-01)"></div>
-            <div className="animate-pulse rounded-(--border-radius) w-full h-[77px] bg-(--contrast-01)"></div>
-            <div className="animate-pulse rounded-(--border-radius) w-full h-[77px] bg-(--contrast-01)"></div>
-            <div className="animate-pulse rounded-(--border-radius) w-full h-[77px] bg-(--contrast-01)"></div>
+        <div className="flex gap-2.5 p-1 overflow-hidden">
+            {Array.from({ length: 20 }).map((_, idx) => (
+                <div key={idx} className="animate-pulse rounded-(--border-radius) h-[50px] aspect-square bg-(--contrast-01)"></div>
+            ))}
         </div>
     );
 
@@ -44,19 +44,20 @@ export default function AlfabetoProverbi() {
         ).sort((a, b) => a.localeCompare(b));
 
         return (
-            <div className="alfabeto">
+            <div className="flex gap-2.5 flex-nowrap overflow-x-auto p-1 scrollbar-hide">
                 {alfabeto.map((lettera) => (
-                    <span key={lettera} className={clsx(lettereProverbi.includes(lettera) && "text-red-500")}>
-                        {lettera}
-                    </span>
+                    <Link key={lettera} className={clsx(!lettereProverbi.includes(lettera) && "opacity-50 pointer-events-none")} href={`/alfabeto/${lettera}`}>
+                        <Ripple opt="outline aspect-square">
+                            {lettera}
+                        </Ripple>
+                    </Link>
                 ))}
                 {lettereSpeciali.map((lettera) => (
-                    <span
-                        key={lettera}
-                        className="text-red-500"
-                    >
-                        {lettera}
-                    </span>
+                    <Link key={lettera} href={`/alfabeto/${lettera}`}>
+                        <Ripple opt="outline aspect-square">
+                            {lettera}
+                        </Ripple>
+                    </Link>
                 ))}
             </div>
         );
@@ -67,3 +68,5 @@ export default function AlfabetoProverbi() {
         <>{isLoading ? renderLoadingSkeleton() : renderAlfabeto()}</>
     );
 }
+
+// TODO: scrollbar personalizzato

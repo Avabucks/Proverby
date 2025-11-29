@@ -38,7 +38,7 @@ Proverby è sviluppato con:
 
 ```bash
 # Clona il repository
-git clone https://github.com/tuo-username/proverby.git
+git clone https://github.com/Avabucks/proverby.git
 
 # Entra nella cartella
 cd proverby

@@ -9,7 +9,7 @@ import LikeDislike from "@/src/components/user/LikeDislike";
 import Popup from "@/src/components/popup/Popup";
 import DeletePopup from "@/src/components/popup/layout/DeletePopup";
 import { useRouter, usePathname } from "next/navigation";
-import { top10Proverbi, acceptedProverbi, reviewProverbi, declinedProverbi, salvatiProverbi, similarProverbi, newProverbi } from "@/src/actions/proverbi_actions";
+import { top10Proverbi, acceptedProverbi, reviewProverbi, declinedProverbi, salvatiProverbi, similarProverbi, newProverbi, filtredProverbi } from "@/src/actions/proverbi_actions";
 import { adminProverbi, accettaProverbio, declinaProverbio } from "@/src/actions/admin_actions";
 import { BiAlarm, BiX, BiMedal, BiTrash, BiCheck, BiEditAlt, BiBookmark, BiCollection, BiPlus } from "react-icons/bi";
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from "react-icons/ai";
@@ -18,6 +18,7 @@ interface Props {
   type: string;
   setCount?: Function;
   isOwner?: boolean;
+  filter?: string;
 }
 
 interface Proverbio {
@@ -31,7 +32,7 @@ interface Proverbio {
   scoreProverbio?: number;
 }
 
-export default function ListProverbi({ type, setCount, isOwner }: Readonly<Props>) {
+export default function ListProverbi({ type, setCount, isOwner, filter }: Readonly<Props>) {
   const router = useRouter();
   const pathname = usePathname();
   const { user, fingerprint } = useUser();
@@ -104,8 +105,15 @@ export default function ListProverbi({ type, setCount, isOwner }: Readonly<Props
       }
       setIsLoading(false);
     }
+    async function loadFiltredProverbi(filterParam: string) {
+      const result = await filtredProverbi(filterParam, fingerprint || "", user?.uid);
+      if (result) {
+        setProverbiArray(result);
+      }
+      setIsLoading(false);
+    }
 
-    const loaders: { [key: string]: () => Promise<void> } = {
+    const loaders: { [key: string]: (filterParam?: string) => Promise<void> } = {
       "top10": loadTopProverbi,
       "accepted": loadAcceptedProverbi,
       "review": loadReviewProverbi,
@@ -114,6 +122,7 @@ export default function ListProverbi({ type, setCount, isOwner }: Readonly<Props
       "admin": loadAdminProverbi,
       "similar": loadSimilarProverbi,
       "new": loadNewProverbi,
+      "filtred": () => loadFiltredProverbi(filter || ""),
     };
 
     if (loaders[type]) {

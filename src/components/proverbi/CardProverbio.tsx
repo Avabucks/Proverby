@@ -30,6 +30,7 @@ interface Proverbio {
 export default function CardProverbio({ type, setString, proverbio }: Readonly<Props>) {
     const router = useRouter();
     const pathname = usePathname().split("/").findLast(Boolean);
+    
     const { user, fingerprint } = useUser();
 
     const [proverbioObj, setProverbioObj] = useState<Proverbio>();

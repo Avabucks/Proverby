@@ -15,11 +15,9 @@ export default async function Profilo() {
     <>
       <section className="animate-[fade-in_.3s]">
         <BreadCrumb pagesLabel={["Home"]} pagesLink={["/"]}>Sfoglia</BreadCrumb>
+        <div className="flex items-center gap-2.5 w-full"><h2 className="title">ALFABETO</h2><div className="w-full border-b border-b-solid border-b-(--contrast-01) duration-300"></div></div>
         <AlfabetoProverbi></AlfabetoProverbi>
-        <div className="flex flex-col md:flex-row gap-2.5 items-center justify-between">
-          <div className="title">PROVERBI AGGIUNTI DI RECENTE</div>
-          <div className="hidden md:flex w-full border-b border-b-solid border-b-(--contrast-01) duration-300"></div>
-        </div>
+        <div className="flex items-center gap-2.5 w-full mt-5"><h2 className="title">PROVERBI AGGIUNTI DI RECENTE</h2><div className="w-full border-b border-b-solid border-b-(--contrast-01) duration-300"></div></div>
         <ListProverbi type="new"></ListProverbi>
       </section>
       <Footer />

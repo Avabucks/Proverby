@@ -321,6 +321,37 @@ export async function newProverbi(fingerprint: string, uid?: string) {
 
 }
 
+export async function filtredProverbi(filter: string, fingerprint: string, uid?: string) {
+
+  if (filter == "") return []
+
+  let saveFingerprint
+  saveFingerprint = uid || fingerprint
+
+  const result = await pool.query(
+    `SELECT P.*, U.foto_profilo AS "photoURL", COALESCE(L.like_state, 0) AS "likeState", 
+    (
+        (
+            SELECT COUNT(*) 
+            FROM likes
+            WHERE like_state = 1 AND proverbio_id = P.id
+        ) * 20 -
+        (
+            SELECT COUNT(*) 
+            FROM likes
+            WHERE like_state = 2 AND proverbio_id = P.id
+        ) * 5
+    ) AS "scoreProverbio"
+     FROM proverbi P JOIN users U ON P.username=U.username LEFT JOIN likes L ON P.id=L.proverbio_id AND L.fingerprint = $1
+     WHERE stato=2 AND UPPER(SUBSTRING(proverbio, 1, 1)) = $2
+     ORDER BY P.proverbio`,
+    [saveFingerprint, filter]
+  );
+
+  return result.rows;
+
+}
+
 export async function getAlfabetoProverbi() {
 
   const result = await pool.query(

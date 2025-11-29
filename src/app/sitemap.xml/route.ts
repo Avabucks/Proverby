@@ -18,6 +18,13 @@ export async function GET() {
        FROM users
        WHERE username != uid`
     );
+    const alfabetoResult = await pool.query(
+      `SELECT UPPER(SUBSTRING(proverbio, 1, 1)) AS first_letter
+     FROM proverbi
+     WHERE stato = 2
+     GROUP BY first_letter
+     ORDER BY first_letter`
+    );
 
     const proverbi_urls = proverbsResult.rows
       .map(
@@ -30,6 +37,10 @@ export async function GET() {
       .map((u) => `<url><loc>${SITE_URL}/profilo/${u.username}</loc></url>`)
       .join("\n");
 
+    const alfabeto = alfabetoResult.rows
+      .map((a) => `<url><loc>${SITE_URL}/alfabeto/${a.first_letter}</loc></url>`)
+      .join("\n");
+
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>${SITE_URL}</loc></url>
@@ -40,6 +51,7 @@ export async function GET() {
   <url><loc>${SITE_URL}/quiz</loc></url>
   ${proverbi_urls}
   ${users_urls}
+  ${alfabeto}
 </urlset>`;
 
     return new NextResponse(sitemap, {
