@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import CardProverbio from "@/src/components/proverbi/CardProverbio";
 import Timer from "@/src/components/ui/Timer";
-import ListProverbi from "@/src/components/proverbi/ListProverbi";
+import ListProverbi from "@/src/components/list/FixedList";
 import Link from "next/link";
 import Footer from "@/src/components/navigation/Footer";
 import { BiRightArrowAlt } from "react-icons/bi";

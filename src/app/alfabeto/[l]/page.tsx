@@ -1,6 +1,6 @@
 import BreadCrumb from "@/src/components/ui/BreadCrumb";
 import Footer from "@/src/components/navigation/Footer";
-import ListProverbi from "@/src/components/proverbi/ListProverbi";
+import ListProverbi from "@/src/components/list/FixedList";
 import AlfabetoProverbi from "@/src/components/proverbi/AlfabetoProverbi";
 
 export async function generateMetadata({

@@ -5,7 +5,7 @@ import { getProverbioFromSEO, getRandomProverbioSEO } from "@/src/actions/prover
 import { BiSolidDice5, BiLogoWhatsapp, BiLogoFacebookCircle } from "react-icons/bi";
 import { RiTwitterXFill } from "react-icons/ri";
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from "react-icons/ai";
-import ListProverbi from "./ListProverbi";
+import ListProverbi from "../list/FixedList";
 
 interface Proverbio {
     spiegazione: string;

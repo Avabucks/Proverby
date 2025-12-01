@@ -1,5 +1,5 @@
 import CheckAdmin from "@/src/components/admin/CheckAdmin";
-import ListProverbi from "@/src/components/proverbi/ListProverbi";
+import ListProverbi from "@/src/components/list/FixedList";
 
 export default function Admin() {
     return (

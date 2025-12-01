@@ -5,7 +5,7 @@ import { useUser } from "@/src/context/UserContext";
 import { getUserFromUsername } from "@/src/actions/users_actions";
 import { firebaseLogOut } from "@/src/actions/firebase_actions";
 import Image from "next/image";
-import ListProverbi from "@/src/components/proverbi/ListProverbi";
+import ListProverbi from "@/src/components/list/FixedList";
 import { BiCollection, BiSolidCollection, BiBookmark, BiSolidBookmark, BiLineChart, BiMedal, BiExit } from "react-icons/bi";
 import CountUp from "../ui/CountUp";
 
