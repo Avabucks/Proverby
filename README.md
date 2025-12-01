@@ -30,8 +30,6 @@ Proverby è sviluppato con:
 - 👥 Community-driven  
 - 🌐 UI moderna e responsive  
 
-> Se vuoi, posso aggiungere screenshot, badge o GIF.
-
 ---
 
 ## 🛠️ Installazione & Avvio del Progetto
