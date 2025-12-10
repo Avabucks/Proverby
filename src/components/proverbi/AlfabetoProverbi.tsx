@@ -28,7 +28,6 @@ export default function AlfabetoProverbi({ initLetter }: Readonly<Props>) {
 
     }, []);
 
-    // TODO: Skeleton loading style
     const renderLoadingSkeleton = () => (
         <div className="flex gap-2.5 p-px overflow-hidden">
             {Array.from({ length: 20 }).map((_, idx) => (
@@ -85,4 +84,4 @@ export default function AlfabetoProverbi({ initLetter }: Readonly<Props>) {
     );
 }
 
-// TODO: scrollbar personalizzato
+// TODO: scrollbar personalizzato con tasto per scrollare orizzontalmente

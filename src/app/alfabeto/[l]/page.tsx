@@ -36,5 +36,3 @@ export default async function Profilo({
     </>
   )
 }
-
-// TODO: lista proverbi con la lettera

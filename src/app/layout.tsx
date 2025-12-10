@@ -96,3 +96,11 @@ export default async function RootLayout({
     </html>
   );
 }
+
+// GENERAL TODOs:
+// - sistemare sfoglia (con alfabeto, cerca e ultimi proverbi)
+// - load more / infinite scroll
+// - mail a utente del proverbio del giorno anziché ad admin
+// - quiz
+// - toast
+// - sistemare theme
